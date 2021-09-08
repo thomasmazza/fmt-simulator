@@ -1,0 +1,7 @@
+# Ignore the build and lib dirs and any exectuable
+build
+lib/*
+bin/*
+.idea
+
+
