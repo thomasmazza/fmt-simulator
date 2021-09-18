@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/fmt_simulator.dir/src/main.cpp.o -o fmt_simulator 
