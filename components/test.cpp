@@ -11,9 +11,11 @@
 using namespace boost::numeric::ublas;
 
 int main(int argc, char *argv[]){
-    vector<double> vec(std::stoi(argv[1]));
-    for(int i=0; i<vec.size(); i++) vec(i)=i;
-    component::Component<double> testComp(vec);
-    std::cout << "Test vector " << testComp.getPos() << std::endl;
+    int dim=std::stoi(argv[1]);
+    vector<double> vec(dim);
+    vector<double> normal(dim);
+    for(int i=0; i<dim; i++) vec(i)=i;
+    component::Component<double> testComp(vec,normal);
+    std::cout << "Test vector " << testComp.getPos() << std::endl << "with dir " << testComp.getNormal() << std::endl;
     return 0;
 };

@@ -12,10 +12,13 @@ namespace component {
     class Component {
     private:
         vector<T> pos;
+        vector<T> normal;
     public:
-        Component(vector<T>&);
+        Component(vector<T>&,vector<T>&);
         vector<T>& getPos();
         void setPos(vector<T>&);
+        vector<T>& getNormal();
+        void setNormal(vector<T>&);
     };
 }
 
