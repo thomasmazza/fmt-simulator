@@ -19,4 +19,4 @@ namespace component {
     };
 }
 
-#include "/src/component.cpp"
+#include "src/component.cpp"
