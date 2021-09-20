@@ -1,4 +1,28 @@
-namespace component {
+#include "component.hpp"
+typedef typename boost::numeric::ublas::vector<double> vector;
+Component::Component(vector & position, vector & normal) {
+    setPosition(position);
+    setNormal(normal);
+}
+ vector Component::getPosition() {
+    return position;
+}
+
+vector Component::getNormal() {
+    return  position;
+}
+
+void Component::setPosition(vector & _position) {
+    if(_position.size() == 3) {
+        position = _position;
+    }
+}
+
+void Component::setNormal(vector & _normal) {
+    normal = _normal;
+}
+
+/*
     template<typename T>
     vector<T>& Component<T>::getPos(){
         return pos;
@@ -24,4 +48,4 @@ namespace component {
         pos(_pos),
         normal(_normal){
     }
-}
+}*/

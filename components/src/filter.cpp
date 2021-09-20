@@ -1,34 +1,27 @@
-namespace component {
-    template<typename T>
-    int Filter<T>::getLowerLim(){
-        return lowerLim;
-    }
+#include"filter.hpp"
 
-    template<typename T>
-    void Filter<T>::setLowerLim(int _lowerLim){
-        lowerLim=_lowerLim;
-    }
+int Filter::getLowerLimit() {
+    return lowerLimit;
+}
 
-    template<typename T>
-    int Filter<T>::getUpperLim(){
-        return upperLim;
-    }
+void Filter::setLowerLimit(int _lowerLimit) {
+    lowerLimit= _lowerLimit;
+}
 
-    template<typename T>
-    void Filter<T>::setUpperLim(int _upperLim){
-        upperLim=_upperLim;
-    }
+int Filter::getUpperLimit() {
+    return upperLimit;
+}
 
-    template<typename T>
-    bool Filter<T>::inRange(int lambda){
-        if(lambda>upperLim||lambda<lowerLim) return false;
-        return true;
-    }
+void Filter::setUpperLimit(int _upperLimit) {
+    upperLimit = _upperLimit;
+}
 
-    template<typename T>
-    Filter<T>::Filter(vector<T>& _pos,vector<T>& _normal,int _lowerLim,int _upperLim):
-        Filter<T>::Component(_pos,_normal),
-        lowerLim(_lowerLim),
-        upperLim(_upperLim){
-    }
+bool Filter::inRange(int lambda) {
+    if (lambda > upperLimit || lambda < lowerLimit) return false;
+    return true;
+}
+
+Filter::Filter(vector& _pos, vector &_normal, int _lowerLimit, int _upperLimit):Filter::Component(_pos, _normal){
+    lowerLimit = _lowerLimit;
+    upperLimit = _upperLimit;
 }
