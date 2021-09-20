@@ -26,9 +26,9 @@ namespace component {
     }
 
     template<typename T>
-    Filter<T>::Filter(vector<T>& _pos,vector<T>& _normal,int _lowerLim,int _upperLim){
-        Filter<T>::Component<T>(_pos,_normal);
-        lowerLim=_lowerLim;
-        upperLim=_upperLim;
+    Filter<T>::Filter(vector<T>& _pos,vector<T>& _normal,int _lowerLim,int _upperLim):
+        Filter<T>::Component(_pos,_normal),
+        lowerLim(_lowerLim),
+        upperLim(_upperLim){
     }
 }

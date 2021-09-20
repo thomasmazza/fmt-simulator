@@ -20,8 +20,8 @@ namespace component {
     }
 
     template<typename T>
-    Component<T>::Component(vector<T>& _pos,vector<T>& _normal){
-        pos=_pos;
-        normal=_normal;
+    Component<T>::Component(vector<T>& _pos,vector<T>& _normal):
+        pos(_pos),
+        normal(_normal){
     }
 }
