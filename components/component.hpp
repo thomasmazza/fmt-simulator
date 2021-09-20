@@ -10,7 +10,7 @@ namespace component {
 
     template<typename T>
     class Component {
-    private:
+    protected:
         vector<T> pos;
         vector<T> normal;
     public:

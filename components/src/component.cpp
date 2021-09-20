@@ -21,7 +21,7 @@ namespace component {
 
     template<typename T>
     Component<T>::Component(vector<T>& _pos,vector<T>& _normal){
-        Component<T>::setPos(_pos);
-        Component<T>::setNormal(_normal);
+        pos=_pos;
+        normal=_normal;
     }
 }
