@@ -7,6 +7,7 @@ Component::Component(vector& position, vector& normal) {
     setPosition(position);
     setNormal(normal);
 }
+
  vector Component::getPosition() {
     return position;
 }
