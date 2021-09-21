@@ -9,7 +9,7 @@ class Component {
         vector position;
         vector normal;
     public:
-        Component(vector& position,vector& normal);
+        Component(vector& position, vector& normal);
         vector getPosition();
         void setPosition(vector&);
         vector getNormal();

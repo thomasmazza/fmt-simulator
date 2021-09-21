@@ -12,6 +12,6 @@ void Mirror::getOutDir(Photon& p) {
     //TODO: Logik einbauen
 }
 
-Mirror::Mirror(vector& _pos, vector& _normal):Mirror::Component(_pos, _normal){
+Mirror::Mirror(vector& _pos, vector& _normal):Mirror::Component(_pos, _normal) {
     //TODO: Nothing
 }
