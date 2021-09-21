@@ -1,11 +1,12 @@
 #pragma once
+
 #include "mirror.hpp"
 class EllipticalMirror: public Mirror{
     private:
         double rH;
-        double rB;
+        double rW;
     public:
-    EllipticalMirror(vector&, vector&, vector&, vector&, vector&, double, double);
+        EllipticalMirror(vector&, vector&, double, double);
 };
 
 
