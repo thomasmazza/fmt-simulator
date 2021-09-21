@@ -1,7 +1,7 @@
 #pragma once
 
 #include <boost/numeric/ublas/vector.hpp>
-#include "component.hpp"
+#include "lens.hpp"
 
 typedef typename boost::numeric::ublas::vector<double> vector;
 
