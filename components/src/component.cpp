@@ -3,7 +3,7 @@
 #include "component.hpp"
 
 typedef typename boost::numeric::ublas::vector<double> vector;
-Component::Component(vector & position, vector & normal) {
+Component::Component(vector& position, vector& normal) {
     setPosition(position);
     setNormal(normal);
 }
@@ -15,12 +15,12 @@ vector Component::getNormal() {
     return  position;
 }
 
-void Component::setPosition(vector & _position) {
+void Component::setPosition(vector& _position) {
     std::assert(_position.size()==3);
     position = _position;
 }
 
-void Component::setNormal(vector & _normal) {
+void Component::setNormal(vector& _normal) {
     normal = _normal;
 }
 
