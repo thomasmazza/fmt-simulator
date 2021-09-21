@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mirror.hpp"
+
 class RectangleMirror: public Mirror{
     private:
         double lengthH;

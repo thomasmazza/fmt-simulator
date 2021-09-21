@@ -13,6 +13,3 @@ class Mirror: public Component {
         bool hitComponent(Photon&);
         vector getOutDir(Photon&);
 };
-
-
-
