@@ -3,8 +3,7 @@
 
 typedef typename boost::numeric::ublas::vector<double> vector;
 
-
-    class Filter : public Component {
+class Filter : public Component {
     private:
         int lowerLimit;
         int upperLimit;
@@ -15,7 +14,4 @@ typedef typename boost::numeric::ublas::vector<double> vector;
         int getUpperLimit();
         void setUpperLimit(int);
         bool inRange(int);
-    };
-
-
-
+};

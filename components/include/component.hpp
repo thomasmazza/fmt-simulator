@@ -1,8 +1,8 @@
 #pragma once
 
 #include <boost/numeric/ublas/vector.hpp>
-typedef typename boost::numeric::ublas::vector<double> vector;
 
+typedef typename boost::numeric::ublas::vector<double> vector;
 
 class Component {
     protected:
@@ -15,4 +15,3 @@ class Component {
         vector getNormal();
         void setNormal(vector&);
 };
-
