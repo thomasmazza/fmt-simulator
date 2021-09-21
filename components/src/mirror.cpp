@@ -3,19 +3,15 @@
 
 typedef typename boost::numeric::ublas::vector<double> vector;
 
-bool Mirror::hitComponent(vector Position) {
+bool Mirror::hitComponent(Photon& p) {
     //TODO: Logik einbauen
     return true;
 }
 
-vector Mirror::getOutDir(vector& r, vector& p) {
+void Mirror::getOutDir(Photon& p) {
     //TODO: Logik einbauen
-    return r;
 }
 
-Mirror::Mirror(vector& vector1, vector& vector2, vector& vector3, vector& _position, vector& _normal):
-Mirror::Component(position, normal){
-    plane[0]= vector1;
-    plane[1]= vector2;
-    plane[2]= vector3;
+Mirror::Mirror(vector& _pos, vector& _normal):Mirror::Component(_pos, _normal){
+    //TODO: Nothing
 }

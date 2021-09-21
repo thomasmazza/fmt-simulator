@@ -1,7 +1,6 @@
 #include "rectangleMirror.hpp"
 
-RectangleMirror::RectangleMirror(vector & vector1, vector & vector2, vector & vector3, vector & position, vector & normal, double _lengthH, double _lengthW):
-Mirror(vector1, vector2, vector3, position, normal) {
-    lengthW = _lengthW;
+RectangleMirror::RectangleMirror(vector& _pos, vector& _normal, double _lengthH, double _lengthW):Mirror(_pos, _normal) {
     lengthH = _lengthH;
+    lengthW = _lengthW;
 }

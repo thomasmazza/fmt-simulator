@@ -2,10 +2,10 @@
 
 #include "ellipticalMirror.hpp"
 class CircleMirror : public EllipticalMirror{
-private:
-    double radius;
-public:
-    CircleMirror(vector&, vector&, vector&, vector&, vector&, double);
+    private:
+        double radius;
+    public:
+        CircleMirror(vector&, vector&, double);
 };
 
 
