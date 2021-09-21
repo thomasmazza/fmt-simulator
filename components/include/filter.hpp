@@ -8,7 +8,7 @@ class Filter : public Component {
         int lowerLimit;
         int upperLimit;
     public:
-        Filter(vector&,vector&,int,int);
+        Filter(vector&, vector&, int, int);
         int getLowerLimit();
         void setLowerLimit(int);
         int getUpperLimit();
