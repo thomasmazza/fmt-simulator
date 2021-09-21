@@ -1,7 +1,9 @@
 #pragma once
 
 #include <boost/numeric/ublas/vector.hpp>
+#include <boost/geometry/arithmetic/cross_product.hpp>
 #include "component.hpp"
+#include "math.h"
 
 typedef typename boost::numeric::ublas::vector<double> vector;
 
@@ -10,6 +12,6 @@ class Mirror: public Component {
 
     public:
         Mirror(vector&, vector&);
-        bool hitComponent(Photon&);
-        vector getOutDir(Photon&);
+        virtual bool hitComponent(Photon&)=0;
+        virtual vector getOutDir(Photon&)=0;
 };
