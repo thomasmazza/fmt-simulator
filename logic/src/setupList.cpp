@@ -1,4 +1,4 @@
-#include "../incl/setupList.hpp"
+#include "../include/setupList.hpp"
 
 namespace setup {
     template<typename T>
