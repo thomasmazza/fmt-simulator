@@ -1,7 +1,6 @@
 #include "lensOneSided.hpp"
 #include <boost/numeric/ublas/vector.hpp>
 
-typedef typename boost::numeric::ublas::vector<double> vector;
 
 void LensOneSided::getOutDir(photon& p){
     //TODO: Logik einbauen
