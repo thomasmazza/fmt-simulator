@@ -1,6 +1,6 @@
-#include "ellipticalMirror.hpp"
+#include "mirrorElliptical.hpp"
 
-bool EllipticalMirror::hitComponent(Photon& p, vector& _dirOA) {
+bool MirrorElliptical::hitComponent(Photon& p, vector& _dirOA) {
     double rS=0;
     double lS=0;
     vector pV = p.getPos();
@@ -77,7 +77,7 @@ bool EllipticalMirror::hitComponent(Photon& p, vector& _dirOA) {
     }
 }
 
-void EllipticalMirror::getOutDir(Photon& p) {
+void MirrorElliptical::getOutDir(Photon& p) {
     //neuer Stützvektor wird der Schnittpunkt
     p.setPos(intersect);
 
@@ -118,7 +118,7 @@ void EllipticalMirror::getOutDir(Photon& p) {
     return true;
 }
 
-EllipticalMirror::EllipticalMirror(vector& pos, vector& _normal, double _rH, double _rW):Mirror(pos, _normal) {
+MirrorElliptical::MirrorElliptical(vector& pos, vector& _normal, double _rH, double _rW):Mirror(pos, _normal) {
     rH= _rH;
     rW= _rW;
 }

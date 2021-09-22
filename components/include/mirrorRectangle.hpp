@@ -2,10 +2,10 @@
 
 #include "mirror.hpp"
 
-class RectangleMirror: public Mirror{
+class MirrorRectangle: public Mirror{
     private:
         double lengthH;
         double lengthW;
     public:
-        RectangleMirror(vector&, vector&, double, double);
+        MirrorRectangle(vector&, vector&, double, double);
 };

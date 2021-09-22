@@ -1,6 +1,6 @@
-#include "rectangleMirror.hpp"
+#include "mirrorRectangle.hpp"
 
-bool RectangleMirror::hitComponent(Photon& p, vector& _dirOA) {
+bool MirrorRectangle::hitComponent(Photon& p, vector& _dirOA) {
     double rS=0;
     double lS=0;
     vector pV = p.getPos();
@@ -77,7 +77,8 @@ bool RectangleMirror::hitComponent(Photon& p, vector& _dirOA) {
 
 }
 
-bool RectangleMirror::getOutDir(Photon& p, vector& intersect) {
+
+bool MirrorRectangle::getOutDir(Photon& p, vector& intersect) {
     //neuer Stützvektor wird der Schnittpunkt
     p.setPos(intersect);
 
@@ -118,7 +119,7 @@ bool RectangleMirror::getOutDir(Photon& p, vector& intersect) {
     return true;
 }
 
-RectangleMirror::RectangleMirror(vector& _pos, vector& _normal, double _lengthH, double _lengthW):Mirror(_pos, _normal) {
+MirrorRectangle::MirrorRectangle(vector& _pos, vector& _normal, double _lengthH, double _lengthW):Mirror(_pos, _normal) {
     lengthH = _lengthH;
     lengthW = _lengthW;
 }

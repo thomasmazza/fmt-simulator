@@ -2,10 +2,10 @@
 
 #include "mirror.hpp"
 
-class EllipticalMirror: public Mirror{
+class MirrorElliptical: public Mirror{
     private:
         double rH;
         double rW;
     public:
-        EllipticalMirror(vector&, vector&, double, double);
+        MirrorElliptical(vector&, vector&, double, double);
 };
