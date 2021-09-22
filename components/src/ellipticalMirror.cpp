@@ -78,7 +78,44 @@ bool EllipticalMirror::hitComponent(Photon& p, vector& _dirOA) {
 }
 
 void EllipticalMirror::getOutDir(Photon& p) {
-    //TODO: Logik einbauen
+    //neuer Stützvektor wird der Schnittpunkt
+    p.setPos(intersect);
+
+    vector out[3];
+    vector dV = p.getDir();
+    double sumVE=0;
+    double sumVN=0;
+
+    //normierter Einfallsvektor berechnen
+    for(int i=0; i<3; i++){
+        sumVE += pow(dV[i], 2);
+        sumVN += pow(normal[i], 2);
+    }
+    sumVE = sqrt(sumVE);
+    sumVN = sqrt(sumVN);
+    for(int i=0; i<3; i++){
+        dv[i] = (dV[i]/sumVE);
+        normal[i] = (normal[i]/sumVN);
+    }
+
+    //Skalarprodukt aus Einfallsvektor & einer Achse (normiert)
+    double coalpha=0;
+    for(int i=0; i<3; i++){
+        coalpha += dV[i]*normWidth[i];
+    }
+
+    //Überprüfen ob der Winkel über 90 Grad
+    if(coalpha>(pi/2)){
+        coalpha = coalpha-(pi/2);
+    }
+
+    //In Formel einsetzen
+    out = dV +2*coalpha*(normal);
+
+    //An Photon übergeben
+    p.setDir(out);
+
+    return true;
 }
 
 EllipticalMirror::EllipticalMirror(vector& pos, vector& _normal, double _rH, double _rW):Mirror(pos, _normal) {

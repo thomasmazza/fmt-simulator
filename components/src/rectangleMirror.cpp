@@ -46,6 +46,8 @@ bool RectangleMirror::hitComponent(Photon& p, vector& _dirOA) {
        mWidth[i] = (mWidth[i]/rS);
     }
 
+    vector normWidth = mWidth;
+
     //Vektor auf Höhe Skalieren
     mHigh = lengthH * mHigh;
     mWidth = lengthW * mWidth;
@@ -68,7 +70,7 @@ bool RectangleMirror::hitComponent(Photon& p, vector& _dirOA) {
 
     //Falls Werte kleiner 1 ist der Betrag entlang der Achsen kleiner als die Ausdehnung => in Grenzen
     if( h<= 1 && w<= 1){
-        if (this.getOutDir(p, intersect)){return true};
+        if (this.getOutDir(p, intersect, normWidth)){return true};
     }else{
         return false;
     }
@@ -76,7 +78,44 @@ bool RectangleMirror::hitComponent(Photon& p, vector& _dirOA) {
 }
 
 bool RectangleMirror::getOutDir(Photon& p, vector& intersect) {
-    //TODO: Logik einbauen
+    //neuer Stützvektor wird der Schnittpunkt
+    p.setPos(intersect);
+
+    vector out[3];
+    vector dV = p.getDir();
+    double sumVE=0;
+    double sumVN=0;
+
+    //normierter Einfallsvektor berechnen
+    for(int i=0; i<3; i++){
+        sumVE += pow(dV[i], 2);
+        sumVN += pow(normal[i], 2);
+    }
+    sumVE = sqrt(sumVE);
+    sumVN = sqrt(sumVN);
+    for(int i=0; i<3; i++){
+        dv[i] = (dV[i]/sumVE);
+        normal[i] = (normal[i]/sumVN);
+    }
+
+    //Skalarprodukt aus Einfallsvektor & einer Achse (normiert)
+    double coalpha=0;
+    for(int i=0; i<3; i++){
+        coalpha += dV[i]*normWidth[i];
+    }
+
+    //Überprüfen ob der Winkel über 90 Grad
+    if(coalpha>(pi/2)){
+        coalpha = coalpha-(pi/2);
+    }
+
+    //In Formel einsetzen
+    out = dV +2*coalpha*(normal);
+
+    //An Photon übergeben
+    p.setDir(out);
+
+    return true;
 }
 
 RectangleMirror::RectangleMirror(vector& _pos, vector& _normal, double _lengthH, double _lengthW):Mirror(_pos, _normal) {
