@@ -43,9 +43,8 @@ bool MirrorRectangle::hitComponent(Photon& p, vector& _dirOA) {
     //normierte Vektoren berechnen
     for(int i=0;  i<3; i++){
         mHigh[i] = (mHigh[i]/lS);
-       mWidth[i] = (mWidth[i]/rS);
+        mWidth[i] = (mWidth[i]/rS);
     }
-
     vector normWidth = mWidth;
 
     //Vektor auf Höhe Skalieren
@@ -78,7 +77,7 @@ bool MirrorRectangle::hitComponent(Photon& p, vector& _dirOA) {
 }
 
 
-bool MirrorRectangle::getOutDir(Photon& p, vector& intersect) {
+bool MirrorRectangle::getOutDir(Photon& p, vector& intersect, vector& normWidth) {
     //neuer Stützvektor wird der Schnittpunkt
     p.setPos(intersect);
 

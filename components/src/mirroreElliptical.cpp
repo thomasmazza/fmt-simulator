@@ -45,6 +45,7 @@ bool MirrorElliptical::hitComponent(Photon& p, vector& _dirOA) {
         mHigh[i] = (mHigh[i]/lS);
         mWidth[i] = (mWidth[i]/rS);
     }
+    vector normWidth = mWidth;
 
     //Vektor auf Höhe Skalieren
     mHigh = rH * mHigh;
@@ -71,13 +72,13 @@ bool MirrorElliptical::hitComponent(Photon& p, vector& _dirOA) {
     double z = abs((pow(xProz,2)/lengthW)+(pow(yProz,2)/lengthH));
 
     if( z<=1 ){
-        if (this.getOutDir(p, intersect)){return true};
+        if (this.getOutDir(p, intersect, normWidth)){return true};
     }else{
         return false;
     }
 }
 
-void MirrorElliptical::getOutDir(Photon& p) {
+void MirrorElliptical::getOutDir(Photon& p, vector& intersect, vector& normWidth) {
     //neuer Stützvektor wird der Schnittpunkt
     p.setPos(intersect);
 
