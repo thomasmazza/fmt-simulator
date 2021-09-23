@@ -11,7 +11,7 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
         rS += normal(i)*(position(i)-pV(i));
         lS += normal(i)*dV(i);
     }
-
+    bool isComponentHit = false;
     //Existiert ein sinnvoller Schnittpunkt oder annähernd parallel zwischen Ebene und Gerade?
     if (lS < 0.000001) {
         double t = rS / lS;
@@ -41,8 +41,8 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
 
         //normierte Vektoren berechnen
         for (int i = 0; i < 3; i++) {
-            mHigh(i) = (mHigh(i) / lS);
-            mWidth(i) = (mWidth(i) / rS);
+            mHigh[i] = (mHigh[i] / lS);
+            mWidth[i] = (mWidth[i] / rS);
         }
         vector normWidth = mWidth;
 
@@ -60,8 +60,8 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
         //Überprüfen, ob in Grenze
         //Skalarprodukt aus Achse mit Intersect
         for (int i = 0; i < 3; i++) {
-            rS += intersect(i) * mHigh(i);
-            lS += intersect(i) * mWidth(i);
+            rS += intersect[i] * mHigh[i];
+            lS += intersect[i] * mWidth[i];
         }
 
         //lengthW und lengthH ist nicht deklariert
@@ -73,11 +73,8 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
         double z = abs(pow(xProz, 2) / lengthW + pow(yProz, 2) / lengthH);
 
         if (z <= 1 && getOutDir(photon, intersect, normWidth)) {
-            return true;
+            isComponentHit = true;
         }
-        return false;
-    } else {
-        return false;
     }
 }
 
@@ -92,13 +89,14 @@ bool MirrorElliptical::getOutDir(Photon& p, vector& intersect, vector& normWidth
 
     //normierter Einfallsvektor berechnen
     for(int i=0; i<3; i++){
-        sumVE += pow(dV(i), 2);
-        sumVN += pow(normal(i), 2);
+        sumVE += pow(dV[i], 2);
+        sumVN += pow(normal[i], 2);
     }
+    sumVE = sqrt(sumVE);
     sumVE = sqrt(sumVE);
     sumVN = sqrt(sumVN);
     for(int i=0; i<3; i++){
-        dV(i) = (dV(i)/sumVE);
+        dV[i] = (dV[i]/sumVE);
         normal[i] = (normal[i]/sumVN);
     }
 
