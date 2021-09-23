@@ -64,18 +64,16 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
             lS += intersect(i) * mWidth(i);
         }
 
-        //lengthW ist nicht deklariert
-        double yProz = abs((rS / (pow(lengthH, 2))));
-        double xProz = abs((lS / (pow(lengthW, 2))));
+        //lengthW und lengthH ist nicht deklariert
+        double yProz = abs((rS / pow(lengthH, 2)));
+        double xProz = abs((lS / pow(lengthW, 2)));
         xProz = xProz * lengthW;
         yProz = yProz * lengthH;
 
-        double z = abs((pow(xProz, 2) / lengthW) + (pow(yProz, 2) / lengthH));
-        bool result = false;
-        if (z <= 1) {
-            if (getOutDir(photon, intersect, normWidth)) {
-                result = true;
-            }
+        double z = abs(pow(xProz, 2) / lengthW + pow(yProz, 2) / lengthH);
+
+        if (z <= 1 && getOutDir(photon, intersect, normWidth)) {
+            return true;
         }
         return false;
     } else {
