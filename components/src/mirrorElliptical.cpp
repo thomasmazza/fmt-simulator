@@ -8,8 +8,8 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
 
     //Improvisierte Skalarprodukte
     for(int i=0; i<3; i++){
-        rS += normal(i)*(position(i)-pV(i));
-        lS += normal(i)*dV(i);
+        rS += normal[i]*(position[i]-pV[i]);
+        lS += normal[i]*dV[i];
     }
     bool isComponentHit = false;
     //Existiert ein sinnvoller Schnittpunkt oder annähernd parallel zwischen Ebene und Gerade?
@@ -19,7 +19,7 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
 
         //Berechne den Schnittpunkt
         for (int i = 0; i < 3; i++) {
-            intersect(i) = pV(i) + t * dV(i);
+            intersect[i] = pV[i] + t * dV[i];
         }
 
         //Überprüfen, ob im Bereich, erst Bereich definieren
