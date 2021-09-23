@@ -11,7 +11,7 @@ Component::Component(vector& position, vector& normal) {
 }
 
 vector Component::getNormal() {
-    return  position;
+    return  normal;
 }
 
 void Component::setPosition(vector& _position) {
