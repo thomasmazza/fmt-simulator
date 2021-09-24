@@ -1,6 +1,6 @@
-#include "../include/mirrorRectangle.hpp"
+#include "../include/mirrorElliptical.hpp"
 
-bool MirrorRectangle::hitComponent(Photon& p, vector& _dirOA) {
+bool MirrorElliptical::hitComponent(Photon& p, vector& _dirOA) {
     double rS=0;
     double lS=0;
     vector pV = p.getPos();
@@ -48,9 +48,8 @@ bool MirrorRectangle::hitComponent(Photon& p, vector& _dirOA) {
     vector normWidth = mWidth;
 
     //Vektor auf Höhe Skalieren
-    mHigh = lengthH * mHigh;
-    mWidth = lengthW * mWidth;
-
+    mHigh = rH * mHigh;
+    mWidth = rW * mWidth;
 
     //Vektor von Mittelpunkt zum Intersect erstellen
     intersect = intersect - pos;
@@ -60,24 +59,26 @@ bool MirrorRectangle::hitComponent(Photon& p, vector& _dirOA) {
     lS = 0;
 
     //Überprüfen ob in Grenze
+    //Skalarprodukt aus Achse mit Intersect
     for(int i=0; i<3; i++){
         rS += intersect[i]*mHigh[i];
         lS += intersect[i]*mWidth[i];
     }
-    double h = abs((rS/(pow(lengthH, 2))));
-    double w = abs((lS/(pow(lengthW, 2))));
+    double yProz = abs((rS/(pow(lengthH, 2))));
+    double xProz = abs((lS/(pow(lengthW, 2))));
+    xProz = xProz*lengthW;
+    yProz = yProz*lengthH;
 
-    //Falls Werte kleiner 1 ist der Betrag entlang der Achsen kleiner als die Ausdehnung => in Grenzen
-    if( h<= 1 && w<= 1){
+    double z = abs((pow(xProz,2)/lengthW)+(pow(yProz,2)/lengthH));
+
+    if( z<=1 ){
         if (this.getOutDir(p, intersect, normWidth)){return true};
     }else{
         return false;
     }
-
 }
 
-
-bool MirrorRectangle::getOutDir(Photon& p, vector& intersect, vector& normWidth) {
+void MirrorElliptical::getOutDir(Photon& p, vector& intersect, vector& normWidth) {
     //neuer Stützvektor wird der Schnittpunkt
     p.setPos(intersect);
 
@@ -118,7 +119,7 @@ bool MirrorRectangle::getOutDir(Photon& p, vector& intersect, vector& normWidth)
     return true;
 }
 
-MirrorRectangle::MirrorRectangle(vector& _pos, vector& _normal, double _lengthH, double _lengthW):Mirror(_pos, _normal) {
-    lengthH = _lengthH;
-    lengthW = _lengthW;
+MirrorElliptical::MirrorElliptical(vector& pos, vector& _normal, double _rH, double _rW):Mirror(pos, _normal) {
+    rH= _rH;
+    rW= _rW;
 }

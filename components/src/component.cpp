@@ -1,4 +1,4 @@
-#include "component.hpp"
+#include "../include/component.hpp"
 #include <assert.h>
 typedef typename boost::numeric::ublas::vector<double> vector;
 Component::Component(vector& position, vector& normal) {

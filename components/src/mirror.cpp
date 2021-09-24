@@ -1,4 +1,4 @@
-#include "mirror.hpp"
+#include "../include/mirror.hpp"
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/geometry/arithmetic/cross_product.hpp>
 
