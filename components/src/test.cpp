@@ -18,7 +18,7 @@ int main(int argc, char *argv[]){
     Component component1(testVector, testVector);
     vector test = component1.getPosition();
     std::cout << test << '\n';
-    auto la = MirrorElliptical( testVector,testVector, 1 ,1);
-    std::cout << la.getOutDir(new Photon(testVector,testVector, 600)) << '\n';
+    MirrorElliptical la = MirrorElliptical( testVector,testVector, 1 ,1);
+    std::cout << la.getOutDir(new Photon(testVector,testVector, 600, 500)) << '\n';
 
 };

@@ -24,8 +24,9 @@ void Photon::setDirection(vector & _direction) {
     direction = _direction;
 }
 
-Photon::Photon(vector & _position, vector & _direction, int _waveLength) {
+Photon::Photon(vector & _position, vector & _direction, int _waveLength, int _intensity) {
     setWaveLength(_waveLength);
     setPosition(_position);
     setDirection(_direction);
+    intensity = _intensity;
 }

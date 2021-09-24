@@ -12,5 +12,5 @@ class Mirror: public Component {
     public:
         Mirror(vector&, vector&);
         virtual bool hitComponent(Photon&, vector&)=0;
-        virtual vector getOutDir(Photon&, vector&, vector&)=0;
+        virtual bool getOutDir(Photon&, vector&, vector&)=0;
 };
