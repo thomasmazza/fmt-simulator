@@ -15,8 +15,8 @@ namespace setup {
             //Position und Normale in Datei eintragen
             vector _pos = _lst.elem(i)->getPosition();
             dataOut << _pos(0) << " " << _pos(1) << " " << _pos(2) << '\n';
-            vector _nrml = _lst.elem(i)->getNormal();
-            dataOut << _nrml(0) << " " << _nrml(1) << " " << _nrml(2) << '\n';
+            vector _normal = _lst.elem(i)->getNormal();
+            dataOut << _normal(0) << " " << _normal(1) << " " << _normal(2) << '\n';
             switch(className) {
                 case "Filter":
                     dataOut << _lst.elem(i)->getLowerLimit() << '\n' << _lst.elem(i)->getUpperLimit() << '\n' << '\n';
