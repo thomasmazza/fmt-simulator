@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include <boost/numeric/ublas/vector.hpp>
 
 typedef typename boost::numeric::ublas::vector<double> vector;
@@ -14,4 +16,5 @@ class Component {
         void setPosition(vector&);
         vector getNormal();
         void setNormal(vector&);
+        virtual std::string getType()=0;
 };

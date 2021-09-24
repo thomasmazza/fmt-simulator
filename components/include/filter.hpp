@@ -14,4 +14,5 @@ class Filter : public Component {
         int getUpperLimit();
         void setUpperLimit(int);
         bool inRange(int);
+        std::string getType();
 };

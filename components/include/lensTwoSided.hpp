@@ -11,4 +11,7 @@ private:
     double radiusO;
 public:
     LensTwoSided(vector&, vector&, double, double, double, double);
+    double getRadiusI();
+    double getRadiusO();
+    std::string getType();
 };

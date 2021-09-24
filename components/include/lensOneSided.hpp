@@ -11,4 +11,7 @@ private:
     bool planeIsFront;
 public:
     LensOneSided(vector&, vector&, double, double, double, bool);
+    double getRadiusW();
+    bool getPlaneIsFront();
+    std::string getType();
 };

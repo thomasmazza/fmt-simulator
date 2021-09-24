@@ -10,4 +10,7 @@ class MirrorElliptical: public Mirror{
         MirrorElliptical(vector&, vector&, double, double);
         bool getOutDir(Photon&, vector&, vector&)=0;
         bool hitComponent(Photon&, vector&)=0;
+        double getRH();
+        double getRW();
+        std::string getType();
 };

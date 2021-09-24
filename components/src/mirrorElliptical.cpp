@@ -120,6 +120,18 @@ bool MirrorElliptical::getOutDir(Photon& p, vector& intersect, vector& normWidth
     return true;
 }
 
+double MirrorElliptical::getRH() {
+    return rH;
+}
+
+double MirrorElliptical::getRW() {
+    return rW;
+}
+
+std::string MirrorElliptical::getType() {
+    return "MirrorElliptical";
+}
+
 MirrorElliptical::MirrorElliptical(vector& pos, vector& _normal, double _rH, double _rW):Mirror(pos, _normal) {
     rH= _rH;
     rW= _rW;

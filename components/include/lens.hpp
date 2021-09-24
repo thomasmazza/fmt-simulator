@@ -13,5 +13,7 @@ protected:
 public:
     Lens(vector&, vector&, double, double);
     bool hitComponent(Photon&);
+    double getRefIndex();
+    double getRadiusH();
     virtual vector getOutDir(Photon&)=0;
 };

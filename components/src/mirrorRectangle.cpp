@@ -118,6 +118,18 @@ bool MirrorRectangle::getOutDir(Photon& p, vector& intersect, vector& normWidth)
     return true;
 }
 
+double MirrorRectangle::getLengthH() {
+    return lengthH;
+}
+
+double MirrorRectangle::getLengthW() {
+    return lengthW;
+}
+
+std::string MirrorRectangle::getType() {
+    return "MirrorRectangle";
+}
+
 MirrorRectangle::MirrorRectangle(vector& _pos, vector& _normal, double _lengthH, double _lengthW):Mirror(_pos, _normal) {
     lengthH = _lengthH;
     lengthW = _lengthW;
