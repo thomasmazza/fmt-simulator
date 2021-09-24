@@ -5,7 +5,8 @@
 #include "component.hpp"
 #include "filter.hpp"
 #include "mirror.hpp"
-#include "ellipticalMirror.hpp"
+#include "mirrorElliptical.hpp"
+#include "photon.hpp"
 
 int main(int argc, char *argv[]){
     vector testVector (3);
@@ -17,7 +18,7 @@ int main(int argc, char *argv[]){
     Component component1(testVector, testVector);
     vector test = component1.getPosition();
     std::cout << test << '\n';
-    Mirror mirror1(testVector, testVector,testVector,testVector,testVector);
-    EllipticalMirror(testVector, testVector, testVector, testVector,testVector, 1 ,1);
+    auto la = MirrorElliptical( testVector,testVector, 1 ,1);
+    std::cout << la.getOutDir(new Photon(testVector,testVector, 600)) << '\n';
 
 };

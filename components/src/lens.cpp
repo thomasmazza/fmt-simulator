@@ -1,7 +1,6 @@
 #include "lens.hpp"
 #include <boost/numeric/ublas/vector.hpp>
 
-typedef typename boost::numeric::ublas::vector<double> vector;
 
 bool Lens::hitComponent(Photon& p){
     //TODO: Logik einbauen

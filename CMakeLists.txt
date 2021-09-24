@@ -8,4 +8,4 @@ find_package(Boost REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(components/include)
-add_executable(test components/src/test.cpp components/src/component.cpp components/src/filter.cpp components/src/mirror.cpp components/src/ellipticalMirror.cpp components/src/circleMirror.cpp components/src/rectangleMirror.cpp components/src/SquareMirror.cpp)
+add_executable(test components/src/test.cpp components/src/component.cpp components/src/filter.cpp components/src/mirror.cpp components/src/mirrorElliptical.cpp components/src/mirrorSquare.cpp components/include/photon.hpp components/src/photon.cpp)
