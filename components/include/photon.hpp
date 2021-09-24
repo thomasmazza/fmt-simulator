@@ -6,10 +6,11 @@ typedef typename boost::numeric::ublas::vector<double> vector;
 class Photon {
 private:
     int waveLength;
+    int intensity;
     vector position;
     vector direction;
 public:
-    Photon(vector&, vector&, int);
+    Photon(vector&, vector&, int, int);
 
     int getWaveLength();
     vector getPosition();
