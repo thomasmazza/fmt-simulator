@@ -1,4 +1,4 @@
-#include "mirrorRectangle.hpp"
+#include "../include/mirrorRectangle.hpp"
 
 bool MirrorRectangle::hitComponent(Photon& p, vector& _dirOA) {
     double rS=0;

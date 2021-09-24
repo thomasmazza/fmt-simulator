@@ -1,4 +1,4 @@
-#include "mirrorElliptical.hpp"
+#include "../include/mirrorElliptical.hpp"
 
 bool MirrorElliptical::hitComponent(Photon& p, vector& _dirOA) {
     double rS=0;

@@ -1,4 +1,4 @@
-#include "lensTwoSided.hpp"
+#include "../include/lensTwoSided.hpp"
 #include <boost/numeric/ublas/vector.hpp>
 
 
