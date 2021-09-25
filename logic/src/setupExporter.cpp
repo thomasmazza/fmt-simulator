@@ -5,13 +5,12 @@
 typedef typename boost::numeric::ublas::vector<double> vector;
 
 namespace setup {
-    void Exporter::exportStp(List& _lst, string _filename) {
+    void Exporter::exportStp(List& _lst, std::string _filename) {
         std::ofstream dataOut(_filename, std::ios::out);
-        dataOut << "[";
         for(int i = 0; i < _lst.getLength(); i++) {
             //Klassentyp eintragen
             std::string className = _lst.elem(i)->getType();
-            dataOut << className << "]" << '\n';
+            dataOut << "[" << className << "]" << '\n';
             //Position und Normale in Datei eintragen
             vector _pos = _lst.elem(i)->getPosition();
             dataOut << _pos(0) << " " << _pos(1) << " " << _pos(2) << '\n';
@@ -30,11 +29,13 @@ namespace setup {
                     << _lst.elem(i)->getRadiusI() << '\n' << _lst.elem(i)->getRadiusO() << '\n' << '\n';
                     break;
                 case "MirrorElliptical":
+                    dataOut << _lst.elem(i)->getRH() << '\n' << _lst.elem(i)->getRW() << '\n' << '\n';
                 case "MirrorCircle":
-                    dataOut << _lst.elem(i)->getRH() << '\n' << _lst.elem(i)->getRH() << '\n' << '\n';
+                    dataOut << _lst.elem(i)->getRH() << '\n' << '\n';
                 case "MirrorRectangle":
-                case "MirrorSquare":
                     dataOut << _lst.elem(i)->getLengthH() << '\n' << _lst.elem(i)->getLengthW() << '\n' << '\n';
+                case "MirrorSquare":
+                    dataOut << _lst.elem(i)->getLengthH() << '\n' << '\n';
                 default:
                     break;
             }

@@ -6,10 +6,10 @@
 #include "../../components/include/component.hpp"
 
 namespace setup {
-    class Exporter {
+    class Importer {
     private:
     public:
-        Exporter();
-        void exportStp(List&, std::string);
+        Importer();
+        void importStp(List&, std::string);
     };
 }
