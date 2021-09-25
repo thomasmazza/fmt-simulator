@@ -1,4 +1,4 @@
-#include "photon.hpp"
+#include "../include/photon.hpp"
 
 vector Photon::getPosition() {
     return position;
