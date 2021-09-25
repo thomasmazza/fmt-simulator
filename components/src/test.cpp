@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     std::cout << filter1.getLowerLimit() << '\n';
     Component component1(testVector, testVector);
     vector test = component1.getPosition();
-    //MirrorRectangle lb = MirrorRectangle(testVector, testVector, 1, 1);
+    MirrorRectangle lb = MirrorRectangle(testVector, testVector, 1, 1);
     std::cout << test << '\n';
     MirrorElliptical la = MirrorElliptical(testVector, testVector, 1, 1);
     Photon testPhoton(testVector, testVector, 600, 500);
