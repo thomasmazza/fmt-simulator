@@ -3,7 +3,7 @@
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/geometry/arithmetic/cross_product.hpp>
 #include "component.hpp"
-#include "photon.hpp"
+#include "../../photon/include/photon.hpp"
 #include "math.h"
 
 typedef typename boost::numeric::ublas::vector<double> vector;

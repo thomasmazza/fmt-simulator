@@ -8,4 +8,7 @@ class MirrorRectangle: public Mirror{
         double lengthW;
     public:
         MirrorRectangle(vector&, vector&, double, double);
+        bool getOutDir(Photon&, vector&, vector&);
+        bool hitComponent(Photon&, vector&);
 };
+
