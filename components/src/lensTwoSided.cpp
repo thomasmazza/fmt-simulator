@@ -39,7 +39,7 @@ void LensTwoSided::getOutDir(photon& p){
     vector intersect(3);
 
     //Unterscheidung zwischen Sammellinse und Zerstreuungslinse und darauf folgend Schnittpunktberechnung
-    if(radius1 > 0 ; radius2 < 0){
+    if(radius1 > 0 && radius2 < 0){
         if(t1<t2){
             intersect = pV+t1*dV;
         }else{
@@ -68,7 +68,7 @@ void LensTwoSided::getOutDir(photon& p){
 
     //Flächennormale berechnen
     vector normalA1(3);
-    if(radius1 > 0 ; radius2 < 0){
+    if(radius1 > 0 && radius2 < 0){
         normalA1 = intersect - OM1;
     }else{
         normalA1 = OM1 - intersect;
@@ -99,7 +99,7 @@ void LensTwoSided::getOutDir(photon& p){
     }
     coalphaS = sqrt(coalphaS);
 
-    if(coalphaS > 1,5){
+    if(coalphaS > 1.5){
         return false;
     }
 
@@ -134,7 +134,7 @@ void LensTwoSided::getOutDir(photon& p){
     t2 = (-b-sqrt((pow(b,2)-4*a*c))) / (2*a);
 
     //Unterscheidung zwischen Sammellinse und Zerstreuungslinse und darauf folgend Schnittpunktberechnung
-    if(radius1 > 0 ; radius2 < 0){
+    if(radius1 > 0 && radius2 < 0){
         if(t1>t2){
             intersect = pV+t1*dV;
         }else{
@@ -162,7 +162,7 @@ void LensTwoSided::getOutDir(photon& p){
 
     //Flächennormale berechnen
     vector normalA2(3);
-    if(radius1 > 0 ; radius2 < 0){
+    if(radius1 > 0 && radius2 < 0){
         normalA2 = OM2 - intersect;
     }else{
         normalA2 = intersect - OM2;
@@ -192,7 +192,7 @@ void LensTwoSided::getOutDir(photon& p){
     }
     coalphaS = sqrt(coalphaS);
 
-    if(coalphaS > 1,5){
+    if(coalphaS > 1.5){
         return false;
     }
 
