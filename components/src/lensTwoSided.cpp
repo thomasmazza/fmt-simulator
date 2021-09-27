@@ -106,6 +106,16 @@ void LensTwoSided::getOutDir(photon& p){
     vector inLensDir(3);
     inLensDir = (1/n)*dV - normalA1*( (1/n)*(skrp1) - sqrt( 1 - pow((1/n), 2)* (1-pow(skrp1, 2)) ) );
 
+    //neue Richtung normieren
+    sum1=0;
+    for(int i=0; i<3; i++){
+        sum1 += pow(inLensDir[i], 2);
+    }
+    sum1=sqrt(sum1);
+    for(int i=0; i<3; i++){
+        inLensDir[i] = inLensDir[i]/sum1;
+    }
+
     //neuer Ausgangspunkt und Richtung setzen
     dV = inLensDir;
     pV = intersect;
@@ -151,7 +161,7 @@ void LensTwoSided::getOutDir(photon& p){
     //Überprüfen ob im Höhenradius
     double d2 = (2*radius2 - sqrt( 4*pow(radius2, 2) - 4*pow(radiusH, 2) )) / 2;
     sum2=0;
-    check = intersect - (position - normal*d2);
+    check = intersect - (position - normal*(d-d2));
     for(int i=0; i<3; i++){
         sum2 += pow(check[i], 2);
     }
