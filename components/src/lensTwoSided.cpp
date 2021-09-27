@@ -90,7 +90,18 @@ void LensTwoSided::getOutDir(photon& p){
         skrp1 += dV[i]*normalA1[i];
     }
 
-    //TODO: Überprüfen ob Winkel zu Groß für Brechnung => Reflexion
+    //Winkel berechnen
+    vector coalphaV(3);
+    double coalphaS=0;
+    cross_product(coalphaV&, dV&, normalA1&);
+    for(int i=0; i<3; i++){
+        coalphaS += pow(coalphaV[i], 2);
+    }
+    coalphaS = sqrt(coalphaS);
+
+    if(coalphaS > 1,5){
+        return false;
+    }
 
     vector inLensDir(3);
     inLensDir = (1/n)*dV - normalA1*( (1/n)*(skrp1) - sqrt( 1 - pow((1/n), 2)* (1-pow(skrp1, 2)) ) );
@@ -173,7 +184,17 @@ void LensTwoSided::getOutDir(photon& p){
         skrp2 += dV[i]*normalA1[i];
     }
 
-    //TODO: Überprüfen ob Winkel zu Groß für Brechnung => Reflexion (cross_product)
+    //Winkel berechnen & überprüfen
+    coalphaS=0;
+    cross_product(coalphaV&, dV&, normalA1&);
+    for(int i=0; i<3; i++){
+        coalphaS += pow(coalphaV[i], 2);
+    }
+    coalphaS = sqrt(coalphaS);
+
+    if(coalphaS > 1,5){
+        return false;
+    }
 
     vector outLensDir(3);
     outLensDir = n*dV - normalA2*( n*(skrp2) - sqrt( 1 - pow(n, 2)* (1-pow(skrp2, 2)) ) );
