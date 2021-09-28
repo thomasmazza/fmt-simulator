@@ -12,7 +12,7 @@
 typedef typename boost::numeric::ublas::vector<double> vector;
 
 namespace setup {
-    void Importer::importStp(List& _lst, std::string _filename) {
+    static void Importer::importStp(List& _lst, std::string _filename) {
         std::ifstream dataIn(_filename, std::ios::in);
         std::string buf;
         bool finish = false;

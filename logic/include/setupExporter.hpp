@@ -10,6 +10,6 @@ namespace setup {
     private:
     public:
         Exporter();
-        void exportStp(List&, std::string);
+        static void exportStp(List&, std::string);
     };
 }

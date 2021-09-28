@@ -5,7 +5,7 @@
 typedef typename boost::numeric::ublas::vector<double> vector;
 
 namespace setup {
-    void Exporter::exportStp(List& _lst, std::string _filename) {
+    static void Exporter::exportStp(List& _lst, std::string _filename) {
         std::ofstream dataOut(_filename, std::ios::out);
         for(int i = 0; i < _lst.getLength(); i++) {
             //Klassentyp eintragen

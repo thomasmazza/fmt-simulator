@@ -10,6 +10,6 @@ namespace setup {
     private:
     public:
         Importer();
-        void importStp(List&, std::string);
+        static void importStp(List&, std::string);
     };
 }
