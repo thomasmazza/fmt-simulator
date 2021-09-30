@@ -19,6 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # Input
 HEADERS += components/include/component.hpp \
+           GUI/include/gui_incl.hpp \
            components/include/filter.hpp \
            components/include/lens.hpp \
            components/include/lensOneSided.hpp \
@@ -32,7 +33,8 @@ HEADERS += components/include/component.hpp \
            logic/include/setupExporter.hpp \
            logic/include/setupImporter.hpp \
            logic/include/setupList.hpp
-SOURCES += GUI/dummy.cpp \
+SOURCES += \
+           GUI/src/guisrc.cpp \
            components/src/component.cpp \
            components/src/filter.cpp \
            components/src/lens.cpp \
