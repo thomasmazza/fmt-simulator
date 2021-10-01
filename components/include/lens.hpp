@@ -19,4 +19,5 @@ public:
     double getRefIndex();
     double getRadiusH();
     virtual vector getOutDir(Photon&)=0;
+    virtual double getFocalLength()=0;
 };
