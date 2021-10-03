@@ -1,13 +1,19 @@
 #pragma once
 
 #include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
+#include "component.hpp"
+#include "../../photon/include/photon.hpp"
 
-class Detector {
+typedef typename boost::numeric::ublas::vector<double> vector;
+
+class Detector: public Component {
 protected:
-    vector position;
-    vector normal;
     int size;
     double pixelSize;
+    double length;
 public:
-    Detector(vector& position, vector& normal, int size, double pixelSize);
+    Detector(vector&, vector&, int, double);
+    bool hitComponent(Photon&);
+    vector getInPoint(Photon&);
 };

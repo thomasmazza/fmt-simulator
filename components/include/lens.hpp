@@ -17,5 +17,4 @@ public:
     Lens(vector&, vector&, double, double);
     bool hitComponent(Photon&);
     virtual vector getOutDir(Photon&)=0;
-    virtual double getFocalLength()=0;
 };
