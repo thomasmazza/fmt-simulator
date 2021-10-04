@@ -76,75 +76,7 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
             isComponentHit = true;
         }
     }
-    //Improvisierte Skalarprodukte
-    for(int i=0; i<3; i++){
-        rS += normal[i]*(position[i]-pV[i]);
-        lS += normal[i]*dV[i];
-    }
-    //Existiert ein sinnvoller Schnittpunkt oder annähernd parallel zwischen Ebene und Gerade?
-    if (lS < 0.000001) {
-        double t = rS / lS;
-        vector intersect(3);
 
-        //Berechne den Schnittpunkt
-        for (int i = 0; i < 3; i++) {
-            intersect[i] = pV[i] + t * dV[i];
-        }
-
-        //Überprüfen, ob im Bereich, erst Bereich definieren
-        vector mHigh(3);
-        vector mWidth(3);
-        Utils::cross_product(mHigh,_dirOA, normal);
-        Utils::cross_product(mHigh,normal, mHigh);
-
-        //Betrag berechnen
-        //lS und rS wiederverwenden zur Speicheroptimierung
-        rS = 0;
-        lS = 0;
-        for (int i = 0; i < 3; i++) {
-            lS = pow(mHigh[i], 2);
-            rS = pow(mWidth[i], 2);
-        }
-        lS = sqrt(lS);
-        rS = sqrt(rS);
-
-        //normierte Vektoren berechnen
-        for (int i = 0; i < 3; i++) {
-            mHigh[i] = (mHigh[i] / lS);
-            mWidth[i] = (mWidth[i] / rS);
-        }
-        vector normWidth = mWidth;
-
-        //Vektor auf Höhe Skalieren
-        mHigh = rH * mHigh;
-        mWidth = rW * mWidth;
-
-        //Vektor von Mittelpunkt zum Intersect erstellen
-        intersect = intersect - position;
-
-        //lS und rS wiederverwenden zur Speicheroptimierung
-        rS = 0;
-        lS = 0;
-
-        //Überprüfen, ob in Grenze
-        //Skalarprodukt aus Achse mit Intersect
-       for (int i = 0; i < 3; i++) {
-            rS += intersect[i] * mHigh[i];
-            lS += intersect[i] * mWidth[i];
-        }
-
-        //lengthW und lengthH ist nicht deklariert
-        double yProz = abs((rS / pow(rH, 2)));
-        double xProz = abs((lS / pow(rW, 2)));
-        xProz = xProz * rW;
-        yProz = yProz * rH;
-
-        double z = abs(pow(xProz, 2) / rW + pow(yProz, 2) / rH);
-
-        if (z <= 1 && getOutDir(photon, intersect, normWidth)) {
-            isComponentHit = true;
-        }
-    }
     return isComponentHit;
 }
 
@@ -163,8 +95,8 @@ bool MirrorElliptical::getOutDir(Photon& p, vector& intersect, vector& normWidth
         sumVN += pow(normal[i], 2);
     }
     sumVE = sqrt(sumVE);
-    sumVE = sqrt(sumVE);
     sumVN = sqrt(sumVN);
+
     for(int i=0; i<3; i++){
         dV[i] = (dV[i]/sumVE);
         normal[i] = (normal[i]/sumVN);

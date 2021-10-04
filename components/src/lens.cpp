@@ -7,7 +7,8 @@ bool Lens::hitComponent(Photon& p){
     return true;
 }
 
-Lens::Lens(vector& _pos, vector& _normal, double _refIndex, double _radiusH):Lens::Component(_pos, _normal) {
-    refIndex = _refIndex;
+Lens::Lens(vector& _pos, vector& _normal, double _n2, double _radiusH, double _d):Lens::Component(_pos, _normal) {
+    n2 = _n2;
     radiusH = _radiusH;
+    d = _d;
 }
