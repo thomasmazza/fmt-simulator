@@ -221,8 +221,8 @@ void LensTwoSided::getOutDir(photon& p){
     dV = outLensDir;
     pV = intersect;
 
-    photon.setPos(pV);
-    photon.setDir(dV);
+    photon.setPosition(pV);
+    photon.setDirection(dV);
 
     return true;
 }
