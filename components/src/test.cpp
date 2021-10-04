@@ -8,7 +8,7 @@
 #include "mirrorElliptical.hpp"
 #include "../../photon/include/photon.hpp"
 #include "mirrorRectangle.hpp"
-
+#include "utils.hpp"
 int main(int argc, char *argv[]) {
     vector testVector(3);
     for (unsigned i = 0; i < testVector.size(); i++) {
@@ -23,5 +23,6 @@ int main(int argc, char *argv[]) {
     MirrorElliptical la = MirrorElliptical(testVector, testVector, 1, 1);
     Photon testPhoton(testVector, testVector, 600, 500);
     std::cout << la.hitComponent(testPhoton, testVector) << '\n';
+    std::cout << Utils::wavelengthToRGB(480) << '\n';
 
 };
