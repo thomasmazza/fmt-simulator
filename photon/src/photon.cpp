@@ -1,4 +1,5 @@
 #include "../include/photon.hpp"
+#include "../../utils/include/utils.hpp"
 
 vector Photon::getPosition() {
     return position;
@@ -12,8 +13,12 @@ int Photon::getWaveLength() {
     return waveLength;
 }
 
-void Photon::setWaveLength(int& _waveLength) {
-    waveLength =_waveLength;
+int Photon::getIntensity() {
+    return intensity;
+}
+
+void Photon::setIntensity(int _intensity) {
+    intensity = _intensity;
 }
 
 void Photon::setPosition(vector & _position) {
@@ -21,12 +26,13 @@ void Photon::setPosition(vector & _position) {
 }
 
 void Photon::setDirection(vector & _direction) {
+    Utils::normalizeVector(_direction);
     direction = _direction;
 }
 
-Photon::Photon(vector & _position, vector & _direction, int _waveLength, int _intensity) {
-    setWaveLength(_waveLength);
-    setPosition(_position);
-    setDirection(_direction);
-    intensity = _intensity;
+Photon::Photon(vector & _position, vector & _direction, int _waveLength, int _intensity):
+waveLength(_waveLength),
+position(_position),
+direction(_direction),
+intensity(_intensity) {
 }
