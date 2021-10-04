@@ -364,8 +364,8 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
             dV = outLensDir;
             pV = intersect;
 
-            photon.setPos(pV);
-            photon.setDir(dV);
+            photon.setPosition(pV);
+            photon.setDirection(dV);
 
             return true;
         }
