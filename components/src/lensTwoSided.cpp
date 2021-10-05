@@ -2,10 +2,10 @@
 #include <boost/numeric/ublas/vector.hpp>
 
 
-void LensTwoSided::getOutDir(photon& p){
+bool LensTwoSided::getOutDir(Photon& p){
 
-    vector pV = photon.getPosition();
-    vector dV = photon.getDirection();
+    vector pV = p.getPosition();
+    vector dV = p.getDirection();
     vector OM1(3);
     vector OM2(3);
 
@@ -21,7 +21,7 @@ void LensTwoSided::getOutDir(photon& p){
     //Summenrechnung für quadratische Gleichung
     for(int i=0; i<3; i++){
         a += pow(dV[i], 2);
-        b += 2*((pV[i]-OM1[i]*dV[i]);
+        b += 2*((pV[i]-OM1[i])*dV[i]);
         c += pow((OM1[i]-pV[i]), 2) - pow(radius1, 2);
     }
 
@@ -87,13 +87,13 @@ void LensTwoSided::getOutDir(photon& p){
     for(int i=0; i<3; i++){
         normalA1[i] = normalA1[i]/sum1;
         dV[i] = dV[i]/sum2;
-        skrp1 += dV[i]*normalA1[i];
+        skpr1 += dV[i]*normalA1[i];
     }
 
     //Winkel berechnen
     vector coalphaV(3);
     double coalphaS=0;
-    cross_product(coalphaV&, dV&, normalA1&);
+    cross_product(coalphaV, dV, normalA1);
     for(int i=0; i<3; i++){
         coalphaS += pow(coalphaV[i], 2);
     }
@@ -104,7 +104,7 @@ void LensTwoSided::getOutDir(photon& p){
     }
 
     vector inLensDir(3);
-    inLensDir = (1/n)*dV - normalA1*( (1/n)*(skrp1) - sqrt( 1 - pow((1/n), 2)* (1-pow(skrp1, 2)) ) );
+    inLensDir = (1/n)*dV - normalA1*( (1/n)*(skpr1) - sqrt( 1 - pow((1/n), 2)* (1-pow(skpr1, 2)) ) );
 
     //neue Richtung normieren
     sum1=0;
@@ -127,7 +127,7 @@ void LensTwoSided::getOutDir(photon& p){
 
     for(int i=0; i<3; i++){
         a += pow(dV[i], 2);
-        b += 2*((pV[i]-OM2[i]*dV[i]);
+        b += 2*((pV[i]-OM2[i])*dV[i]);
         c += pow((OM2[i]-pV[i]), 2) - pow(radius2, 2);
     }
 
@@ -191,12 +191,12 @@ void LensTwoSided::getOutDir(photon& p){
     for(int i=0; i<3; i++){
         normalA2[i] = normalA2[i]/sum1;
         dV[i] = dV[i]/sum2;
-        skrp2 += dV[i]*normalA1[i];
+        skpr2 += dV[i]*normalA1[i];
     }
 
     //Winkel berechnen & überprüfen
     coalphaS=0;
-    cross_product(coalphaV&, dV&, normalA1&);
+    cross_product(coalphaV, dV, normalA1);
     for(int i=0; i<3; i++){
         coalphaS += pow(coalphaV[i], 2);
     }
@@ -207,7 +207,7 @@ void LensTwoSided::getOutDir(photon& p){
     }
 
     vector outLensDir(3);
-    outLensDir = n*dV - normalA2*( n*(skrp2) - sqrt( 1 - pow(n, 2)* (1-pow(skrp2, 2)) ) );
+    outLensDir = n*dV - normalA2*( n*(skpr2) - sqrt( 1 - pow(n, 2)* (1-pow(skpr2, 2)) ) );
 
     //neuer Ausgangspunkt und Richtung normieren & setzen
     sum1=0;
@@ -221,14 +221,14 @@ void LensTwoSided::getOutDir(photon& p){
     dV = outLensDir;
     pV = intersect;
 
-    photon.setPosition(pV);
-    photon.setDirection(dV);
+    p.setPosition(pV);
+    p.setDirection(dV);
 
     return true;
 }
 
-LensTwoSided::LensTwoSided(vector& _pos, vector& _normal, double _refIndex, double _radiusH, double _radiusI, double _radiusO)
-:LensTwoSided::Lens(_pos, _normal, _refIndex, _radiusH) {
-    radiusI = _radiusI;
-    radiusO = _radiusO;
+LensTwoSided::LensTwoSided(vector& _pos, vector& _normal,double _n, double _radiusH, double _radiusI, double _radiusO, double _d)
+:LensTwoSided::Lens(_pos, _normal, _n, _radiusH, _d) {
+    radius1 = _radiusI;
+    radius2 = _radiusO;
 }

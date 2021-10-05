@@ -1,10 +1,10 @@
-#include "lensOneSided.hpp"
-#include <boost/numeric/ublas/vector.hpp>
+#include "../include/lensOneSided.hpp"
+#include "../include/utils.hpp"
 
 
-void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
-    vector pV = photon.getPosition();
-    vector dV = photon.getDirection();
+bool LensOneSided::getOutDir(Photon &p) {
+    vector pV = p.getPosition();
+    vector dV = p.getDirection();
     if (planeIsFront) {
         double rS = 0;
         double lS = 0;
@@ -15,10 +15,11 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
             lS += normal[i] * dV[i];
         }
 
-        //Existiert ein sinnvoller Schnittpunkt oder annähernd parallel zwischen Ebene und Gerade?
-        if (lS < 0.000001) {
+        double t = rS / lS;
 
-            double t = rS / lS;
+        //Existiert ein sinnvoller Schnittpunkt oder annähernd parallel zwischen Ebene und Gerade?
+        if (abs(lS) > 0.000001 && t > 0) {
+
             vector intersect(3);
 
             //Berechne den Schnittpunkt
@@ -43,13 +44,13 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
             //Skalarprodukt
             double skpr1=0;
             for(int i=0; i<3; i++){
-                skrp1 = dV[i]*normal[i];
+                skpr1 += dV[i]*normal[i];
             }
 
             //Winkel berechnen
             vector coalphaV(3);
             double coalphaS=0;
-            cross_product(coalphaV&, dV&, normalA&);
+            cross_product(coalphaV, dV, normal);
             for(int i=0; i<3; i++){
                 coalphaS += pow(coalphaV[i], 2);
             }
@@ -61,7 +62,7 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
 
             //Neuen Richtungsvektor berechnen
             vector inLensDir(3);
-            inLensDir = (1/n)*dV - normal*( (1/n)*(skrp1) - sqrt( 1 - pow((1/n), 2)* (1-pow(skrp1, 2)) ) );
+            inLensDir = (1/n)*dV - normal*( (1/n)*(skpr1) - sqrt( 1 - pow((1/n), 2)* (1-pow(skpr1, 2)) ) );
 
             //neue Richtung normieren
             t=0;
@@ -89,8 +90,8 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
             //Summenrechnung für quadratische Gleichung
             for(int i=0; i<3; i++){
                 a += pow(dV[i], 2);
-                b += 2*((pV[i]-OM1[i]*dV[i]);
-                c += pow((OM1[i]-pV[i]), 2) - pow(radius1, 2);
+                b += 2*((pV[i]-OM1[i])*dV[i]);
+                c += pow((OM1[i]-pV[i]), 2) - pow(radiusW, 2);
             }
 
             //Prüfen ob reele Lösung ex.
@@ -149,12 +150,12 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
             sum1 = sqrt(sum1);
             for(int i=0; i<3; i++) {
                 normalA1[i] = normalA1[i] / sum1;
-                skrp1 = dV[i]*normalA1[i];
+                skpr1 += dV[i]*normalA1[i];
             }
 
             //Winkel berechnen & überprüfen
             coalphaS=0;
-            cross_product(coalphaV&, dV&, normalA1&);
+            cross_product(coalphaV, dV, normalA1);
             for(int i=0; i<3; i++){
                 coalphaS += pow(coalphaV[i], 2);
             }
@@ -165,7 +166,7 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
             }
 
             vector outLensDir(3);
-            outLensDir = n*dV - normalA1*( n*(skrp1) - sqrt( 1 - pow(n, 2)* (1-pow(skrp1, 2)) ) );
+            outLensDir = n*dV - normalA1*( n*(skpr1) - sqrt( 1 - pow(n, 2)* (1-pow(skpr1, 2)) ) );
 
             //neuer Ausgangspunkt und Richtung normieren & setzen
             sum1=0;
@@ -179,8 +180,8 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
             dV = outLensDir;
             pV = intersect;
 
-            photon.setPos(pV);
-            photon.setDir(dV);
+            p.setPosition(pV);
+            p.setDirection(dV);
 
             return true;
         }else{
@@ -200,8 +201,8 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
         //Summenrechnung für quadratische Gleichung
         for(int i=0; i<3; i++){
             a += pow(dV[i], 2);
-            b += 2*((pV[i]-OM1[i]*dV[i]);
-            c += pow((OM1[i]-pV[i]), 2) - pow(radius1, 2);
+            b += 2*((pV[i]-OM1[i])*dV[i]);
+            c += pow((OM1[i]-pV[i]), 2) - pow(radiusW, 2);
         }
 
         //Prüfen ob reele Lösung ex.
@@ -228,7 +229,7 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
             if(t1>t2){
                 intersect = pV + t1*dV;
             }else{
-                intersect = pV + t2dV;
+                intersect = pV + t2*dV;
             }
         }
 
@@ -261,13 +262,13 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
         sum1 = sqrt(sum1);
         for(int i=0; i<3; i++) {
             normalA1[i] = normalA1[i] / sum1;
-            skrp1 = dV[i]*normalA1[i];
+            skpr1 = dV[i]*normalA1[i];
         }
 
         //Winkel berechnen & überprüfen
         vector coalphaV(3);
         double coalphaS=0;
-        cross_product(coalphaV&, dV&, normalA1&);
+        cross_product(coalphaV, dV, normalA1);
         for(int i=0; i<3; i++){
             coalphaS += pow(coalphaV[i], 2);
         }
@@ -278,7 +279,7 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
         }
 
         vector inLensDir(3);
-        inLensDir = (1/n)*dV - normalA1*( (1/n)*(skrp1) - sqrt( 1 - pow((1/n), 2)* (1-pow(skrp1, 2)) ) );
+        inLensDir = (1/n)*dV - normalA1*( (1/n)*(skpr1) - sqrt( 1 - pow((1/n), 2)* (1-pow(skpr1, 2)) ) );
 
         //neue Richtung normieren
         sum1=0;
@@ -331,12 +332,12 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
             //Skalarprodukt
             skpr1=0;
             for(int i=0; i<3; i++){
-                skrp1 = dV[i]*(normalA1[i]);
+                skpr1 = dV[i]*(normalA1[i]);
             }
 
             //Winkel berechnen
             coalphaS=0;
-            cross_product(coalphaV&, dV&, normalA1&);
+            cross_product(coalphaV, dV, normalA1);
             for(int i=0; i<3; i++){
                 coalphaS += pow(coalphaV[i], 2);
             }
@@ -348,7 +349,7 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
 
             //Neuen Richtungsvektor berechnen
             vector outLensDir(3);
-            outLensDir = n*dV - normalA1*( n*(skrp1) - sqrt( 1 - pow(n, 2)* (1-pow(skrp1, 2)) ) );
+            outLensDir = n*dV - normalA1*( n*(skpr1) - sqrt( 1 - pow(n, 2)* (1-pow(skpr1, 2)) ) );
 
             //neue Richtung normieren
             t=0;
@@ -364,8 +365,8 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
             dV = outLensDir;
             pV = intersect;
 
-            photon.setPosition(pV);
-            photon.setDirection(dV);
+            p.setPosition(pV);
+            p.setDirection(dV);
 
             return true;
         }
@@ -373,8 +374,7 @@ void LensOneSided::getOutDir(photon &p, vector &_dirOA) {
     }
 }
 
-LensOneSided::LensOneSided(vector& _pos, vector& _normal, double _refIndex, double _radiusH, double _radiusW, bool _planeIsFront)
-:LensOneSided::Lens(_pos, _normal, _refIndex, _radiusH) {
+LensOneSided::LensOneSided(vector & _pos, vector & _normal, double _n, double _radiusH, double _radiusW, double _d, bool _planeisFront):Lens(_pos, _normal, _n, _radiusH, _d) {
     radiusW = _radiusW;
-    planeIsFront = _planeIsFront;
+    planeIsFront = _planeisFront;
 }
