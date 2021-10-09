@@ -8,3 +8,12 @@ typedef typename boost::numeric::ublas::vector<double> vector;
  * Zweiter und Dritter Vektor sind die b
  */
 void cross_product(vector&, vector&, vector&);
+
+//Normiert Vektoren
+void normalize(vector&);
+
+
+vector cross_product_2(vector&, vector&);
+
+
+double dot_product(vector&, vector&);
