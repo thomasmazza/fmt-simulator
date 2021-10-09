@@ -1,30 +1,24 @@
 #include "mirrorRectangle.hpp"
 #include "utils.hpp"
 
-MirrorRectangle::MirrorRectangle(vector &_pos, vector &_normal, double _lengthH, double _lengthW) : Mirror(_pos,
-                                                                                                           _normal) {
-    lengthH = _lengthH;
-    lengthW = _lengthW;
-}
-
-
 bool MirrorRectangle::hitComponent(Photon &p, vector &_dirOA) {
     double rS = 0;
     double lS = 0;
     vector pV = p.getPosition();
     vector dV = p.getDirection();
-    bool isComponentHit = false;
+
     //Improvisierte Skalarprodukte
     for (int i = 0; i < 3; i++) {
         rS += normal[i] * (position[i] - pV[i]);
         lS += normal[i] * dV[i];
     }
+    bool isComponentHit = false;
+    double t = rS / lS;
 
     //Existiert ein sinnvoller Schnittpunkt oder annähernd Parallel zw. Ebene und Gerade?
-    if (lS >= 0.000001) {
-        double t = rS / lS;
-        vector intersect(3);
+    if (abs(lS) > 0.000001 && t>0) {
 
+        vector intersect(3);
         //Berechne den Schnittpunkt
         for (int i = 0; i < 3; i++) {
             intersect[i] = pV[i] + t * dV[i];
@@ -33,15 +27,17 @@ bool MirrorRectangle::hitComponent(Photon &p, vector &_dirOA) {
         //Überprüfen ob im Bereich, Erst Bereich definieren
         vector mHigh(3);
         vector mWidth(3);
-        cross_product(mHigh, _dirOA, normal);
-        cross_product(mWidth, normal, mHigh);
+        cross_product(mHigh, normal, _dirOA);
+        cross_product(mWidth, mHigh, normal );
+
 
         //Betrag berechnen
-        rS = 0;  //lS und rS wiederverwenden zur Speicheroptimierung
+        //lS und rS wiederverwenden zur Speicheroptimierung
+        rS = 0;
         lS = 0;
         for (int i = 0; i < 3; i++) {
-            lS = pow(mHigh[i], 2);
-            rS = pow(mWidth[i], 2);
+            lS += pow(mHigh[i], 2);
+            rS += pow(mWidth[i], 2);
         }
         lS = sqrt(lS);
         rS = sqrt(rS);
@@ -121,4 +117,9 @@ bool MirrorRectangle::getOutDir(Photon &p, vector &intersect, vector &normWidth)
     p.setDirection(out);
 
     return true;
+}
+
+MirrorRectangle::MirrorRectangle(vector &_pos, vector &_normal, double _lengthH, double _lengthW) : Mirror(_pos,_normal) {
+    lengthH = _lengthH;
+    lengthW = _lengthW;
 }

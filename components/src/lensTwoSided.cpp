@@ -10,7 +10,7 @@ bool LensTwoSided::getOutDir(Photon& p){
     vector OM2(3);
 
     //Positionsvektor der MIttelpunkte der Kugeln bestimmen
-    OM1 = position + radius1*normal;
+    OM1 = position - radius1*normal;
     OM2 = position -normal*(d+radius2);
 
     //Summenvariablen für Schnittpunktberechnung erstellen
@@ -22,8 +22,9 @@ bool LensTwoSided::getOutDir(Photon& p){
     for(int i=0; i<3; i++){
         a += pow(dV[i], 2);
         b += 2*((pV[i]-OM1[i])*dV[i]);
-        c += pow((OM1[i]-pV[i]), 2) - pow(radius1, 2);
+        c += pow((OM1[i]-pV[i]), 2);
     }
+    c = c-pow(radius1, 2);
 
     //Prüfen ob reele Lösung ex.
     if( (pow(b,2)-4*a*c) < 0 && a == 0){
@@ -39,25 +40,46 @@ bool LensTwoSided::getOutDir(Photon& p){
     vector intersect(3);
 
     //Unterscheidung zwischen Sammellinse und Zerstreuungslinse und darauf folgend Schnittpunktberechnung
+
     if(radius1 > 0 && radius2 < 0){
-        if(t1<t2){
+        if(t1>0 && t2>0){
+            if(t1<t2){
+                intersect = pV+t1*dV;
+            }else{
+                intersect = pV+t2*dV;
+            }
+        }else if(t1>0){
             intersect = pV+t1*dV;
-        }else{
+        }else if(t2>0){
             intersect = pV+t2*dV;
+        }else{
+            return false;
         }
     }else{
-        if(t1>t2){
+        if(t1>0 && t2>0){
+            if(t1>t2){
+                intersect = pV+t1*dV;
+            }else{
+                intersect = pV+t2*dV;
+            }
+        }else if(t1>0){
             intersect = pV+t1*dV;
-        }else{
+        }else if(t2>0){
             intersect = pV+t2*dV;
+        }else{
+            return false;
         }
     }
 
     //Überprüfen ob im Höhenradius
-    double d1 = (2*radius1 - sqrt( 4*pow(radius1, 2) - 4*pow(radiusH, 2) )) / 2;
-    double sum1=0;
+    double d1 = abs(radius1) - sqrt(pow(radius1, 2) - pow(radiusH, 2)) ;
     vector check(3);
-    check = intersect - (position - normal*d1);
+    if(radius1>0){
+        check = intersect - (position - normal*d1);
+    }else{
+        check = intersect - (position + normal*d1);
+    }
+    double sum1=0;
     for(int i=0; i<3; i++){
         sum1 += pow(check[i], 2);
     }
@@ -68,7 +90,7 @@ bool LensTwoSided::getOutDir(Photon& p){
 
     //Flächennormale berechnen
     vector normalA1(3);
-    if(radius1 > 0 && radius2 < 0){
+    if(radius1 < 0 && radius2 > 0){
         normalA1 = intersect - OM1;
     }else{
         normalA1 = OM1 - intersect;
@@ -103,6 +125,7 @@ bool LensTwoSided::getOutDir(Photon& p){
         return false;
     }
 
+
     vector inLensDir(3);
     inLensDir = (1/n)*dV - normalA1*( (1/n)*(skpr1) - sqrt( 1 - pow((1/n), 2)* (1-pow(skpr1, 2)) ) );
 
@@ -119,7 +142,6 @@ bool LensTwoSided::getOutDir(Photon& p){
     //neuer Ausgangspunkt und Richtung setzen
     dV = inLensDir;
     pV = intersect;
-
     //Summenvariablen für Schnittpunktberechnung zurücksetzen
     a=0;
     b=0;
@@ -128,8 +150,9 @@ bool LensTwoSided::getOutDir(Photon& p){
     for(int i=0; i<3; i++){
         a += pow(dV[i], 2);
         b += 2*((pV[i]-OM2[i])*dV[i]);
-        c += pow((OM2[i]-pV[i]), 2) - pow(radius2, 2);
+        c += pow((OM2[i]-pV[i]), 2);
     }
+    c = c - pow(radius2, 2);
 
     //Prüfen ob reele Lösung ex.
     if( (pow(b,2)-4*a*c) < 0 && a == 0){
@@ -145,34 +168,55 @@ bool LensTwoSided::getOutDir(Photon& p){
 
     //Unterscheidung zwischen Sammellinse und Zerstreuungslinse und darauf folgend Schnittpunktberechnung
     if(radius1 > 0 && radius2 < 0){
-        if(t1>t2){
+        if(t1>0 && t2>0){
+            if(t1<t2){
+                intersect = pV+t1*dV;
+            }else{
+                intersect = pV+t2*dV;
+            }
+        }else if(t1>0){
             intersect = pV+t1*dV;
-        }else{
+        }else if(t2>0){
             intersect = pV+t2*dV;
+        }else{
+            return false;
         }
     }else{
-        if(t1<t2){
+        if(t1>0 && t2>0){
+            if(t1<t2){
+                intersect = pV+t1*dV;
+            }else{
+                intersect = pV+t2*dV;
+            }
+        }else if(t1>0){
             intersect = pV+t1*dV;
-        }else{
+        }else if(t2>0){
             intersect = pV+t2*dV;
+        }else{
+            return false;
         }
     }
 
     //Überprüfen ob im Höhenradius
-    double d2 = (2*radius2 - sqrt( 4*pow(radius2, 2) - 4*pow(radiusH, 2) )) / 2;
+    double d2 = abs(radius2) - sqrt(pow(radius2, 2) -pow(radiusH, 2));
     sum2=0;
-    check = intersect - (position - normal*(d-d2));
+    if(radius2>0){
+        check = intersect - (position - (normal*(d2+d)));
+    }else{
+        check = intersect - (position + (normal*(d2-d)));
+    }
     for(int i=0; i<3; i++){
         sum2 += pow(check[i], 2);
     }
     sum2 = sqrt(sum2);
+
     if(sum2>radiusH){
         return false;
     }
 
     //Flächennormale berechnen
     vector normalA2(3);
-    if(radius1 > 0 && radius2 < 0){
+    if(radius1 < 0 && radius2 > 0){
         normalA2 = OM2 - intersect;
     }else{
         normalA2 = intersect - OM2;
