@@ -24,5 +24,4 @@ int main(int argc, char *argv[]) {
     Photon testPhoton(testVector, testVector, 600, 500);
     std::cout << la.hitComponent(testPhoton, testVector) << '\n';
     std::cout << Utils::wavelengthToRGB(480) << '\n';
-
 };
