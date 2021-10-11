@@ -8,8 +8,8 @@
 #include "utils.hpp"
 
 typedef typename boost::numeric::ublas::vector<double> vector;
-typedef typename std::vector<*Photon> photonVector;
-typedef typename boost::numeric::ublas::matrix<photonVector> photonMatrix;
+typedef typename std::vector<int> intVector;
+typedef typename boost::numeric::ublas::matrix<intVector> photon_matrix;
 
 vector Detector::getPosOfPrevComponent() {
     return posOfPrevComponent;
@@ -29,7 +29,7 @@ void Detector::setPointOnEdge(vector& _point) {
     pointOnEdge = _point;
 }
 
-vector Detector::getInPoint(Photon& photon) {
+void Detector::getInPoint(Photon& photon) {
     vector pV = photon.getPosition();
     vector dV = photon.getDirection();
     vector intersection(3);
@@ -39,14 +39,14 @@ vector Detector::getInPoint(Photon& photon) {
         intersection[i] = dV[i] * temp + pV[i];
     }
     //TODO: Überprüfe ob das Photon im Rahmen des Sensors ist, und berechne in welchem Pixel. Hängt davon ab, wie wir das Koordinatesystem definieren (Morgen)
-    vector relPosition = pV - position; // Position vom Photon relativ zum Detektormittelpunkt
-    vector detectorNormal = posOfPrevComponent - position;
-    vector ref = pointOnEdge - position;
+    vector relativePosition = pV - position; // Position vom Photon relativ zum Detektormittelpunkt
+    vector detectorNormal = posOfPrevComponent - position; // Normalvektor in der Mitte von Detektor
+    vector ref = pointOnEdge - position; //
     normalize(detectorNormal);
     // temp hier wiederverwenden zum Speicheroptimierung
-    temp = atan2(dot_product(cross_product_2(relPosition, ref), detectorNormal), dotProduct(ref, relPosition));
+    temp = atan2(dot_product(cross_product_2(relativePosition, ref), detectorNormal), dot_product(ref, relativePosition));
     double a, b, c;
-    c = sqrt(relPosition(0)^2 + relPosition(1)^2 + relPosition(2)^2);
+    c = sqrt(relativePosition(0)^2 + relativePosition(1)^2 + relativePosition(2)^2);
     a = abs(c * sin(temp));
 
     if (a < length / 2) {
@@ -63,7 +63,7 @@ vector Detector::getInPoint(Photon& photon) {
                 }
             }
             else {
-                if (temp < boost::math::constants::pi<double>() / (-2)) {
+                if (temp > boost::math::constants::pi<double>() / (-2)) {
                     sensor(size / 2 - i_index, size / 2 + j_index).pushback(photon.waveLength);
                 }
                 else {
@@ -72,7 +72,9 @@ vector Detector::getInPoint(Photon& photon) {
             }
         }
     }
+}
 
+void Detector::createImage(photon_matrix&) {
 
 }
 
@@ -80,5 +82,6 @@ Detector::Detector(vector& _pos, vector& _normal, int _size, double _pixelSize, 
     size = _size;
     pixleSize = _pixelSize;
     length = size * pixelSize;
-    sensor = photonMatrix (size, size);
+    halfLength = length / 2;
+    sensor = photon_matrix (size, size);
 }
