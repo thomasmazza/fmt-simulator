@@ -1,0 +1,29 @@
+<object>
+    <name>
+        Testname
+    </name>
+    <point>
+        <position>
+            13,11,17
+        </position>
+        <wavelength>
+            745
+        </wavelength>
+    </point>    \
+    <point>
+        <position>
+            7,5,19
+        </position>
+        <wavelength>
+            540
+        </wavelength>
+    </point>
+    <point>
+        <position>
+            23,29,43
+        </position>
+        <wavelength>
+            620
+        </wavelength>
+    </point>
+</object>

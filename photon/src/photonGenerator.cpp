@@ -13,6 +13,7 @@ Photon PhotonGenerator::generatePhoton() {
     vector randomDirection(3);
     for (int i = 0; i < randomDirection.size();i++){
         randomDirection(i) = rand() % 1000;
+        randomDirection(i) = rand()%1?-randomDirection(i):randomDirection(i);
     }
     Utils::normalizeVector(randomDirection);
     vector position = raster[pointSelector].getPosition();
