@@ -12,9 +12,10 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
         lS += normal[i]*dV[i];
     }
     bool isComponentHit = false;
+    double t = rS / lS;
+
     //Existiert ein sinnvoller Schnittpunkt oder annähernd parallel zwischen Ebene und Gerade?
-    if (lS < 0.000001) {
-        double t = rS / lS;
+    if (abs(lS) > 0.000001 && t>0) {
         vector intersect(3);
 
         //Berechne den Schnittpunkt
@@ -25,16 +26,16 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
         //Überprüfen, ob im Bereich, erst Bereich definieren
         vector mHigh(3);
         vector mWidth(3);
-        Utils::cross_product(mHigh,_dirOA, normal);
-        Utils::cross_product(mHigh,normal, mHigh);
+        Utils::cross_product(mHigh, normal, _dirOA);
+        Utils::cross_product(mWidth, mHigh, normal);
 
         //Betrag berechnen
         //lS und rS wiederverwenden zur Speicheroptimierung
         rS = 0;
         lS = 0;
         for (int i = 0; i < 3; i++) {
-            lS = pow(mHigh[i], 2);
-            rS = pow(mWidth[i], 2);
+            lS += pow(mHigh[i], 2);
+            rS += pow(mWidth[i], 2);
         }
         lS = sqrt(lS);
         rS = sqrt(rS);
@@ -98,8 +99,8 @@ bool MirrorElliptical::getOutDir(Photon& p, vector& intersect, vector& normWidth
     sumVN = sqrt(sumVN);
 
     for(int i=0; i<3; i++){
-        dV[i] = (dV[i]/sumVE);
-        normal[i] = (normal[i]/sumVN);
+        dV[i] /= sumVE;
+        normal[i] /= sumVN;
     }
 
     //Skalarprodukt aus Einfallsvektor & einer Achse (normiert)
