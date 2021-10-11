@@ -1,10 +1,13 @@
 #include "../include/lensOneSided.hpp"
-#include "utils.hpp"
+#include "../include/utils.hpp"
 
 
 bool LensOneSided::getOutDir(Photon &p) {
     vector pV = p.getPosition();
     vector dV = p.getDirection();
+    double d1 = radiusW - sqrt( pow(radiusW, 2) - pow(radiusH, 2) );
+    bool getsOut;
+
     if (planeIsFront) {
         double rS = 0;
         double lS = 0;
@@ -38,13 +41,13 @@ bool LensOneSided::getOutDir(Photon &p) {
 
             //Prüfe, ob dieser Betrag kleiner als der Radius
             if (t > radiusH) {
-                return false;
+                getsOut = false;
             }
 
             //Skalarprodukt
             double skpr1=0;
             for(int i=0; i<3; i++){
-                skpr1 += dV[i]*normal[i];
+                skpr1 += dV[i]*((-1)*normal[i]);
             }
 
             //Winkel berechnen
@@ -57,12 +60,12 @@ bool LensOneSided::getOutDir(Photon &p) {
             coalphaS = sqrt(coalphaS);
 
             if(coalphaS > 1.5){
-                return false;
+                getsOut = false;
             }
 
             //Neuen Richtungsvektor berechnen
             vector inLensDir(3);
-            inLensDir = (1/n)*dV - normal*( (1/n)*(skpr1) - sqrt( 1 - pow((1/n), 2)* (1-pow(skpr1, 2)) ) );
+            inLensDir = (1/n)*dV - (-1)*normal*( (1/n)*(skpr1) - sqrt( 1 - (pow((1/n), 2)*(1-pow(skpr1, 2))) ) );
 
             //neue Richtung normieren
             t=0;
@@ -77,26 +80,28 @@ bool LensOneSided::getOutDir(Photon &p) {
             //neuer Ausgangspunkt und Richtung setzen
             dV = inLensDir;
             pV = intersect;
-
             //Schnittpunkt mit Kugel berechnen, zuerst Kugel formulieren
             vector OM1(3);
-            OM1 = position - normal* (d-radiusW);
+            OM1 = position - normal* (d1-radiusW);
 
             //Summenvariablen für Schnittpunktberechnung erstellen
             double a=0;
             double b=0;
             double c=0;
+            double y=pow(radiusW, 2);
+            vector P = pV-OM1;
 
             //Summenrechnung für quadratische Gleichung
             for(int i=0; i<3; i++){
                 a += pow(dV[i], 2);
-                b += 2*((pV[i]-OM1[i])*dV[i]);
-                c += pow((OM1[i]-pV[i]), 2) - pow(radiusW, 2);
+                b += 2*(P[i]*dV[i]);
+                c += pow(P[i], 2);
             }
+            c = c-y;
 
             //Prüfen ob reele Lösung ex.
             if( (pow(b,2)-4*a*c) < 0 && a == 0){
-                return false;
+                getsOut = false;
             }
 
             //Mögliche Lösungen als Variablen
@@ -121,16 +126,15 @@ bool LensOneSided::getOutDir(Photon &p) {
                 }
             }
 
-            //Überprüfen, ob im Höhenradius
-            double d1 = (2*radiusW - sqrt( 4*pow(radiusW, 2) - 4*pow(radiusH, 2) )) / 2;
-            vector check = intersect - (position - normal*(d-d1));
+            //Überprüfen ob im Höhenradius
+            vector check = intersect - position;
             double sum1=0;
             for(int i=0; i<3; i++){
                 sum1 += pow(check[i], 2);
             }
             sum1 = sqrt(sum1);
             if(sum1>radiusH){
-                return false;
+                getsOut=false;
             }
 
             //Flächennormale berechnen
@@ -162,7 +166,7 @@ bool LensOneSided::getOutDir(Photon &p) {
             coalphaS = sqrt(coalphaS);
 
             if(coalphaS > 1.5){
-                return false;
+                getsOut = false;
             }
 
             vector outLensDir(3);
@@ -183,12 +187,14 @@ bool LensOneSided::getOutDir(Photon &p) {
             p.setPosition(pV);
             p.setDirection(dV);
 
-            return true;
+            getsOut = true;
         }else{
-            return false;
+            getsOut = false;
         }
 
     }else{
+
+
         //Schnittpunkt mit Kugel berechnen, zuerst Kugel formulieren
         vector OM1(3);
         OM1 = position - normal* (radiusW);
@@ -202,12 +208,13 @@ bool LensOneSided::getOutDir(Photon &p) {
         for(int i=0; i<3; i++){
             a += pow(dV[i], 2);
             b += 2*((pV[i]-OM1[i])*dV[i]);
-            c += pow((OM1[i]-pV[i]), 2) - pow(radiusW, 2);
+            c += pow((pV[i]-OM1[i]), 2);
         }
+        c = c - pow(radiusW, 2);
 
         //Prüfen ob reele Lösung ex.
         if( (pow(b,2)-4*a*c) < 0 && a == 0){
-            return false;
+            getsOut = false;
         }
 
         //Mögliche Lösungen als Variablen
@@ -233,21 +240,20 @@ bool LensOneSided::getOutDir(Photon &p) {
             }
         }
 
-        //Überprüfen, ob im Höhenradius
-        double d1 = (2*radiusW - sqrt( 4*pow(radiusW, 2) - 4*pow(radiusH, 2) )) / 2;
-        vector check = intersect - (position - normal*(d1));
+        //Überprüfen ob im Höhenradius
+        vector check = intersect - position;;
         double sum1=0;
         for(int i=0; i<3; i++){
             sum1 += pow(check[i], 2);
         }
         sum1 = sqrt(sum1);
         if(sum1>radiusH){
-            return false;
+            getsOut = false;
         }
 
         //Flächennormale berechnen
         vector normalA1(3);
-        if(radiusW > 0){
+        if(radiusW < 0){
             normalA1 = intersect - OM1;
         }else{
             normalA1 =  OM1 - intersect;
@@ -262,7 +268,7 @@ bool LensOneSided::getOutDir(Photon &p) {
         sum1 = sqrt(sum1);
         for(int i=0; i<3; i++) {
             normalA1[i] = normalA1[i] / sum1;
-            skpr1 = dV[i]*normalA1[i];
+            skpr1 += dV[i]*normalA1[i];
         }
 
         //Winkel berechnen & überprüfen
@@ -275,7 +281,7 @@ bool LensOneSided::getOutDir(Photon &p) {
         coalphaS = sqrt(coalphaS);
 
         if(coalphaS > 1.5){
-            return false;
+            getsOut = false;
         }
 
         vector inLensDir(3);
@@ -303,12 +309,12 @@ bool LensOneSided::getOutDir(Photon &p) {
 
         //Improvisierte Skalarprodukte
         for (int i = 0; i < 3; i++) {
-            rS += normalA1[i] * (position[i] + d - pV[i]);
+            rS += normalA1[i] * (position[i] + d1 - pV[i]);
             lS += normalA1[i] * dV[i];
         }
+        double t = rS / lS;
 
-        if (lS < 0.000001){
-            double t = rS / lS;
+        if (abs(lS) > 0.000001 && t > 0){
 
             //Berechne den Schnittpunkt
             intersect = pV + t * dV;
@@ -316,9 +322,10 @@ bool LensOneSided::getOutDir(Photon &p) {
             //Berechne Vektor von Pos bis zum Schnittpunkt
             vector posInter(3);
             posInter = intersect - position;
-            t = 0;
+
 
             //Berechne Betrag von diesem Vektor
+            t = 0;
             for (int i = 0; i < 3; i++) {
                 t += pow(posInter[i], 2);
             }
@@ -326,13 +333,13 @@ bool LensOneSided::getOutDir(Photon &p) {
 
             //Prüfe, ob dieser Betrag kleiner als der Radius
             if (t > radiusH) {
-                return false;
+                getsOut = false;
             }
 
             //Skalarprodukt
             skpr1=0;
             for(int i=0; i<3; i++){
-                skpr1 = dV[i]*(normalA1[i]);
+                skpr1 += dV[i]*(normalA1[i]);
             }
 
             //Winkel berechnen
@@ -344,7 +351,7 @@ bool LensOneSided::getOutDir(Photon &p) {
             coalphaS = sqrt(coalphaS);
 
             if(coalphaS > 1.5){
-                return false;
+                getsOut = false;
             }
 
             //Neuen Richtungsvektor berechnen
@@ -368,10 +375,12 @@ bool LensOneSided::getOutDir(Photon &p) {
             p.setPosition(pV);
             p.setDirection(dV);
 
-            return true;
+            getsOut = true;
         }
 
     }
+
+    return getsOut;
 }
 
 LensOneSided::LensOneSided(vector & _pos, vector & _normal, double _n, double _radiusH, double _radiusW, double _d, bool _planeisFront):Lens(_pos, _normal, _n, _radiusH, _d) {
