@@ -5,13 +5,13 @@
 #include <boost/math/constants/constants.hpp>
 #include <vector>
 #include <assert.h>
-#include "utils.hpp"
-#include "rgb.hpp"
+#include "../include/utils.hpp"
+#include "../include/rgb.hpp"
 
 typedef typename boost::numeric::ublas::vector<double> vector;
 typedef typename std::vector<RGB> rgb_dynamic_v;
 typedef typename boost::numeric::ublas::vector<RGB> rgb_vector;
-typedef typename boost::numeric::ublas::matrix<RGBVector> photon_matrix;
+typedef typename boost::numeric::ublas::matrix<rgb_dynamic_v> photon_matrix;
 
 vector Detector::getPosOfPrevComponent() {
     return posOfPrevComponent;
@@ -43,10 +43,11 @@ void Detector::getInPoint(Photon& photon) {
 
     vector relativePosition = pV - position; // Position vom Photon relativ zum Detektormittelpunkt
     vector detectorNormal = posOfPrevComponent - position; // Normalvektor in der Mitte von Detektor
-    vector ref = pointOnEdge - position; //
+    vector ref = pointOnEdge - position; // Position vom pointOnEdge relativ zum Detektormittelpunkt
     normalize(detectorNormal);
+
     // temp hier wiederverwenden zum Speicheroptimierung
-    temp = atan2(dot_product(cross_product_2(relativePosition, ref), detectorNormal), dot_product(ref, relativePosition));
+    temp = atan2(dot_product(cross_product_2(relativePosition, ref), detectorNormal), dot_product(ref, relativePosition)); //Berechnet Winkel in der Ebene zwischen ref und relativePosition in [-pi,+pi]
     double a, b, c;
     c = sqrt(relativePosition(0)^2 + relativePosition(1)^2 + relativePosition(2)^2);
     a = abs(c * sin(temp));
@@ -102,6 +103,5 @@ Detector::Detector(vector& _pos, vector& _normal, int _size, double _pixelSize, 
     size = _size;
     pixleSize = _pixelSize;
     length = size * pixelSize;
-    halfLength = length / 2;
     sensor = photon_matrix (size, size);
 }

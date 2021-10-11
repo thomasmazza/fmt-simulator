@@ -1,4 +1,4 @@
-#include "rgb.hpp"
+#include "../include/rgb.hpp"
 
 void RGB::setRGB(double & _r, double & _g, double & _b) {
     r = _r;
