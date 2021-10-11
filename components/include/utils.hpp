@@ -3,17 +3,21 @@
 #include <boost/numeric/ublas/vector.hpp>
 
 typedef typename boost::numeric::ublas::vector<double> vector;
+class Utils {
+public:
 /*
  * Erster Vektor ist der Ergebnisvektor
  * Zweiter und Dritter Vektor sind die b
  */
-void cross_product(vector&, vector&, vector&);
+    static void cross_product(vector &, vector &, vector &);
 
-//Normiert Vektoren
-void normalize(vector&);
+    static vector cross_product_2(vector&, vector&);
 
+    static void normalizeVector(vector &);
 
-vector cross_product_2(vector&, vector&);
+    static double dot_product(vector&, vector&);
 
+    static std::string wavelengthToRGB(const int&);
 
-double dot_product(vector&, vector&);
+    static void coreTranslationInColor(const int&, double&, double&, double&);
+};
