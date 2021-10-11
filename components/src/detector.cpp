@@ -79,20 +79,19 @@ void Detector::getInPoint(Photon& photon) {
     }
 }
 
- rgb_vector Detector::createImage(photon_matrix& pm) {
+ rgb_vector Detector::createImage() {
     rgb_vector image (size * size);
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            rgb_vector pixVal (pm(i,j).size());
             RGB color;
-            for(int k = 0; k < pm(i,j).size(); k++) {
-                color.r += pm(i,j)[k].r;
-                color.g += pm(i,j)[k].g;
-                color.b += pm(i,j)[k].b;
+            for(int k = 0; k < sensor(i,j).size(); k++) {
+                color.r += sensor(i,j)[k].r;
+                color.g += sensor(i,j)[k].g;
+                color.b += sensor(i,j)[k].b;
             }
-            color.r = color.r/pm(i,j).size();
-            color.g = color.g/pm(i,j).size();
-            color.b = color.b/pm(i,j).size();
+            color.r = color.r/sensor(i,j).size();
+            color.g = color.g/sensor(i,j).size();
+            color.b = color.b/sensor(i,j).size();
             image(j + i * size) = color;
         }
     }
