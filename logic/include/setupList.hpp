@@ -11,8 +11,8 @@ namespace setup {
         std::vector<std::unique_ptr<Component>> lst;
     public:
         List();
-        template<typename T> void ins(int, const T);
-        template<typename T> void append(const T);
+        void ins(int, const Component&);
+        void append(const Component&);
         void del(int);
         void swap(int, int);
         std::unique_ptr<Component>& elem(int);

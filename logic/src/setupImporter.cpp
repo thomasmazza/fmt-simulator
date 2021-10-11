@@ -63,7 +63,7 @@ namespace setup {
                     vector _position; vector _normal;
                     double _refIndex; double _radiusH; double _radiusI; double _radiusO;
                     //Daten aus Datei einlesen
-                    importPosNorm(dataIn, _position, _normal);
+                    importPosNorm(data+In, _position, _normal);
                     normalizeVector(_normal);
                     dataIn >> buf; _refIndex = std::stod(buf);
                     dataIn >> buf; _radiusH = std::stod(buf);

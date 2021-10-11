@@ -1,14 +1,12 @@
 #include "../include/setupList.hpp"
 
 namespace setup {
-    template<typename T>
-    void List::ins(int pos, const &T e){
-        lst.insert(pos, std::make_unique<T>(e));
+    void List::ins(int pos, const Component& e){
+        lst.insert(pos, std::make_unique<Component>(e));
     }
 
-    template<typename T>
-    void List::append(const &T e){
-        lst.push_back(std::make_unique<T>(e));
+    void List::append(const Component& e){
+        lst.push_back(std::make_unique<Component>(e));
     }
 
     void List::del(int pos){
