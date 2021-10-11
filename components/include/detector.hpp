@@ -30,5 +30,5 @@ public:
     void setPointOnEdge(vector&);
     Detector(vector&, vector&, int, double, double);
     void getInPoint(Photon&);
-    rgb_vector createImage(photon_matrix&);
+    rgb_vector createImage();
 };
