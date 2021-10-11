@@ -44,7 +44,7 @@ void Detector::getInPoint(Photon& photon) {
     vector relativePosition = pV - position; // Position vom Photon relativ zum Detektormittelpunkt
     vector detectorNormal = posOfPrevComponent - position; // Normalvektor in der Mitte von Detektor
     vector ref = pointOnEdge - position; // Position vom pointOnEdge relativ zum Detektormittelpunkt
-    normalize(detectorNormal);
+    normalizeVector(detectorNormal);
 
     // temp hier wiederverwenden zum Speicheroptimierung
     temp = atan2(dot_product(cross_product_2(relativePosition, ref), detectorNormal), dot_product(ref, relativePosition)); //Berechnet Winkel in der Ebene zwischen ref und relativePosition in [-pi,+pi]
