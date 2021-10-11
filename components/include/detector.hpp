@@ -18,9 +18,9 @@ class Detector: public Component {
 protected:
     vector pointOnEdge; // Punkt in der Mitte der obere Kannte des Detectors. Muss gegeben oder irgendwie bestimmt werden
     vector posOfPrevComponent; // vector position von dem vorkommenden Komponenten
-    int size; // Detector hat size x size Pixel
-    double pixelSize;
-    double length;
+    int size; // Detector hat size * size Pixel
+    double pixelSize; //Größe eines Pixels
+    double length; // Dimensionen von dem Detektor
     // double halfSize; // Spart die Berechnung von size / 2 bei jeder Aufruf von getInPoint();?
     photon_matrix sensor;
 public:
@@ -29,7 +29,6 @@ public:
     vector getPointOnEdge();
     void setPointOnEdge(vector&);
     Detector(vector&, vector&, int, double, double);
-    //bool hitComponent(Photon&);
     void getInPoint(Photon&);
     rgb_vector createImage(photon_matrix&);
 };
