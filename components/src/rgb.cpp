@@ -13,3 +13,9 @@ RGB::RGB(double & _r, double & _g, double & _b) {
     g = _g;
     b = _b;
 }
+
+RGB::RGB(const RGB & obj)  {
+    r = obj.r;
+    g = obj.g;
+    b = obj.b;
+}

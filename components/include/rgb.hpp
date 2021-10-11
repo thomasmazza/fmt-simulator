@@ -8,4 +8,5 @@ public:
     void setRGB(double &, double &, double &);
     RGB();
     RGB(double &, double &, double &);
+    RGB(const RGB&); //Kopierkonstruktor
 };
