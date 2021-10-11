@@ -27,8 +27,8 @@ bool MirrorRectangle::hitComponent(Photon &p, vector &_dirOA) {
         //Überprüfen ob im Bereich, Erst Bereich definieren
         vector mHigh(3);
         vector mWidth(3);
-        Utils::cross_product(mHigh, _dirOA, normal);
-        Utils::cross_product(mWidth, normal, mHigh);
+        Utils::cross_product(mHigh, normal, _dirOA);
+        Utils::cross_product(mWidth, mHigh, normal);
 
         //Betrag berechnen
         //lS und rS wiederverwenden zur Speicheroptimierung
