@@ -383,7 +383,7 @@ bool LensOneSided::getOutDir(Photon &p) {
     return getsOut;
 }
 
-LensOneSided::LensOneSided(vector & _pos, vector & _normal, double _n, double _radiusH, double _radiusW, double _d, bool _planeisFront):Lens(_pos, _normal, _n, _radiusH, _d) {
+LensOneSided::LensOneSided(vector & _pos, vector & _normal, double _n, double _radiusH, double _radiusW, double _d, bool _planeIsFront):Lens(_pos, _normal, _n, _radiusH, _d) {
     radiusW = _radiusW;
-    planeIsFront = _planeisFront;
+    planeIsFront = _planeIsFront;
 }

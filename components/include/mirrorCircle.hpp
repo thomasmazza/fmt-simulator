@@ -1,9 +1,10 @@
 #pragma once
 
 #include "mirrorElliptical.hpp"
+typedef typename boost::numeric::ublas::vector<double> vector;
 
 class MirrorCircle : public MirrorElliptical{
     private:
     public:
-        MirrorElliptical(vector&, vector&, double);
+        MirrorCircle(vector&, vector&, double);
 };
