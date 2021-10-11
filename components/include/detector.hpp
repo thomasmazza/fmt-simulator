@@ -1,14 +1,18 @@
 #pragma once
 
+#include <vector>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 #include "component.hpp"
 #include "../../photon/include/photon.hpp"
+#include "rgb.hpp"
 
 
 typedef typename boost::numeric::ublas::vector<double> vector;
-typedef typename boost::numeric::ublas::vector<int> intVector;//Kann verändert sein, abhängig davon wie die Photon und wie die Wellenlängen zuerst gespeichert werden
-typedef typename boost::numeric::ublas::matrix<intVector> photon_matrix;
+typedef typename std::vector<RGB> rgb_dynamic_v;//Kann verändert sein, abhängig davon wie die Photon und wie die Wellenlängen zuerst gespeichert werden
+typedef typename boost::numeric::ublas::vector<RGB> rgb_vector;
+typedef typename boost::numeric::ublas::matrix<rgb_dynamic_v> photon_matrix;
+
 
 class Detector: public Component {
 protected:
@@ -17,7 +21,7 @@ protected:
     int size; // Detector hat size x size Pixel
     double pixelSize;
     double length;
-    double halfLength; // Spart die Berechnung von length / 2 bei jeder Aufruf von getInPoint();
+    // double halfSize; // Spart die Berechnung von size / 2 bei jeder Aufruf von getInPoint();?
     photon_matrix sensor;
 public:
     vector getPosOfPrevComponent();
@@ -27,5 +31,5 @@ public:
     Detector(vector&, vector&, int, double, double);
     //bool hitComponent(Photon&);
     void getInPoint(Photon&);
-    void createImage(photon_matrix&); //Nicht endgueltig
+    rgb_vector createImage(photon_matrix&);
 };

@@ -6,10 +6,12 @@
 #include <vector>
 #include <assert.h>
 #include "utils.hpp"
+#include "rgb.hpp"
 
 typedef typename boost::numeric::ublas::vector<double> vector;
-typedef typename std::vector<int> intVector;
-typedef typename boost::numeric::ublas::matrix<intVector> photon_matrix;
+typedef typename std::vector<RGB> rgb_dynamic_v;
+typedef typename boost::numeric::ublas::vector<RGB> rgb_vector;
+typedef typename boost::numeric::ublas::matrix<RGBVector> photon_matrix;
 
 vector Detector::getPosOfPrevComponent() {
     return posOfPrevComponent;
@@ -38,7 +40,7 @@ void Detector::getInPoint(Photon& photon) {
     for (int i = 0; i < 3; i++){
         intersection[i] = dV[i] * temp + pV[i];
     }
-    //TODO: Überprüfe ob das Photon im Rahmen des Sensors ist, und berechne in welchem Pixel. Hängt davon ab, wie wir das Koordinatesystem definieren (Morgen)
+
     vector relativePosition = pV - position; // Position vom Photon relativ zum Detektormittelpunkt
     vector detectorNormal = posOfPrevComponent - position; // Normalvektor in der Mitte von Detektor
     vector ref = pointOnEdge - position; //
@@ -52,30 +54,48 @@ void Detector::getInPoint(Photon& photon) {
     if (a < length / 2) {
         b = sqrt(c^2 - a^2);
         if (b < length / 2) {
+            RGB color;
+            coreTranslationInColor(photon.waveLength, color.r, color.g, color.b);
             int i_index = floor(b / pixelSize);
             int j_index = floor(a / pixelSize);
             if (temp > 0) {
                 if (temp < boost::math::constants::pi<double>() / 2) {
-                    sensor(size / 2 - i_index, size / 2 - j_index).pushback(photon.waveLength);
+                    sensor(size / 2 - i_index, size / 2 - j_index).pushback(color);
                 }
                 else {
-                    sensor(size / 2 + i_index, size / 2 - j_index).pushback(photon.waveLength);
+                    sensor(size / 2 + i_index, size / 2 - j_index).pushback(color);
                 }
             }
             else {
                 if (temp > boost::math::constants::pi<double>() / (-2)) {
-                    sensor(size / 2 - i_index, size / 2 + j_index).pushback(photon.waveLength);
+                    sensor(size / 2 - i_index, size / 2 + j_index).pushback(color);
                 }
                 else {
-                    sensor(size / 2 + i_index, size / 2 + j_index).pushback(photon.waveLength);
+                    sensor(size / 2 + i_index, size / 2 + j_index).pushback(color);
                 }
             }
         }
     }
 }
 
-void Detector::createImage(photon_matrix&) {
-
+ rgb_vector Detector::createImage(photon_matrix& pm) {
+    rgb_vector image (size * size);
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            rgb_vector pixVal (pm(i,j).size());
+            RGB color;
+            for(int k = 0; k < pm(i,j).size(); k++) {
+                color.r += pm(i,j)[k].r;
+                color.g += pm(i,j)[k].g;
+                color.b += pm(i,j)[k].b;
+            }
+            color.r = color.r/pm(i,j).size();
+            color.g = color.g/pm(i,j).size();
+            color.b = color.b/pm(i,j).size();
+            image(j + i * size) = color;
+        }
+    }
+    return image;
 }
 
 Detector::Detector(vector& _pos, vector& _normal, int _size, double _pixelSize, double _length):Detector::Component(_pos, _normal) {
