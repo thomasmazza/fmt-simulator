@@ -26,8 +26,8 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
         //Überprüfen, ob im Bereich, erst Bereich definieren
         vector mHigh(3);
         vector mWidth(3);
-        cross_product(mHigh, normal, _dirOA );
-        cross_product(mWidth, mHigh, normal);
+        Utils::cross_product(mHigh,_dirOA, normal);
+        Utils::cross_product(mHigh,normal, mHigh);
 
         //Betrag berechnen
         //lS und rS wiederverwenden zur Speicheroptimierung

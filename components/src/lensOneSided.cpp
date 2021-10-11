@@ -39,7 +39,7 @@ bool LensOneSided::getOutDir(Photon &p) {
             }
             t = sqrt(t);
 
-            //Prüfe ob dieser Betrag kleiner als der Radius
+            //Prüfe, ob dieser Betrag kleiner als der Radius
             if (t > radiusH) {
                 getsOut = false;
             }
@@ -53,7 +53,7 @@ bool LensOneSided::getOutDir(Photon &p) {
             //Winkel berechnen
             vector coalphaV(3);
             double coalphaS=0;
-            cross_product(coalphaV, dV, normal);
+            Utils::cross_product(coalphaV, dV, normal);
             for(int i=0; i<3; i++){
                 coalphaS += pow(coalphaV[i], 2);
             }
@@ -159,7 +159,7 @@ bool LensOneSided::getOutDir(Photon &p) {
 
             //Winkel berechnen & überprüfen
             coalphaS=0;
-            cross_product(coalphaV, dV, normalA1);
+            Utils::cross_product(coalphaV, dV, normalA1);
             for(int i=0; i<3; i++){
                 coalphaS += pow(coalphaV[i], 2);
             }
@@ -274,7 +274,7 @@ bool LensOneSided::getOutDir(Photon &p) {
         //Winkel berechnen & überprüfen
         vector coalphaV(3);
         double coalphaS=0;
-        cross_product(coalphaV, dV, normalA1);
+        Utils::cross_product(coalphaV, dV, normalA1);
         for(int i=0; i<3; i++){
             coalphaS += pow(coalphaV[i], 2);
         }
@@ -331,7 +331,7 @@ bool LensOneSided::getOutDir(Photon &p) {
             }
             t = sqrt(t);
 
-            //Prüfe ob dieser Betrag kleiner als der Radius
+            //Prüfe, ob dieser Betrag kleiner als der Radius
             if (t > radiusH) {
                 getsOut = false;
             }
@@ -344,7 +344,7 @@ bool LensOneSided::getOutDir(Photon &p) {
 
             //Winkel berechnen
             coalphaS=0;
-            cross_product(coalphaV, dV, normalA1);
+            Utils::cross_product(coalphaV, dV, normalA1);
             for(int i=0; i<3; i++){
                 coalphaS += pow(coalphaV[i], 2);
             }

@@ -115,7 +115,7 @@ bool LensTwoSided::getOutDir(Photon& p){
     //Winkel berechnen
     vector coalphaV(3);
     double coalphaS=0;
-    cross_product(coalphaV, dV, normalA1);
+    Utils::cross_product(coalphaV, dV, normalA1);
     for(int i=0; i<3; i++){
         coalphaS += pow(coalphaV[i], 2);
     }
@@ -240,7 +240,7 @@ bool LensTwoSided::getOutDir(Photon& p){
 
     //Winkel berechnen & überprüfen
     coalphaS=0;
-    cross_product(coalphaV, dV, normalA1);
+    Utils::cross_product(coalphaV, dV, normalA1);
     for(int i=0; i<3; i++){
         coalphaS += pow(coalphaV[i], 2);
     }

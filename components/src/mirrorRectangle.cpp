@@ -1,5 +1,5 @@
 #include "mirrorRectangle.hpp"
-#include "utils.hpp"
+#include "../../utils/include/utils.hpp"
 
 bool MirrorRectangle::hitComponent(Photon &p, vector &_dirOA) {
     double rS = 0;
@@ -27,9 +27,8 @@ bool MirrorRectangle::hitComponent(Photon &p, vector &_dirOA) {
         //Überprüfen ob im Bereich, Erst Bereich definieren
         vector mHigh(3);
         vector mWidth(3);
-        cross_product(mHigh, normal, _dirOA);
-        cross_product(mWidth, mHigh, normal );
-
+        Utils::cross_product(mHigh, _dirOA, normal);
+        Utils::cross_product(mWidth, normal, mHigh);
 
         //Betrag berechnen
         //lS und rS wiederverwenden zur Speicheroptimierung
