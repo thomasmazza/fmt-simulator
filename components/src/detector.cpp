@@ -89,11 +89,33 @@ void Detector::getInPoint(Photon& photon) {
                 color.g += sensor(i,j)[k].g;
                 color.b += sensor(i,j)[k].b;
             }
+            color.intensity = sensor(i,j).size();
             color.r = color.r/sensor(i,j).size();
             color.g = color.g/sensor(i,j).size();
             color.b = color.b/sensor(i,j).size();
             image(j + i * size) = color;
         }
+    }
+    double max = image[0].intensity;
+    double min = max;
+    double avg = 0;
+    for (int i = 0; i < image.size(); i++) {
+        if (image[i].intensity > max) {
+            max = image[i].intensity;
+        }
+        else if (image[i].intensity < min) {
+            min = image[i].intensity;
+        }
+        avg += image[i].intensity;
+    }
+    avg = avg / (image.size());
+    double factor = avg / (max - min);
+    double adjustment = 0;
+    for (int i = 0; i < image.size()) {
+        adjustment = (image[i].intensity - avg) * factor; //Muss testen wie sinnvoll adjustment berechnet wird
+        image[i].r = image[i].r + adjustment;
+        image[i].g = image[i].g + adjustment;
+        image[i].b = image[i].b + adjustment;
     }
     return image;
 }
