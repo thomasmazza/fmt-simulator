@@ -98,3 +98,13 @@ void Utils::coreTranslationInColor(const int &wavelength, double &r, double &g, 
     b = round(b * intensity * 255);
 
 }
+
+double Utils::max(double & a, double & b) {
+    if (a < b) { return b; }
+    else return a;
+}
+
+double Utils::min(double & a, double & b) {
+    if (a > b) { return b; }
+    else return a;
+}

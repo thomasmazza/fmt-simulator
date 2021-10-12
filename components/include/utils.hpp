@@ -20,4 +20,8 @@ public:
     static std::string wavelengthToRGB(const int&);
 
     static void coreTranslationInColor(const int&, double&, double&, double&);
+
+    static double max(double &, double &);
+
+    static double min(double &, double &);
 };

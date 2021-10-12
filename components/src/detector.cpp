@@ -113,9 +113,16 @@ void Detector::getInPoint(Photon& photon) {
     double adjustment = 0;
     for (int i = 0; i < image.size()) {
         adjustment = (image[i].intensity - avg) * factor; //Muss testen wie sinnvoll adjustment berechnet wird
-        image[i].r = image[i].r + adjustment;
-        image[i].g = image[i].g + adjustment;
-        image[i].b = image[i].b + adjustment;
+        if (image[i].intensity >= avg) {
+            image[i].r = min(image[i].r + adjustment, 255);
+            image[i].g = min(image[i].g + adjustment, 255);
+            image[i].b = min(image[i].b + adjustment, 255);
+        }
+        else {
+            image[i].r = max(image[i].r + adjustment, 0);
+            image[i].g = max(image[i].g + adjustment, 0);
+            image[i].b = max(image[i].b + adjustment, 0);
+        }
     }
     return image;
 }
