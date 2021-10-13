@@ -25,5 +25,5 @@ add_executable(test
         photon/src/photon.cpp
         logic/src/setupImporter.cpp
         logic/src/setupList.cpp
-        )
+        logic/include/setupExporter.hpp logic/src/setupExporter.cpp)
         #logic/src/importObject.cpp)

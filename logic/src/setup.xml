@@ -36,4 +36,77 @@
             1
         </PlaneIsFront>
     </LensOneSided>
+    <LensTwoSided>
+        <Position>
+            13 14 15
+        </Position>
+        <Normal>
+            16 17 18
+        </Normal>
+        <RefIndex>
+            7
+        </RefIndex>
+        <RadiusH>
+            8
+        </RadiusH>
+        <RadiusI>
+            9
+        </RadiusI>
+        <RadiusO>
+            10
+        </RadiusO>
+        <D>
+            11
+        </D>
+    </LensTwoSided>
+    <MirrorElliptical>
+        <Position>
+            19 20 21
+        </Position>
+        <Normal>
+            22 23 24
+        </Normal>
+        <RadiusH>
+            12
+        </RadiusH>
+        <RadiusW>
+            13
+        </RadiusW>
+    </MirrorElliptical>
+    <MirrorCircle>
+        <Position>
+            25 26 27
+        </Position>
+        <Normal>
+            28 29 30
+        </Normal>
+        <Radius>
+            14
+        </Radius>
+    </MirrorCircle>
+    <MirrorRectangle>
+        <Position>
+            31 32 33
+        </Position>
+        <Normal>
+            34 35 36
+        </Normal>
+        <LengthH>
+            15
+        </LengthH>
+        <LengthW>
+            16
+        </LengthW>
+    </MirrorRectangle>
+    <MirrorSquare>
+        <Position>
+            37 38 39
+        </Position>
+        <Normal>
+            40 41 42
+        </Normal>
+        <Length>
+            17
+        </Length>
+    </MirrorSquare>
 </Setup>

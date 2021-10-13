@@ -70,6 +70,8 @@ const std::string Importer::LENGTH_H_OPENING_TAG = "LengthH";
 const std::string Importer::LENGTH_H_CLOSING_TAG = "/LengthH";
 const std::string Importer::LENGTH_W_OPENING_TAG = "LengthW";
 const std::string Importer::LENGTH_W_CLOSING_TAG = "/LengthW";
+const std::string Importer::LENGTH_OPENING_TAG = "Length";
+const std::string Importer::LENGTH_CLOSING_TAG = "/Length";
 const std::string Importer::D_OPENING_TAG = "D";
 const std::string Importer::D_CLOSING_TAG = "/D";
 const std::string Importer::PLANE_IS_FRONT_OPENING_TAG = "PlaneIsFront";
@@ -228,6 +230,7 @@ void Importer::importStp(List &_lst, std::string _filename) {
                         double _d;
                         //Daten aus Datei einlesen
                         importPosition(setupFile, _position);
+                        importNormal(setupFile, _normal);
                         importNumber(setupFile, REF_INDEX_OPENING_TAG, _refIndex);
                         importNumber(setupFile, RADIUS_H_OPENING_TAG, _radiusH);
                         importNumber(setupFile, RADIUS_I_OPENING_TAG, _radiusI);
@@ -271,7 +274,7 @@ void Importer::importStp(List &_lst, std::string _filename) {
 
                         _lst.append<MirrorRectangle>(MirrorRectangle(_position, _normal, _lengthH, _lengthW));
                         getContentInBrackets(setupFile, buf, MIRROR_RECTANGLE_CLOSING_TAG);
-                        std::cout << MIRROR_RECTANGLE_CLOSING_TAG << " was imported!" << std::endl;
+                        std::cout << MIRROR_RECTANGLE_OPENING_TAG << " was imported!" << std::endl;
                     } else if (buf == MIRROR_SQUARE_OPENING_TAG) {
                         double _length;
                         //Daten aus Datei einlesen
@@ -281,7 +284,7 @@ void Importer::importStp(List &_lst, std::string _filename) {
 
                         _lst.append<MirrorSquare>(MirrorSquare(_position, _normal, _length));
                         getContentInBrackets(setupFile, buf, MIRROR_SQUARE_CLOSING_TAG);
-                        std::cout << MIRROR_SQUARE_CLOSING_TAG << " was imported!" << std::endl;
+                        std::cout << MIRROR_SQUARE_OPENING_TAG << " was imported!" << std::endl;
                     } else if(buf == SETUP_CLOSING_TAG) {
                         break;
                     }else{
