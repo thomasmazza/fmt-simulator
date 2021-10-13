@@ -50,6 +50,15 @@ typedef typename std::string string;
         static const string RADIUS_I_CLOSING_TAG;
         static const string RADIUS_O_OPENING_TAG;
         static const string RADIUS_O_CLOSING_TAG;
+        static const string RADIUS_OPENING_TAG;
+        static const string RADIUS_CLOSING_TAG;
+        static const string LENGTH_H_OPENING_TAG;
+        static const string LENGTH_H_CLOSING_TAG;
+        static const string LENGTH_W_OPENING_TAG;
+        static const string LENGTH_W_CLOSING_TAG;
+        static const string LENGTH_OPENING_TAG;
+        static const string LENGTH_CLOSING_TAG;
+
 
 
         static bool isCorrectParameter(std::string&, const std::string&);

@@ -64,6 +64,12 @@ const std::string Importer::RADIUS_I_OPENING_TAG = "RadiusI";
 const std::string Importer::RADIUS_I_CLOSING_TAG = "/RadiusI";
 const std::string Importer::RADIUS_O_OPENING_TAG = "RadiusO";
 const std::string Importer::RADIUS_O_CLOSING_TAG = "/RadiusO";
+const std::string Importer::RADIUS_OPENING_TAG = "Radius";
+const std::string Importer::RADIUS_CLOSING_TAG = "/Radius";
+const std::string Importer::LENGTH_H_OPENING_TAG = "LengthH";
+const std::string Importer::LENGTH_H_CLOSING_TAG = "/LengthH";
+const std::string Importer::LENGTH_W_OPENING_TAG = "LengthW";
+const std::string Importer::LENGTH_W_CLOSING_TAG = "/LengthW";
 const std::string Importer::D_OPENING_TAG = "D";
 const std::string Importer::D_CLOSING_TAG = "/D";
 const std::string Importer::PLANE_IS_FRONT_OPENING_TAG = "PlaneIsFront";
@@ -210,6 +216,7 @@ void Importer::importStp(List &_lst, std::string _filename) {
                         importNumber(setupFile, RADIUS_W_OPENING_TAG, _radiusW);
                         importNumber(setupFile, D_OPENING_TAG, _d);
                         importBool(setupFile, PLANE_IS_FRONT_OPENING_TAG, _planeIsFront);
+
                         _lst.append<LensOneSided>(LensOneSided(_position, _normal, _refIndex, _radiusH, _radiusW, _d, _planeIsFront));
                         getContentInBrackets(setupFile, buf, LENS_ONE_SIDED_CLOSING_TAG);
                         std::cout << LENS_ONE_SIDED_OPENING_TAG << " was imported!" << std::endl;
@@ -232,43 +239,49 @@ void Importer::importStp(List &_lst, std::string _filename) {
                         getContentInBrackets(setupFile, buf, LENS_TWO_SIDED_CLOSING_TAG);
                         std::cout << LENS_TWO_SIDED_OPENING_TAG << " was imported!" << std::endl;
                     } else if (buf == MIRROR_ELLIPTICAL_OPENING_TAG) {
-                        double _rH;
-                        double _rW;
+                        double _radiusH;
+                        double _radiusW;
                         //Daten aus Datei einlesen
                         importPosition(setupFile, _position);
-                        Utils::normalizeVector(_normal);
-                        setupFile >> buf;
-                        _rH = std::stod(buf);
-                        setupFile >> buf;
-                        _rW = std::stod(buf);
-                        _lst.append<MirrorElliptical>(MirrorElliptical(_position, _normal, _rH, _rW));
+                        importNormal(setupFile, _normal);
+                        importNumber(setupFile,RADIUS_H_OPENING_TAG, _radiusH);
+                        importNumber(setupFile, RADIUS_W_OPENING_TAG, _radiusW);
+
+                        _lst.append<MirrorElliptical>(MirrorElliptical(_position, _normal, _radiusH, _radiusW));
+                        getContentInBrackets(setupFile, buf, MIRROR_ELLIPTICAL_CLOSING_TAG);
+                        std::cout << MIRROR_ELLIPTICAL_OPENING_TAG << " was imported!" << std::endl;
                     } else if (buf == MIRROR_CIRCLE_OPENING_TAG) {
                         double _radius;
                         //Daten aus Datei einlesen
                         importPosition(setupFile, _position);
-                        Utils::normalizeVector(_normal);
-                        setupFile >> buf;
-                        _radius = std::stod(buf);
+                        importNormal(setupFile, _normal);
+                        importNumber(setupFile, RADIUS_OPENING_TAG, _radius);
+
                         _lst.append<MirrorCircle>(MirrorCircle(_position, _normal, _radius));
+                        getContentInBrackets(setupFile, buf, MIRROR_CIRCLE_CLOSING_TAG);
+                        std::cout << MIRROR_CIRCLE_OPENING_TAG << " was imported!" << std::endl;
                     } else if (buf == MIRROR_RECTANGLE_OPENING_TAG) {
                         double _lengthH;
                         double _lengthW;
                         //Daten aus Datei einlesen
                         importPosition(setupFile, _position);
-                        Utils::normalizeVector(_normal);
-                        setupFile >> buf;
-                        _lengthH = std::stod(buf);
-                        setupFile >> buf;
-                        _lengthW = std::stod(buf);
+                        importNormal(setupFile, _normal);
+                        importNumber(setupFile, LENGTH_H_OPENING_TAG, _lengthH);
+                        importNumber(setupFile, LENGTH_W_OPENING_TAG, _lengthW);
+
                         _lst.append<MirrorRectangle>(MirrorRectangle(_position, _normal, _lengthH, _lengthW));
+                        getContentInBrackets(setupFile, buf, MIRROR_RECTANGLE_CLOSING_TAG);
+                        std::cout << MIRROR_RECTANGLE_CLOSING_TAG << " was imported!" << std::endl;
                     } else if (buf == MIRROR_SQUARE_OPENING_TAG) {
                         double _length;
                         //Daten aus Datei einlesen
                         importPosition(setupFile, _position);
-                        Utils::normalizeVector(_normal);
-                        setupFile >> buf;
-                        _length = std::stod(buf);
+                        importNormal(setupFile, _normal);
+                        importNumber(setupFile, LENGTH_OPENING_TAG, _length);
+
                         _lst.append<MirrorSquare>(MirrorSquare(_position, _normal, _length));
+                        getContentInBrackets(setupFile, buf, MIRROR_SQUARE_CLOSING_TAG);
+                        std::cout << MIRROR_SQUARE_CLOSING_TAG << " was imported!" << std::endl;
                     } else if(buf == SETUP_CLOSING_TAG) {
                         break;
                     }else{
