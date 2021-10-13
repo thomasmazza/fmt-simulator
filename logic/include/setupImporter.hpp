@@ -46,6 +46,10 @@ typedef typename std::string string;
         static const string D_CLOSING_TAG;
         static const string PLANE_IS_FRONT_OPENING_TAG;
         static const string PLANE_IS_FRONT_CLOSING_TAG;
+        static const string RADIUS_I_OPENING_TAG;
+        static const string RADIUS_I_CLOSING_TAG;
+        static const string RADIUS_O_OPENING_TAG;
+        static const string RADIUS_O_CLOSING_TAG;
 
 
         static bool isCorrectParameter(std::string&, const std::string&);

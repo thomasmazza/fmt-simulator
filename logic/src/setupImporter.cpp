@@ -60,6 +60,10 @@ const std::string Importer::RADIUS_H_OPENING_TAG = "RadiusH";
 const std::string Importer::RADIUS_H_CLOSING_TAG = "/RadiusH";
 const std::string Importer::RADIUS_W_OPENING_TAG = "RadiusW";
 const std::string Importer::RADIUS_W_CLOSING_TAG = "/RadiusW";
+const std::string Importer::RADIUS_I_OPENING_TAG = "RadiusI";
+const std::string Importer::RADIUS_I_CLOSING_TAG = "/RadiusI";
+const std::string Importer::RADIUS_O_OPENING_TAG = "RadiusO";
+const std::string Importer::RADIUS_O_CLOSING_TAG = "/RadiusO";
 const std::string Importer::D_OPENING_TAG = "D";
 const std::string Importer::D_CLOSING_TAG = "/D";
 const std::string Importer::PLANE_IS_FRONT_OPENING_TAG = "PlaneIsFront";
@@ -168,7 +172,6 @@ void Importer::getContentInBrackets(std::ifstream &file, std::string &buf) {
     std::getline(file, buf, '>');
 }
 
-
 void Importer::importStp(List &_lst, std::string _filename) {
     std::ifstream setupFile;
     setupFile.open(_filename);
@@ -207,9 +210,8 @@ void Importer::importStp(List &_lst, std::string _filename) {
                         importNumber(setupFile, RADIUS_W_OPENING_TAG, _radiusW);
                         importNumber(setupFile, D_OPENING_TAG, _d);
                         importBool(setupFile, PLANE_IS_FRONT_OPENING_TAG, _planeIsFront);
-                        _lst.append<LensOneSided>(
-                                LensOneSided(_position, _normal, _refIndex, _radiusH, _radiusW, _d, _planeIsFront));
-                        getContentInBrackets(setupFile, buf, FILTER_CLOSING_TAG);
+                        _lst.append<LensOneSided>(LensOneSided(_position, _normal, _refIndex, _radiusH, _radiusW, _d, _planeIsFront));
+                        getContentInBrackets(setupFile, buf, LENS_ONE_SIDED_CLOSING_TAG);
                         std::cout << LENS_ONE_SIDED_OPENING_TAG << " was imported!" << std::endl;
                     } else if(buf ==LENS_TWO_SIDED_OPENING_TAG) {
                         double _refIndex;
@@ -219,20 +221,16 @@ void Importer::importStp(List &_lst, std::string _filename) {
                         double _d;
                         //Daten aus Datei einlesen
                         importPosition(setupFile, _position);
-                        Utils::normalizeVector(_normal);
-                        setupFile >> buf;
-                        _refIndex = std::stod(buf);
-                        setupFile >> buf;
-                        _radiusH = std::stod(buf);
-                        setupFile >> buf;
-                        _radiusI = std::stod(buf);
-                        setupFile >> buf;
-                        _radiusO = std::stod(buf);
-                        setupFile >> buf;
-                        _d = std::stod(buf);
+                        importNumber(setupFile, REF_INDEX_OPENING_TAG, _refIndex);
+                        importNumber(setupFile, RADIUS_H_OPENING_TAG, _radiusH);
+                        importNumber(setupFile, RADIUS_I_OPENING_TAG, _radiusI);
+                        importNumber(setupFile, RADIUS_O_OPENING_TAG, _radiusO);
+                        importNumber(setupFile, D_OPENING_TAG, _d);
 
                         _lst.append<LensTwoSided>(
                                 LensTwoSided(_position, _normal, _refIndex, _radiusH, _radiusI, _radiusO, _d));
+                        getContentInBrackets(setupFile, buf, LENS_TWO_SIDED_CLOSING_TAG);
+                        std::cout << LENS_TWO_SIDED_OPENING_TAG << " was imported!" << std::endl;
                     } else if (buf == MIRROR_ELLIPTICAL_OPENING_TAG) {
                         double _rH;
                         double _rW;
@@ -287,6 +285,7 @@ void Importer::importStp(List &_lst, std::string _filename) {
     } catch (ImporterException e) {
         std::cerr << e.what() << std::endl;
     }
+    setupFile.close();
 }
 
 Importer::Importer() {
