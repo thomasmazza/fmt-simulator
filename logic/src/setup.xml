@@ -13,4 +13,27 @@
             2
         </UpperLimit>
     </Filter>
+    <LensOneSided>
+        <Position>
+            7 8 9
+        </Position>
+        <Normal>
+            10 11 12
+        </Normal>
+        <RefIndex>
+            3
+        </RefIndex>
+        <RadiusH>
+            4
+        </RadiusH>
+        <RadiusW>
+            5
+        </RadiusW>
+        <D>
+            6
+        </D>
+        <PlaneIsFront>
+            1
+        </PlaneIsFront>
+    </LensOneSided>
 </Setup>

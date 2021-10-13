@@ -14,12 +14,18 @@ typedef typename std::string string;
     private:
         static const string FILTER_OPENING_TAG;
         static const string FILTER_CLOSING_TAG;
-        static const string LENS_ONE_SIDED;
-        static const string LENS_TWO_SIDED;
-        static const string MIRROR_ELLIPTICAL;
-        static const string MIRROR_CIRCLE;
-        static const string MIRROR_RECTANGLE;
-        static const string MIRROR_SQUARE;
+        static const string LENS_ONE_SIDED_OPENING_TAG;
+        static const string LENS_ONE_SIDED_CLOSING_TAG;
+        static const string LENS_TWO_SIDED_OPENING_TAG;
+        static const string LENS_TWO_SIDED_CLOSING_TAG;
+        static const string MIRROR_ELLIPTICAL_OPENING_TAG;
+        static const string MIRROR_ELLIPTICAL_CLOSING_TAG;
+        static const string MIRROR_CIRCLE_OPENING_TAG;
+        static const string MIRROR_CIRCLE_CLOSING_TAG;
+        static const string MIRROR_RECTANGLE_OPENING_TAG;
+        static const string MIRROR_RECTANGLE_CLOSING_TAG;
+        static const string MIRROR_SQUARE_OPENING_TAG;
+        static const string MIRROR_SQUARE_CLOSING_TAG;
         static const string SETUP_OPENING_TAG;
         static const string SETUP_CLOSING_TAG;
         static const string POSITION_OPENING_TAG;
@@ -38,12 +44,16 @@ typedef typename std::string string;
         static const string REF_INDEX_CLOSING_TAG;
         static const string D_OPENING_TAG;
         static const string D_CLOSING_TAG;
+        static const string PLANE_IS_FRONT_OPENING_TAG;
+        static const string PLANE_IS_FRONT_CLOSING_TAG;
+
 
         static bool isCorrectParameter(std::string&, const std::string&);
         static void getContentInBrackets(std::ifstream &, std::string &, const std::string);
         static void getContentInBrackets(std::ifstream &, std::string &);
-        static double importNumber(std::ifstream& ,const  std::string&, int&);
-        static double importNumber(std::ifstream& ,const  std::string&, double&);
+        static void importNumber(std::ifstream& ,const  std::string&, int&);
+        static void importNumber(std::ifstream& ,const  std::string&, double&);
+        static void importBool(std::ifstream&, const std::string&, bool&);
 
 
     public:
