@@ -26,6 +26,7 @@ int main(int argc, char *argv[]) {
 
     testVector3(0)=-1;
     testVector3(1)=1;
+
     testVector3(2)=1;
 
     testVector4(0)=4;
@@ -35,7 +36,6 @@ int main(int argc, char *argv[]) {
     testVector5[0]=-1;
     testVector5[1]=0;
     testVector5[2]=1;
-
 
     int sum1=0;
     for(int i=0; i<3; i++){

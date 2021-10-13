@@ -9,7 +9,7 @@
 typedef typename boost::numeric::ublas::vector<double> vector;
 typedef typename std::string string;
 
-namespace setup {
+
     class Importer {
     private:
         static const string FILTER;
@@ -19,13 +19,25 @@ namespace setup {
         static const string MIRROR_CIRCLE;
         static const string MIRROR_RECTANGLE;
         static const string MIRROR_SQUARE;
+        static const string SETUP_OPENING_TAG;
+        static const string SETUP_CLOSING_TAG;
+        static const string POSITION_OPENING_TAG;
+        static const string POSITION_CLOSING_TAG;
+
+        static void getContentInBrackets(std::ifstream &, std::string &);
+
+
     public:
         Importer();
 
-        static void importPosNorm(std::ifstream &, vector &, vector &);
+        static void importVector(std::ifstream &, vector &);
+
+        static void importPosition(std::ifstream &, vector &);
+
+        static void importNormal(std::ifstream &, vector &);
 
         static void normalizeVector(vector &);
 
         static void importStp(List &, std::string);
     };
-}
+
