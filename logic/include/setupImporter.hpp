@@ -23,7 +23,8 @@ typedef typename std::string string;
         static const string SETUP_CLOSING_TAG;
         static const string POSITION_OPENING_TAG;
         static const string POSITION_CLOSING_TAG;
-
+        static bool isCorrectParameter(std::string&, const std::string&);
+        static void getContentInBrackets(std::ifstream &, std::string &, const std::string);
         static void getContentInBrackets(std::ifstream &, std::string &);
 
 

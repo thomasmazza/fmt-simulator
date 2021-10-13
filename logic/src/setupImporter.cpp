@@ -5,10 +5,19 @@
 #include "../../components/include/lensTwoSided.hpp"
 #include "../../components/include/mirrorCircle.hpp"
 #include "../../components/include/mirrorSquare.hpp"
-
-struct InvalidComponentException : public std::exception {
+struct ImporterException: public std::exception{
+    const char *what() const throw() {
+        return "Error while import Setup";
+    }
+};
+struct InvalidComponentException : public ImporterException {
     const char *what() const throw() {
         return "Invalid Component in Setup File";
+    }
+};
+struct WrongTagException : public ImporterException {
+    const char *what() const throw() {
+        return "Wrong Parameter in Component";
     }
 };
 
@@ -24,13 +33,20 @@ const std::string Importer::SETUP_CLOSING_TAG = "/setup";
 const std::string Importer::POSITION_OPENING_TAG = "position";
 const std::string Importer::POSITION_CLOSING_TAG = "/position";
 
-void Importer::importPosition(std::ifstream &_setupFile, vector &_position) {
-    try {
 
+void Importer::importPosition(std::ifstream &_setupFile, vector &_position) {
+    std::string buf;
+    try {
+        getContentInBrackets(_setupFile, buf, POSITION_OPENING_TAG);
         importVector(_setupFile, _position);
-    } catch (InvalidComponentException e) {
-        std::cerr << "Error occurred while creating Position Vector" << std::endl;
+        getContentInBrackets(_setupFile, buf, POSITION_CLOSING_TAG);
+
+    } catch (InvalidComponentException& e) {
+        std::cerr <<e.what() << std::endl << "Error occurred while creating Position Vector" << std::endl;
         throw InvalidComponentException();
+    } catch (WrongTagException& e){
+        std::cerr << e.what() << std::endl <<"Expected Parameter: " << POSITION_OPENING_TAG << std::endl << "Retrieved Parameter: " << buf << std::endl;
+        throw WrongTagException();
     }
 }
 
@@ -49,11 +65,17 @@ void Importer::importVector(std::ifstream &_setupFile, vector &_vector) {
         _setupFile >> buf;
         _vector[2] = std::stod(buf);
     } catch (std::exception &e) {
-        std::cerr << "Error while creation of a vector " << std::endl << "Current Buffer: " << buf << std::endl;
+        std::cerr  << std::endl << "Error while creation of a vector " << std::endl << "Current Buffer: " << buf << std::endl << "Number was expected" << std::endl;
         throw InvalidComponentException();
     }
 }
 
+void Importer::getContentInBrackets(std::ifstream &file, std::string &buf, const std::string expectedString) {
+    getContentInBrackets(file, buf);
+    if (buf != expectedString){
+        throw WrongTagException();
+    }
+}
 void Importer::getContentInBrackets(std::ifstream &file, std::string &buf) {
     std::getline(file, buf, '<');
     std::getline(file, buf, '>');
@@ -64,17 +86,15 @@ void Importer::importStp(List &_lst, std::string _filename) {
     std::ifstream setupFile;
     setupFile.open(_filename);
     std::string buf;
-    getContentInBrackets(setupFile, buf);
+    getContentInBrackets(setupFile, buf, SETUP_OPENING_TAG);
     std::cout << setupFile.is_open() << std::endl;
     try {
         if (buf == SETUP_OPENING_TAG) {
             while (buf != SETUP_CLOSING_TAG && setupFile.is_open()) {
                 try {
-                    std::cout << "buf: " + buf << std::endl;
                     getContentInBrackets(setupFile, buf);
-                    std::cout << "buf: " + buf << std::endl;
-                    vector _position;
-                    vector _normal;
+                    vector _position(3);
+                    vector _normal(3);
                     if (buf == FILTER) {
                         int _lowerLim;
                         int _upperLim;
@@ -170,16 +190,15 @@ void Importer::importStp(List &_lst, std::string _filename) {
                     } else {
                         throw InvalidComponentException();
                     }
-                } catch (InvalidComponentException e) {
-                    std::cerr << e.what() << std::endl;
-                    throw InvalidComponentException();
+                } catch (ImporterException e) {
+                    throw ImporterException();
                 }
             }
         } else {
             std::cerr << "File " + _filename + " doesn't have Setup file Syntax" << std::endl;
         }
-    } catch (InvalidComponentException e) {
-        std::cerr << "Error while import Setup" << std::endl;
+    } catch (ImporterException e) {
+        std::cerr << e.what() << std::endl;
     }
 }
 

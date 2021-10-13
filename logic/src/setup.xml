@@ -1,10 +1,16 @@
 <setup>
-    <Filter>
-        <Position>
-            1 1 1
-        </Position>
-        <Normal>
+    <filter>
+        <position>
+            4 5 6
+        </position>
+        <normal>
             1 2 3
-        </Normal>
-    </Filter>
+        </normal>
+        <lowerLimit>
+            1
+        </lowerLimit>
+        <upperLimit>
+            2
+        </upperLimit>
+    </filter>
 </setup>
