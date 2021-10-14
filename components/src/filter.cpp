@@ -20,8 +20,11 @@ bool Filter::inRange(int lambda) {
     if (lambda > upperLimit || lambda < lowerLimit) return false;
     return true;
 }
+std::string Filter::getType() {
+    return "Filter";
+}
 
-Filter::Filter(vector& _pos, vector& _normal, int _lowerLimit, int _upperLimit):Filter::Component(_pos, _normal){
-    lowerLimit = _lowerLimit;
-    upperLimit = _upperLimit;
+Filter::Filter(vector& _pos, vector& _normal, int _lowerLimit, int _upperLimit):Component(_pos, _normal,  filter){
+
+
 }

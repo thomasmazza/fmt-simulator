@@ -13,10 +13,13 @@ typedef typename boost::numeric::ublas::vector<double> vector;
 
 class Lens: public Component {
 protected:
-    double n;
     double radiusH;
+    double n;
     double d;
 public:
-    Lens(vector&, vector&, double, double, double);
+    Lens(vector&, vector&, double, double, double, ComponentType _type);
     virtual bool getOutDir(Photon&)=0;
+    const double& getN();
+    const double& getRadiusH();
+    const double& getD();
 };

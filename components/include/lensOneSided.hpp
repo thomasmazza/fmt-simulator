@@ -11,4 +11,6 @@ private:
 public:
     LensOneSided(vector&, vector&, double, double, double, double, bool);
     bool getOutDir(Photon&);
+    const double& getRadiusW();
+    const bool& getPlaneIsFront();
 };

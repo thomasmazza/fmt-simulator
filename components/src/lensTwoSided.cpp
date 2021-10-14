@@ -9,7 +9,7 @@ bool LensTwoSided::getOutDir(Photon& p){
     vector OM1(3);
     vector OM2(3);
 
-    //Positionsvektor der MIttelpunkte der Kugeln bestimmen
+    //Positionsvektor der Mittelpunkte der Kugeln bestimmen
     OM1 = position - radius1*normal;
     OM2 = position -normal*(d+radius2);
 
@@ -26,14 +26,14 @@ bool LensTwoSided::getOutDir(Photon& p){
     }
     c = c-pow(radius1, 2);
 
-    //Prüfen ob reele Lösung ex.
+    //Prüfen, ob reelle Lösung ex.
     if( (pow(b,2)-4*a*c) < 0 && a == 0){
         return false;
     }
 
     //Mögliche Lösungen als Variablen
-    double t1=0;
-    double t2=0;
+    double t1;
+    double t2;
 
     t1 = (-b+sqrt((pow(b,2)-4*a*c))) / (2*a);
     t2 = (-b-sqrt((pow(b,2)-4*a*c))) / (2*a);
@@ -71,7 +71,7 @@ bool LensTwoSided::getOutDir(Photon& p){
         }
     }
 
-    //Überprüfen ob im Höhenradius
+    //Überprüfen, ob im Höhenradius
     double d1 = abs(radius1) - sqrt(pow(radius1, 2) - pow(radiusH, 2)) ;
     vector check(3);
     if(radius1>0){
@@ -154,15 +154,12 @@ bool LensTwoSided::getOutDir(Photon& p){
     }
     c = c - pow(radius2, 2);
 
-    //Prüfen ob reele Lösung ex.
+    //Prüfen, ob reelle Lösung ex.
     if( (pow(b,2)-4*a*c) < 0 && a == 0){
         return false;
     }
 
     //Mögliche Lösungen als Variablen
-    t1=0;
-    t2=0;
-
     t1 = (-b+sqrt((pow(b,2)-4*a*c))) / (2*a);
     t2 = (-b-sqrt((pow(b,2)-4*a*c))) / (2*a);
 
@@ -197,7 +194,7 @@ bool LensTwoSided::getOutDir(Photon& p){
         }
     }
 
-    //Überprüfen ob im Höhenradius
+    //Überprüfen, ob im Höhenradius
     double d2 = abs(radius2) - sqrt(pow(radius2, 2) -pow(radiusH, 2));
     sum2=0;
     if(radius2>0){
@@ -271,8 +268,6 @@ bool LensTwoSided::getOutDir(Photon& p){
     return true;
 }
 
-LensTwoSided::LensTwoSided(vector& _pos, vector& _normal,double _n, double _radiusH, double _radiusI, double _radiusO, double _d)
-:LensTwoSided::Lens(_pos, _normal, _n, _radiusH, _d) {
-    radius1 = _radiusI;
-    radius2 = _radiusO;
+LensTwoSided::LensTwoSided(vector& _pos, vector& _normal,double _n, double _radiusH, double _radius1, double _radius2, double _d)
+:LensTwoSided::Lens(_pos, _normal, _n, _radiusH, _d, lensTwoSided), radius1(_radius1), radius2(_radius2) {
 }

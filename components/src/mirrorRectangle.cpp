@@ -118,7 +118,7 @@ bool MirrorRectangle::getOutDir(Photon &p, vector &intersect, vector &normWidth)
     return true;
 }
 
-MirrorRectangle::MirrorRectangle(vector &_pos, vector &_normal, double _lengthH, double _lengthW) : Mirror(_pos,_normal) {
-    lengthH = _lengthH;
-    lengthW = _lengthW;
+MirrorRectangle::MirrorRectangle(vector &_pos, vector &_normal, double _lengthH, double _lengthW): Mirror(_pos,_normal, mirrorRectangle), lengthH(_lengthH), lengthW(_lengthW) {
 }
+
+MirrorRectangle::MirrorRectangle(vector &_pos, vector &_normal, double _lengthH, double _lengthW, ComponentType _type):Mirror(_pos, _normal, _type), lengthH(_lengthH), lengthW(_lengthW) {}

@@ -10,7 +10,7 @@ typedef typename boost::numeric::ublas::vector<double> vector;
 
 class Mirror: public Component {
     public:
-        Mirror(vector&, vector&);
+        Mirror(vector&, vector&, ComponentType _type);
         virtual bool hitComponent(Photon&, vector&)=0;
         virtual bool getOutDir(Photon&, vector&, vector&)=0;
 };

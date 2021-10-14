@@ -48,8 +48,8 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
         vector normWidth = mWidth;
 
         //Vektor auf Höhe Skalieren
-        mHigh = rH * mHigh;
-        mWidth = rW * mWidth;
+        mHigh = radiusH * mHigh;
+        mWidth = radiusW * mWidth;
 
         //Vektor von Mittelpunkt zum Intersect erstellen
         intersect = intersect - position;
@@ -66,12 +66,12 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
         }
 
         //lengthW und lengthH ist nicht deklariert
-        double yProz = abs((rS / pow(rH, 2)));
-        double xProz = abs((lS / pow(rW, 2)));
-        xProz = xProz * rW;
-        yProz = yProz * rH;
+        double yProz = abs((rS / pow(radiusH, 2)));
+        double xProz = abs((lS / pow(radiusW, 2)));
+        xProz = xProz * radiusW;
+        yProz = yProz * radiusH;
 
-        double z = abs(pow(xProz, 2) / rW + pow(yProz, 2) / rH);
+        double z = abs(pow(xProz, 2) / radiusW + pow(yProz, 2) / radiusH);
 
         if (z <= 1 && getOutDir(photon, intersect, normWidth)) {
             isComponentHit = true;
@@ -123,7 +123,7 @@ bool MirrorElliptical::getOutDir(Photon& p, vector& intersect, vector& normWidth
     return true;
 }
 
-MirrorElliptical::MirrorElliptical(vector& _pos, vector& _normal, double _rH, double _rW):Mirror(_pos, _normal) {
-    rH= _rH;
-    rW= _rW;
+MirrorElliptical::MirrorElliptical(vector& _pos, vector& _normal, double _radiusH, double _radiusW):Mirror(_pos, _normal, mirrorElliptical),radiusH(_radiusH),radiusW(_radiusW) {
 }
+
+MirrorElliptical::MirrorElliptical(vector &_pos, vector &_normal, double _radiusH, double _radiusW, ComponentType _type): Mirror(_pos, _normal, _type), radiusH(_radiusH), radiusW(_radiusW) {}
