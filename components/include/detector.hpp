@@ -28,7 +28,7 @@ public:
     void setPosOfPrevComponent(vector&);
     vector getPointOnEdge();
     void setPointOnEdge(vector&);
-    Detector(vector&, vector&, int, double, double);
+    Detector(vector&, vector&, int, double);
     void getInPoint(Photon&);
     rgb_vector createImage();
 };
