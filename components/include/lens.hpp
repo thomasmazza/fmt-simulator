@@ -1,13 +1,10 @@
 #pragma once
 
-#include <iostream>
+#include "../../utils/include/utils.hpp"
 #include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/io.hpp>
-#include <boost/geometry/arithmetic/cross_product.hpp>
 #include "../../photon/include/photon.hpp"
 #include "component.hpp"
 #include "math.h"
-#include "utils.hpp"
 
 typedef typename boost::numeric::ublas::vector<double> vector;
 

@@ -1,6 +1,6 @@
 #include "../include/mirrorElliptical.hpp"
 
-bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
+bool MirrorElliptical::getOutDir(Photon& photon, vector& _dirOA) {
     double rS=0;
     double lS=0;
     vector pV = photon.getPosition();
@@ -73,7 +73,7 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
 
         double z = abs(pow(xProz, 2) / rW + pow(yProz, 2) / rH);
 
-        if (z <= 1 && getOutDir(photon, intersect, normWidth)) {
+        if (z <= 1 && calcOut(photon, intersect, normWidth)) {
             isComponentHit = true;
         }
     }
@@ -81,7 +81,7 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
     return isComponentHit;
 }
 
-bool MirrorElliptical::getOutDir(Photon& p, vector& intersect, vector& normWidth) {
+bool MirrorElliptical::calcOut(Photon& p, vector& intersect, vector& normWidth) {
     //neuer Stützvektor wird der Schnittpunkt
     p.setPosition(intersect);
 
