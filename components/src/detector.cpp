@@ -56,6 +56,9 @@ std::cout << intersection[0] << "   " << intersection[1] << "   " << intersectio
     // temp hier wiederverwenden zum Speicheroptimierung
     temp = Utils::dot_product(cp, detectorNormal);
     temp = atan2(temp, dp); //Berechnet Winkel in der Ebene zwischen ref und relativePosition in [-pi,+pi]
+
+    std::cout << temp << std::endl;
+
     double a, b, c;
     c = sqrt(pow(relativePosition(0), 2) + pow(relativePosition(1), 2) + pow(relativePosition(2), 2));
     a = abs(c * sin(temp));

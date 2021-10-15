@@ -17,9 +17,16 @@ vector Utils::cross_product_2(vector& a, vector& b) {
 
 void Utils::normalizeVector(vector & a) {
     double t = sqrt(pow(a(0), 2) + pow(a(1), 2) + pow(a(2), 2));
-    a(0) = a(0) / t;
-    a(1) = a(1) / t;
-    a(2) = a(2) / t;
+    if (t != 0) {
+        a(0) = a(0) / t;
+        a(1) = a(1) / t;
+        a(2) = a(2) / t;
+    }
+    else {
+        a(0) = 0;
+        a(1) = 0;
+        a(2) = 0;
+    }
 }
 
 double Utils::dot_product(vector& a, vector& b) {

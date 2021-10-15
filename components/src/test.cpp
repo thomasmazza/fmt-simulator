@@ -57,7 +57,7 @@ int main() {
 
     Detector d(v, vn, vpe, vpc, 50.0, 0.03);
 
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 121; i++) {
         d.getInPoint(phV[i]);
     }
     rgb_vector image = d.createImage();
