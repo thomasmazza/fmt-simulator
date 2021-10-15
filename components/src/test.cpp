@@ -9,10 +9,7 @@
 //#include "filter.hpp"
 //#include "mirror.hpp"
 #include "../include/detector.hpp"
-
-//#include "mirrorElliptical.hpp"
 #include "../../photon/include/photon.hpp"
-//#include "mirrorRectangle.hpp"
 
 typedef typename boost::numeric::ublas::vector<double> vector;
 
@@ -20,10 +17,11 @@ int main() {
     vector v (3);
     for (int i = 0; i < 3; i++) {
         v(i) = 0;
+        std::cout << v(i);
     }
     Photon ph(v, v, 700, 0);
     std::vector<Photon> phV;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 11; i++) {
         for (int j = 0; j < 10; j++) {
             v(0) = j / 10.0;
             v(1) = i / 10.0;
@@ -46,8 +44,17 @@ int main() {
     vn(1) = 0;
     vn(2) = 5;
 
+    vector vpe(3);
+    vpe(0) = 0.5;
+    vpe(1) = 1;
+    vpe(2) = 5;
 
-    Detector d(v, vn, 50, 0.03);
+    vector vpc(3);
+    vpc(0) = 0.5;
+    vpc(1) = 0.5;
+    vpc(2) = 0;
+
+    Detector d(v, vn, vpe, vpc, 50, 0.03);
 
     for (int i = 0; i < 100; i++) {
         d.getInPoint(phV[i]);

@@ -7,7 +7,7 @@ void Utils::cross_product(vector& result,vector& a, vector& b){
     result(2)=a(0)*b(1)-a(1)*b(0);
 }
 
-vector Utils::cross_product_2(vector& a, vector& b) {
+vector & Utils::cross_product_2(vector& a, vector& b) {
     vector result(3);
     result(0)=a(1)*b(2)-a(2)*b(2);
     result(1)=a(2)*b(0)-a(0)*b(2);
@@ -99,12 +99,12 @@ void Utils::coreTranslationInColor(const int &wavelength, double &r, double &g, 
 
 }
 
-double Utils::max(double & a, double & b) {
+double Utils::max(double a, double b) {
     if (a < b) { return b; }
     else return a;
 }
 
-double Utils::min(double & a, double & b) {
+double Utils::min(double a, double b) {
     if (a > b) { return b; }
     else return a;
 }
