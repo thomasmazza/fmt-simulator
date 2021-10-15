@@ -141,7 +141,6 @@ void Importer::importStp(List &_lst, std::string _filename) {
     getContentInBrackets(setupFile, buf, SETUP_OPENING_TAG);
     try {
         while (buf != SETUP_CLOSING_TAG && setupFile.is_open()) {
-
             getContentInBrackets(setupFile, buf);
             std::vector<double> _position(3);
             std::vector<double> _normal(3);
@@ -251,17 +250,36 @@ void Importer::importStp(List &_lst, std::string _filename) {
     setupFile.close();
 }
 
-void Importer::importObject(Config::object &object, std::string filename) {
+void Importer::importObject(Config::object &_object, std::string filename) {
     std::ifstream setupFile;
     setupFile.open(filename);
     std::string buf;
-    getContentInBrackets(setupFile, buf, OBJECT_OPENING_TAG);
+    int i = 0;
     try {
-
-    }catch(std::exception& e){}
-
+        getContentInBrackets(setupFile, buf, OBJECT_OPENING_TAG);
+        while (buf != OBJECT_CLOSING_TAG && setupFile.is_open()) {
+            getContentInBrackets(setupFile, buf);
+            Config::objectRow rowBuffer;
+            while (buf != OBJECT_ROW_CLOSING_TAG && setupFile.is_open()) {
+                std::vector<double> position(3);
+                getContentInBrackets(setupFile, buf);
+                if (buf == POINT_OPENING_TAG) {
+                    importPosition(setupFile, position);
+                    int wavelength;
+                    importNumber(setupFile, WAVELENGTH_OPENING_TAG, wavelength);
+                    objectPoint point(position, wavelength);
+                    rowBuffer.push_back(point);
+                    getContentInBrackets(setupFile, buf, POINT_CLOSING_TAG);
+                    std::cout << ++i << std::endl;
+                }
+            }
+            _object.push_back(rowBuffer);
+            getContentInBrackets(setupFile, buf);
+        }
+    } catch (std::exception &e) {
+        std::cerr << "Error while importing Object" << std::endl;
+    }
 }
-
 
 
 

@@ -60,4 +60,5 @@ namespace Config {
     const std::string WAVELENGTH_CLOSING_TAG = "/Wavelength";
     const std::string OBJECT_ROW_OPENING_TAG = "ObjectRow";
     const std::string OBJECT_ROW_CLOSING_TAG = "/ObjectRow";
+
 }

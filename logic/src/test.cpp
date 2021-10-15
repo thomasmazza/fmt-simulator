@@ -9,11 +9,14 @@
 int main() {
     List testList = List();
 //    List testList1 = List();
-    Importer::importStp(testList, "/home/thomas/CLionProjects/fmt-simulator/logic/src/setup.xml");
-    Exporter::exportStp(testList, "/home/thomas/CLionProjects/fmt-simulator/logic/src/testExport.xml");
+//    Importer::importStp(testList, "/home/thomas/CLionProjects/fmt-simulator/logic/src/setup.xml");
+//    Exporter::exportStp(testList, "/home/thomas/CLionProjects/fmt-simulator/logic/src/testExport.xml");
 //    Importer::importStp(testList1, "/home/thomas/CLionProjects/fmt-simulator/logic/src/testExport.xml");
 //    Exporter::exportStp(testList, "/home/thomas/CLionProjects/fmt-simulator/logic/src/testExport1.xml");
     Config::object _object;
+    Config::object  _object1;
     ObjectGenerator::generateObject(_object);
     Exporter::exportObject(_object, "/home/thomas/CLionProjects/fmt-simulator/logic/src/object.xml");
+    Importer::importObject(_object1,"/home/thomas/CLionProjects/fmt-simulator/logic/src/object.xml");
+    Exporter::exportObject(_object1, "/home/thomas/CLionProjects/fmt-simulator/logic/src/object1.xml");
 }
