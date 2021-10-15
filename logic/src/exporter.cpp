@@ -1,6 +1,6 @@
 #include <fstream>
 
-#include "../include/setupExporter.hpp"
+#include "../include/exporter.hpp"
 #include "setupImporter.hpp"
 
 using namespace Config;

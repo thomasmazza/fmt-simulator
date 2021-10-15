@@ -28,5 +28,6 @@ private:
 public:
     Exporter();
     static void exportStp(List &, std::string);
+    static void exportObject
 };
 

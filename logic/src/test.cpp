@@ -7,7 +7,7 @@
 #include <boost/numeric/ublas/vector.hpp>
 #include "setupImporter.hpp"
 
-#include "../include/setupExporter.hpp"
+#include "../include/exporter.hpp"
 
 typedef typename boost::numeric::ublas::vector<double> vector;
 int main() {
