@@ -51,10 +51,14 @@ std::cout << intersection[0] << "   " << intersection[1] << "   " << intersectio
     Utils::normalizeVector(detectorNormal);
 
     double dp = Utils::dot_product(ref, relativePosition);
+    std::cout << " DP" << dp << std::endl;
     vector cp = Utils::cross_product_2(relativePosition, ref);
 
     // temp hier wiederverwenden zum Speicheroptimierung
     temp = Utils::dot_product(cp, detectorNormal);
+
+    std::cout << " temp" << temp << std::endl;
+
     temp = atan2(temp, dp); //Berechnet Winkel in der Ebene zwischen ref und relativePosition in [-pi,+pi]
 
     std::cout << temp << std::endl;
