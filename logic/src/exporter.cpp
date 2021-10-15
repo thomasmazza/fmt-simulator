@@ -100,7 +100,23 @@ void Exporter::exportStp(List &_lst, std::string _filename) {
     dataOut.close();
 }
 
-Exporter::Exporter() {
+void Exporter::exportObject(Config::object &object, std::string filename) {
+    std::ofstream dataOut(filename, std::ios::out);
+    exportInBrackets(dataOut, OBJECT_OPENING_TAG);
+    for(Config::objectRow row: object){
+        exportInBrackets(dataOut, OBJECT_ROW_OPENING_TAG);
+        for(objectPoint point: row){
+            exportInBrackets(dataOut, POINT_OPENING_TAG);
+            exportInBrackets(dataOut, POSITION_OPENING_TAG);
+            exportVector(dataOut,point.getPosition());
+            exportInBrackets(dataOut, POSITION_CLOSING_TAG);
+            exportInBrackets(dataOut, WAVELENGTH_OPENING_TAG);
+            dataOut << point.getWavelength() << std::endl;
+            exportInBrackets(dataOut, WAVELENGTH_CLOSING_TAG);
+            exportInBrackets(dataOut, POINT_CLOSING_TAG);
+        }
+        exportInBrackets(dataOut, OBJECT_ROW_CLOSING_TAG);
+    }
+    exportInBrackets(dataOut, OBJECT_CLOSING_TAG);
+    dataOut.close();
 }
-
-

@@ -260,9 +260,6 @@ void Importer::importStp(List &_lst, std::string _filename) {
     setupFile.close();
 }
 
-Importer::Importer() {
-}
-
 
 
 

@@ -6,11 +6,7 @@
 #include "setupList.hpp"
 #include "../../components/include/component.hpp"
 #include "config.hpp"
-
-typedef typename std::string string;
-
-
-    class Importer {
+        class Importer {
     private:
         static bool isCorrectParameter(std::string&, const std::string&);
         static void getContentInBrackets(std::ifstream &, std::string &, const std::string);
@@ -21,8 +17,6 @@ typedef typename std::string string;
 
 
     public:
-        Importer();
-
         static void importVector(std::ifstream &, std::vector<double> &);
 
         static void importPosition(std::ifstream &, std::vector<double> &);

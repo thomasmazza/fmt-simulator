@@ -16,6 +16,7 @@
 #include "mirrorElliptical.hpp"
 
 #include "componentType.hpp"
+#include "config.hpp"
 
 class Exporter {
 private:
@@ -26,8 +27,7 @@ private:
     static void exportVector(std::ofstream& os, const std::vector<double> &_vector);
     static void exportParameter(std::ofstream& os, std::string parameterTag, int number);
 public:
-    Exporter();
     static void exportStp(List &, std::string);
-    static void exportObject
+    static void exportObject(Config::object & object, std::string filename);
 };
 

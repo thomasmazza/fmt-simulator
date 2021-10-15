@@ -52,12 +52,12 @@ namespace Config {
     const std::string D_CLOSING_TAG = "/D";
     const std::string PLANE_IS_FRONT_OPENING_TAG = "PlaneIsFront";
     const std::string PLANE_IS_FRONT_CLOSING_TAG = "/PlaneIsFront";
-    const std::string OBJECT_OPENING_TAG = "<object>";
-    const std::string OBJECT_CLOSING_TAG = "</object>";
-    const std::string NAME_OPENING_TAG = "<name>";
-    const std::string NAME_CLOSING_TAG = "</name>";
-    const std::string POINT_OPENING_TAG = "<point>";
-    const std::string POINT_CLOSING_TAG = "</point>";
-    const std::string WAVELENGTH_OPENING_TAG = "<wavelength>";
-    const std::string WAVELENGTH_CLOSING_TAG = "</wavelength>";
+    const std::string OBJECT_OPENING_TAG = "Object";
+    const std::string OBJECT_CLOSING_TAG = "/Object";
+    const std::string POINT_OPENING_TAG = "Point";
+    const std::string POINT_CLOSING_TAG = "/Point";
+    const std::string WAVELENGTH_OPENING_TAG = "Wavelength";
+    const std::string WAVELENGTH_CLOSING_TAG = "/Wavelength";
+    const std::string OBJECT_ROW_OPENING_TAG = "ObjectRow";
+    const std::string OBJECT_ROW_CLOSING_TAG = "/ObjectRow";
 }
