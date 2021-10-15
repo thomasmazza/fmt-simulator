@@ -67,8 +67,8 @@ void Exporter::exportStp(List &_lst, std::string _filename) {
             case lensOneSided:
                 exportParameter(dataOut, N_OPENING_TAG, static_cast<LensOneSided&>(*_lst.elem(i)).getN());
                 exportParameter(dataOut, RADIUS_H_OPENING_TAG, static_cast<LensOneSided&>(*_lst.elem(i)).getRadiusH());
-                exportParameter(dataOut, D_OPENING_TAG, static_cast<LensOneSided&>(*_lst.elem(i)).getD());
                 exportParameter(dataOut, RADIUS_W_OPENING_TAG, static_cast<LensOneSided&>(*_lst.elem(i)).getRadiusW());
+                exportParameter(dataOut, D_OPENING_TAG, static_cast<LensOneSided&>(*_lst.elem(i)).getD());
                 exportParameter(dataOut, PLANE_IS_FRONT_OPENING_TAG, static_cast<LensOneSided&>(*_lst.elem(i)).getPlaneIsFront());
                 break;
             case lensTwoSided:

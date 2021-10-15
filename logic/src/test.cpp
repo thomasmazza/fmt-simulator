@@ -12,6 +12,9 @@
 typedef typename boost::numeric::ublas::vector<double> vector;
 int main() {
     List testList = List();
+    List testList1 = List();
     Importer::importStp(testList, "/home/thomas/CLionProjects/fmt-simulator/logic/src/setup.xml");
     Exporter::exportStp(testList, "/home/thomas/CLionProjects/fmt-simulator/logic/src/testExport.xml");
+    Importer::importStp(testList1, "/home/thomas/CLionProjects/fmt-simulator/logic/src/testExport.xml");
+    Exporter::exportStp(testList, "/home/thomas/CLionProjects/fmt-simulator/logic/src/testExport1.xml");
 }
