@@ -11,7 +11,7 @@ public:
  */
     static void cross_product(vector &, vector &, vector &);
 
-    static vector & cross_product_2(vector&, vector&);
+    static vector cross_product_2(vector&, vector&);
 
     static void normalizeVector(vector &);
 

@@ -46,8 +46,12 @@ void Detector::getInPoint(Photon& photon) {
     vector ref = pointOnEdge - position; // Position vom pointOnEdge relativ zum Detektormittelpunkt
     Utils::normalizeVector(detectorNormal);
 
+    double dp = Utils::dot_product(ref, relativePosition);
+    vector cp = Utils::cross_product_2(relativePosition, ref);
+
     // temp hier wiederverwenden zum Speicheroptimierung
-    temp = atan2(Utils::dot_product(Utils::cross_product_2(relativePosition, ref), detectorNormal), Utils::dot_product(ref, relativePosition)); //Berechnet Winkel in der Ebene zwischen ref und relativePosition in [-pi,+pi]
+    temp = Utils::dot_product(cp, detectorNormal);
+    temp = atan2(temp, dp); //Berechnet Winkel in der Ebene zwischen ref und relativePosition in [-pi,+pi]
     double a, b, c;
     c = sqrt(pow(relativePosition(0), 2) + pow(relativePosition(1), 2) + pow(relativePosition(2), 2));
     a = abs(c * sin(temp));
