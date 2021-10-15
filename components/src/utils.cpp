@@ -30,7 +30,7 @@ void Utils::normalizeVector(vector & a) {
 }
 
 double Utils::dot_product(vector& a, vector& b) {
-    return sqrt(a(0) * b(0) + a(1) * b(1) + a(2) * b(2));
+    return (a(0) * b(0)) + (a(1) * b(1)) + (a(2) * b(2));
 }
 
 std::string Utils::wavelengthToRGB(const int &wavelength) {

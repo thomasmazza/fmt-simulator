@@ -20,17 +20,17 @@ int main() {
     for (int i = 0; i < 3; i++) {
         v(i) = 0;
     }
-    Photon ph(v, v, 700, 0);
+    Photon ph(v, v, 560, 0);
     std::vector<Photon> phV;
     for (int i = 0; i < 11; i++) {
         for (int j = 0; j < 11; j++) {
             v(0) = j / 10.0;
             v(1) = i / 10.0;
-            v(2) = 0;
+            v(2) = 0.0;
             ph.setPosition(v);
-            v(0) = 0;
-            v(1) = 0;
-            v(2) = 1;
+            v(0) = 0.0;
+            v(1) = 0.0;
+            v(2) = 1.0;
             ph.setDirection(v);
             phV.push_back(ph);
         }
@@ -47,7 +47,7 @@ int main() {
 
     vector vpe(3);
     vpe(0) = 0.5;
-    vpe(1) = 1.0;
+    vpe(1) = 0;
     vpe(2) = 5.0;
 
     vector vpc(3);
@@ -55,13 +55,20 @@ int main() {
     vpc(1) = 0.5;
     vpc(2) = 0.0;
 
-    Detector d(v, vn, vpe, vpc, 50.0, 0.03);
+    Detector d(v, vn, vpe, vpc, 10, 0.1);
 
-    for (int i = 0; i < 121; i++) {
+    for (int i = 0; i < 120; i++) {
         d.getInPoint(phV[i]);
     }
-    rgb_vector image = d.createImage();
-   /* for (int i = 0; i < 100; i++) {
+
+
+  /*  for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            std::cout << "red = " << d.sensor(i * 10 + j)[0].r << std::endl;
+        }
+    }
+  /*  rgb_vector image = d.createImage();
+    for (int i = 0; i < 100; i++) {
         std::cout << image[i].r << " " << image[i].g << " " << image[i].b << std::endl;
     }
 */
