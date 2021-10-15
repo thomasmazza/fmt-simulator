@@ -27,7 +27,7 @@ vector Detector::getPointOnEdge() {
 }
 
 void Detector::setPointOnEdge(vector& _point) {
-    assert(_point.size()==3);
+    //assert(_point.size()==3);
     pointOnEdge = _point;
 }
 
@@ -44,20 +44,20 @@ void Detector::getInPoint(Photon& photon) {
     vector relativePosition = pV - position; // Position vom Photon relativ zum Detektormittelpunkt
     vector detectorNormal = posOfPrevComponent - position; // Normalvektor in der Mitte von Detektor
     vector ref = pointOnEdge - position; // Position vom pointOnEdge relativ zum Detektormittelpunkt
-    normalizeVector(detectorNormal);
+    Utils::normalizeVector(detectorNormal);
 
     // temp hier wiederverwenden zum Speicheroptimierung
-    temp = atan2(dot_product(cross_product_2(relativePosition, ref), detectorNormal), dot_product(ref, relativePosition)); //Berechnet Winkel in der Ebene zwischen ref und relativePosition in [-pi,+pi]
+    temp = atan2(Utils::dot_product(Utils::cross_product_2(relativePosition, ref), detectorNormal), Utils::dot_product(ref, relativePosition)); //Berechnet Winkel in der Ebene zwischen ref und relativePosition in [-pi,+pi]
     double a, b, c;
-    c = sqrt(relativePosition(0)^2 + relativePosition(1)^2 + relativePosition(2)^2);
+    c = sqrt(pow(relativePosition(0), 2) + pow(relativePosition(1), 2) + pow(relativePosition(2), 2));
     a = abs(c * sin(temp));
 
     if (a < length / 2) {
-        b = sqrt(c^2 - a^2);
+        b = sqrt(c * c - a * a);
         if (b < length / 2) {
             RGB color;
             const int wl = photon.getWaveLength();
-            coreTranslationInColor(wl, color.r, color.g, color.b);
+            Utils::coreTranslationInColor(wl, color.r, color.g, color.b);
             int i_index = floor(b / pixelSize);
             int j_index = floor(a / pixelSize);
             if (temp > 0) {
@@ -111,26 +111,28 @@ void Detector::getInPoint(Photon& photon) {
     }
     avg = avg / (image.size());
     double factor = avg / (max - min);
-    double adjustment = 0;
-    for (int i = 0; i < image.size()) {
+    double adjustment;
+    for (int i = 0; i < image.size(); i++) {
         adjustment = (image[i].intensity - avg) * factor; //Muss testen wie sinnvoll adjustment berechnet wird
         if (image[i].intensity >= avg) {
-            image[i].r = min(image[i].r + adjustment, 255);
-            image[i].g = min(image[i].g + adjustment, 255);
-            image[i].b = min(image[i].b + adjustment, 255);
+            image[i].r = Utils::min(image[i].r + adjustment, 255);
+            image[i].g = Utils::min(image[i].g + adjustment, 255);
+            image[i].b = Utils::min(image[i].b + adjustment, 255);
         }
         else {
-            image[i].r = max(image[i].r + adjustment, 0);
-            image[i].g = max(image[i].g + adjustment, 0);
-            image[i].b = max(image[i].b + adjustment, 0);
+            image[i].r = Utils::max(image[i].r + adjustment, 0);
+            image[i].g = Utils::max(image[i].g + adjustment, 0);
+            image[i].b = Utils::max(image[i].b + adjustment, 0);
         }
     }
     return image;
 }
 
-Detector::Detector(vector& _pos, vector& _normal, int _size, double _pixelSize):Detector::Component(_pos, _normal) {
+Detector::Detector(vector& _pos, vector& _normal, vector& _pointOnEdge, vector& _posOfPrevComponent, int _size, double _pixelSize):Detector::Component(_pos, _normal) {
+    pointOnEdge = _pointOnEdge;
+    posOfPrevComponent = _posOfPrevComponent;
     size = _size;
-    pixleSize = _pixelSize;
+    pixelSize = _pixelSize;
     length = size * pixelSize;
     sensor = photon_matrix (size, size);
 }
