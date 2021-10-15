@@ -11,7 +11,7 @@
 typedef typename boost::numeric::ublas::vector<double> vector;
 typedef typename std::vector<RGB> rgb_dynamic_v;
 typedef typename boost::numeric::ublas::vector<RGB> rgb_vector;
-typedef typename boost::numeric::ublas::matrix<rgb_dynamic_v> photon_matrix;
+typedef typename boost::numeric::ublas::matrix<rgb_dynamic_v> rgb_matrix;
 
 vector Detector::getPosOfPrevComponent() {
     return posOfPrevComponent;
@@ -40,6 +40,10 @@ void Detector::getInPoint(Photon& photon) {
     for (int i = 0; i < 3; i++){
         intersection[i] = dV[i] * temp + pV[i];
     }
+
+
+std::cout << intersection[0] << "  " << intersection[1] << "  " << intersection [2] << std::endl;
+
 
     vector relativePosition = pV - position; // Position vom Photon relativ zum Detektormittelpunkt
     vector detectorNormal = posOfPrevComponent - position; // Normalvektor in der Mitte von Detektor
@@ -132,11 +136,11 @@ void Detector::getInPoint(Photon& photon) {
     return image;
 }
 
-Detector::Detector(vector& _pos, vector& _normal, vector& _pointOnEdge, vector& _posOfPrevComponent, int _size, double _pixelSize):Detector::Component(_pos, _normal) {
+Detector::Detector(vector& _pos, vector& _normal, vector& _pointOnEdge, vector& _posOfPrevComponent, double _size, double _pixelSize):Detector::Component(_pos, _normal) {
     pointOnEdge = _pointOnEdge;
     posOfPrevComponent = _posOfPrevComponent;
     size = _size;
     pixelSize = _pixelSize;
     length = size * pixelSize;
-    sensor = photon_matrix (size, size);
+    sensor = rgb_matrix (size, size);
 }
