@@ -127,7 +127,7 @@ void Detector::getInPoint(Photon& photon) {
     return image;
 }
 
-Detector::Detector(vector& _pos, vector& _normal, int _size, double _pixelSize, double _length):Detector::Component(_pos, _normal) {
+Detector::Detector(vector& _pos, vector& _normal, int _size, double _pixelSize):Detector::Component(_pos, _normal) {
     size = _size;
     pixleSize = _pixelSize;
     length = size * pixelSize;
