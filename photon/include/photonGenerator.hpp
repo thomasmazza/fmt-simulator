@@ -3,12 +3,11 @@
 #include <boost/numeric/ublas/vector.hpp>
 #include "photon.hpp"
 #include "../../utils/include/objectPoint.hpp"
+#include "config.hpp"
 class PhotonGenerator{
 private:
-    //Der Erste Eintrag ist der Oberflaechenpunkt, des Photonen austrahlenden Objektes das zweite die wellenlaenge wenn, die intensitaet auch aus dem object auslesbar
-    //ist muss man dieses hier noch erweitern
-    std::vector<objectPoint> raster;
+    Config::object raster;
 public:
-    PhotonGenerator(std::vector<objectPoint>);
+    PhotonGenerator(Config::object);
     Photon generatePhoton();
 };
