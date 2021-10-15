@@ -1,7 +1,6 @@
 #include "mirrorRectangle.hpp"
-#include "../../utils/include/utils.hpp"
 
-bool MirrorRectangle::hitComponent(Photon &p, vector &_dirOA) {
+bool MirrorRectangle::getOutDir(Photon &p, vector &_dirOA) {
     double rS = 0;
     double lS = 0;
     vector pV = p.getPosition();
@@ -70,14 +69,14 @@ bool MirrorRectangle::hitComponent(Photon &p, vector &_dirOA) {
         double w = abs((lS / (pow(lengthW, 2))));
 
         //Falls Werte kleiner 1 ist der Betrag entlang der Achsen kleiner als die Ausdehnung => in Grenzen
-        if (h <= 1 && w <= 1 && getOutDir(p, intersect, normWidth)) {
+        if (h <= 1 && w <= 1 && calcOut(p, intersect, normWidth)) {
             isComponentHit = true;
         }
     }
     return isComponentHit;
 }
 
-bool MirrorRectangle::getOutDir(Photon &p, vector &intersect, vector &normWidth) {
+bool MirrorRectangle::calcOut(Photon &p, vector &intersect, vector &normWidth) {
     //neuer Stützvektor wird der Schnittpunkt
     p.setPosition(intersect);
 
