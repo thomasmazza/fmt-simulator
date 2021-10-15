@@ -15,6 +15,13 @@ RGB::RGB(double & _r, double & _g, double & _b, double & _i) {
     intensity = _i;
 }
 
+RGB::RGB(double _r, double _g, double _b, double _i) {
+    r = _r;
+    g = _g;
+    b = _b;
+    intensity = _i;
+}
+
 RGB::RGB(const RGB & obj)  {
     r = obj.r;
     g = obj.g;
