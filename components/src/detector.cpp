@@ -56,23 +56,24 @@ void Detector::getInPoint(Photon& photon) {
         b = sqrt(c^2 - a^2);
         if (b < length / 2) {
             RGB color;
-            coreTranslationInColor(photon.waveLength, color.r, color.g, color.b);
+            const int wl = photon.getWaveLength();
+            coreTranslationInColor(wl, color.r, color.g, color.b);
             int i_index = floor(b / pixelSize);
             int j_index = floor(a / pixelSize);
             if (temp > 0) {
                 if (temp < boost::math::constants::pi<double>() / 2) {
-                    sensor(size / 2 - i_index, size / 2 - j_index).pushback(color);
+                    sensor(size / 2 - i_index, size / 2 - j_index).push_back(color);
                 }
                 else {
-                    sensor(size / 2 + i_index, size / 2 - j_index).pushback(color);
+                    sensor(size / 2 + i_index, size / 2 - j_index).push_back(color);
                 }
             }
             else {
                 if (temp > boost::math::constants::pi<double>() / (-2)) {
-                    sensor(size / 2 - i_index, size / 2 + j_index).pushback(color);
+                    sensor(size / 2 - i_index, size / 2 + j_index).push_back(color);
                 }
                 else {
-                    sensor(size / 2 + i_index, size / 2 + j_index).pushback(color);
+                    sensor(size / 2 + i_index, size / 2 + j_index).push_back(color);
                 }
             }
         }

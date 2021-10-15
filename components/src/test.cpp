@@ -3,6 +3,7 @@
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 #include <vector>
+#include "../include/utils.hpp"
 #include <boost/numeric/ublas/io.hpp>
 #include "../include/component.hpp"
 //#include "filter.hpp"
@@ -47,6 +48,12 @@ int main() {
 
 
     Detector d(v, vn, 50, 0.03);
+
+    for (int i = 0; i < 100; i++) {
+        d.getInPoint(phV[i]);
+    }
+
+
 
     return 0;
 

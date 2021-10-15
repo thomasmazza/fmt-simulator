@@ -15,8 +15,8 @@ vector Utils::cross_product_2(vector& a, vector& b) {
     return result;
 }
 
-void Utils::normalizeVector(vector &) {
-    double t = sqrt(a(0)^2 + a(1)^2 + a(2)^2);
+void Utils::normalizeVector(vector & a) {
+    double t = sqrt(pow(a(0), 2) + pow(a(1), 2) + pow(a(2), 2));
     a(0) = a(0) / t;
     a(1) = a(1) / t;
     a(2) = a(2) / t;
