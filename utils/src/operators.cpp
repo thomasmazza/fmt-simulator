@@ -19,7 +19,15 @@ std::vector<double> operator-(const std::vector<double>& vector1, const std::vec
     return vector;
 }
 
-std::vector<double> operator*(const std::vector<double>& _vector, double& scalar){
+std::vector<double> operator-(const std::vector<double>& _vector){
+    std::vector<double> vector;
+    for(unsigned int i = 0; i < _vector.size(); i++){
+        vector[i] = -_vector[i];
+    }
+    return vector;
+}
+
+std::vector<double> operator*(const std::vector<double>& _vector, const double& scalar){
     std::vector<double> vector(_vector.size());
     for(unsigned int i =0; i<_vector.size();i++){
         vector[i] = scalar*_vector[i];
