@@ -1,6 +1,7 @@
 #include<iostream>
 
 #include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>
 #include "component.hpp"
 #include "filter.hpp"
@@ -8,8 +9,9 @@
 #include "mirrorElliptical.hpp"
 #include "../../photon/include/photon.hpp"
 #include "mirrorRectangle.hpp"
+#include "detector.hpp"
 
-int main(int argc, char *argv[]) {
+int main() {
     vector testVector(3);
     for (unsigned i = 0; i < testVector.size(); i++) {
         testVector(i) = i;
@@ -24,4 +26,6 @@ int main(int argc, char *argv[]) {
     Photon testPhoton(testVector, testVector, 600, 500);
     std::cout << la.hitComponent(testPhoton, testVector) << '\n';
 
-};
+
+    return 0;
+}
