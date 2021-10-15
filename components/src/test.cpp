@@ -19,12 +19,11 @@ int main() {
     vector v (3);
     for (int i = 0; i < 3; i++) {
         v(i) = 0;
-        std::cout << v(i);
     }
     Photon ph(v, v, 700, 0);
     std::vector<Photon> phV;
     for (int i = 0; i < 11; i++) {
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < 11; j++) {
             v(0) = j / 10.0;
             v(1) = i / 10.0;
             v(2) = 0;

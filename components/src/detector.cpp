@@ -42,7 +42,7 @@ void Detector::getInPoint(Photon& photon) {
     }
 
 
-std::cout << intersection[0] << "  " << intersection[1] << "  " << intersection [2] << std::endl;
+std::cout << intersection[0] << "   " << intersection[1] << "   " << intersection [2] << std::endl;
 
 
     vector relativePosition = pV - position; // Position vom Photon relativ zum Detektormittelpunkt
