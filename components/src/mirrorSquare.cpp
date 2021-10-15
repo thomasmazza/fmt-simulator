@@ -1,5 +1,4 @@
 #include "mirrorSquare.hpp"
-#include "mirrorRectangle.hpp"
 
 const double &MirrorSquare::getLength() {
     return getLengthW();
