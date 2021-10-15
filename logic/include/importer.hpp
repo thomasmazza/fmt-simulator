@@ -26,5 +26,7 @@
         static void normalizeVector(std::vector<double> &);
 
         static void importStp(List &, std::string);
+
+        static void importObject(Config::object& object, std::string filename);
     };
 

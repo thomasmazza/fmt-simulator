@@ -1,7 +1,7 @@
 #include <fstream>
 
 #include "../include/exporter.hpp"
-#include "setupImporter.hpp"
+#include "importer.hpp"
 
 using namespace Config;
 std::ostream& operator <<(std::ostream& os, ComponentType _type){

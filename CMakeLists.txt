@@ -23,7 +23,7 @@ add_executable(test
         components/src/lens.cpp
         photon/src/photonGenerator.cpp
         photon/src/photon.cpp
-        logic/src/setupImporter.cpp
+        logic/src/importer.cpp
         logic/src/setupList.cpp
         logic/include/exporter.hpp
         logic/src/exporter.cpp
