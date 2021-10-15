@@ -17,14 +17,13 @@
 
 #include "componentType.hpp"
 
-typedef typename boost::numeric::ublas::vector<double> vector;
 class Exporter {
 private:
     static void exportInBrackets(std::ofstream& os, const std::string &content);
     static void exportInBrackets(std::ofstream& os, const ComponentType type);
     static void exportInClosingBrackets(std::ofstream& os, const std::string &content);
     static void exportInClosingBrackets(std::ofstream& os, const ComponentType type);
-    static void exportVector(std::ofstream& os, const vector &_vector);
+    static void exportVector(std::ofstream& os, const std::vector<double> &_vector);
     static void exportParameter(std::ofstream& os, std::string parameterTag, int number);
 public:
     Exporter();

@@ -27,5 +27,5 @@ add_executable(test
         logic/src/setupList.cpp
         logic/include/setupExporter.hpp
         logic/src/setupExporter.cpp
-        )
+        logic/include/objectGenerator.hpp logic/src/objectGenerator.cpp utils/include/operators.hpp utils/src/operators.cpp)
 

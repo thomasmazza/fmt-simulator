@@ -4,7 +4,6 @@
 #include "setupImporter.hpp"
 
 using namespace Config;
-typedef typename boost::numeric::ublas::vector<double> vector;
 std::ostream& operator <<(std::ostream& os, ComponentType _type){
     switch(_type){
         case filter : os << "Filter"; break;
@@ -35,8 +34,8 @@ void Exporter::exportInClosingBrackets(std::ofstream &os, const ComponentType ty
     os << "</" << type << ">" << std::endl;
 }
 
-void Exporter::exportVector(std::ofstream &os, const vector &_vector) {
-    os << _vector(0) << " " << _vector(1) << " " << _vector(2) << std::endl;
+void Exporter::exportVector(std::ofstream &os, const std::vector<double> &_vector) {
+    os << _vector[0] << " " << _vector[1] << " " << _vector[2] << std::endl;
 }
 
 void Exporter::exportParameter(std::ofstream &os, std::string parameterTag,int number) {

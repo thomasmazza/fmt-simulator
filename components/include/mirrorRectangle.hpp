@@ -7,10 +7,10 @@ class MirrorRectangle: public Mirror{
         double lengthH;
         double lengthW;
     public:
-        MirrorRectangle(vector&, vector&, double, double);
-        MirrorRectangle(vector&, vector&, double, double, ComponentType _type);
-        bool getOutDir(Photon&, vector&, vector&);
-        bool hitComponent(Photon&, vector&);
+        MirrorRectangle(std::vector<double>&, std::vector<double>&, double, double);
+        MirrorRectangle(std::vector<double>&, std::vector<double>&, double, double, ComponentType _type);
+        bool getOutDir(Photon&, std::vector<double>&, std::vector<double>&);
+        bool hitComponent(Photon&, std::vector<double>&);
         const double& getLengthH();
         const double& getLengthW();
 };

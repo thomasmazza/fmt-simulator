@@ -7,7 +7,6 @@
 #include "../../components/include/component.hpp"
 #include "config.hpp"
 
-typedef typename boost::numeric::ublas::vector<double> vector;
 typedef typename std::string string;
 
 
@@ -24,13 +23,13 @@ typedef typename std::string string;
     public:
         Importer();
 
-        static void importVector(std::ifstream &, vector &);
+        static void importVector(std::ifstream &, std::vector<double> &);
 
-        static void importPosition(std::ifstream &, vector &);
+        static void importPosition(std::ifstream &, std::vector<double> &);
 
-        static void importNormal(std::ifstream &, vector &);
+        static void importNormal(std::ifstream &, std::vector<double> &);
 
-        static void normalizeVector(vector &);
+        static void normalizeVector(std::vector<double> &);
 
         static void importStp(List &, std::string);
     };

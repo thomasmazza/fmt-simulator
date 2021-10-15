@@ -1,10 +1,10 @@
 #include "../include/mirrorElliptical.hpp"
 
-bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
+bool MirrorElliptical::hitComponent(Photon& photon, std::vector<double>& _dirOA) {
     double rS=0;
     double lS=0;
-    vector pV = photon.getPosition();
-    vector dV = photon.getDirection();
+    std::vector<double> pV = photon.getPosition();
+    std::vector<double> dV = photon.getDirection();
 
     //Improvisierte Skalarprodukte
     for(int i=0; i<3; i++){
@@ -16,7 +16,7 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
 
     //Existiert ein sinnvoller Schnittpunkt oder annähernd parallel zwischen Ebene und Gerade?
     if (abs(lS) > 0.000001 && t>0) {
-        vector intersect(3);
+        std::vector<double> intersect(3);
 
         //Berechne den Schnittpunkt
         for (int i = 0; i < 3; i++) {
@@ -24,8 +24,8 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
         }
 
         //Überprüfen, ob im Bereich, erst Bereich definieren
-        vector mHigh(3);
-        vector mWidth(3);
+        std::vector<double> mHigh(3);
+        std::vector<double> mWidth(3);
         Utils::cross_product(mHigh, normal, _dirOA);
         Utils::cross_product(mWidth, mHigh, normal);
 
@@ -45,7 +45,7 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
             mHigh[i] = (mHigh[i] / lS);
             mWidth[i] = (mWidth[i] / rS);
         }
-        vector normWidth = mWidth;
+        std::vector<double> normWidth = mWidth;
 
         //Vektor auf Höhe Skalieren
         mHigh = radiusH * mHigh;
@@ -81,12 +81,12 @@ bool MirrorElliptical::hitComponent(Photon& photon, vector& _dirOA) {
     return isComponentHit;
 }
 
-bool MirrorElliptical::getOutDir(Photon& p, vector& intersect, vector& normWidth) {
+bool MirrorElliptical::getOutDir(Photon& p, std::vector<double>& intersect, std::vector<double>& normWidth) {
     //neuer Stützvektor wird der Schnittpunkt
     p.setPosition(intersect);
 
-    vector out(3);
-    vector dV = p.getDirection();
+    std::vector<double> out(3);
+    std::vector<double> dV = p.getDirection();
     double sumVE=0;
     double sumVN=0;
 
@@ -131,7 +131,7 @@ const double &MirrorElliptical::getRadiusW() {
     return radiusW;
 }
 
-MirrorElliptical::MirrorElliptical(vector& _pos, vector& _normal, double _radiusH, double _radiusW):Mirror(_pos, _normal, mirrorElliptical),radiusH(_radiusH),radiusW(_radiusW) {
+MirrorElliptical::MirrorElliptical(std::vector<double>& _pos, std::vector<double>& _normal, double _radiusH, double _radiusW):Mirror(_pos, _normal, mirrorElliptical),radiusH(_radiusH),radiusW(_radiusW) {
 }
 
-MirrorElliptical::MirrorElliptical(vector &_pos, vector &_normal, double _radiusH, double _radiusW, ComponentType _type): Mirror(_pos, _normal, _type), radiusH(_radiusH), radiusW(_radiusW) {}
+MirrorElliptical::MirrorElliptical(std::vector<double> &_pos, std::vector<double> &_normal, double _radiusH, double _radiusW, ComponentType _type): Mirror(_pos, _normal, _type), radiusH(_radiusH), radiusW(_radiusW) {}

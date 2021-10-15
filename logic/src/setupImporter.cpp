@@ -35,7 +35,7 @@ struct NotANumberException : public ImporterException {
 
 
 
-void Importer::importPosition(std::ifstream &_setupFile, vector &_position) {
+void Importer::importPosition(std::ifstream &_setupFile, std::vector<double> &_position) {
     std::string buf;
     try {
         getContentInBrackets(_setupFile, buf, POSITION_OPENING_TAG);
@@ -52,7 +52,7 @@ void Importer::importPosition(std::ifstream &_setupFile, vector &_position) {
     }
 }
 
-void Importer::importNormal(std::ifstream &_setupFile, vector &_normal) {
+void Importer::importNormal(std::ifstream &_setupFile, std::vector<double> &_normal) {
     std::string buf;
     try {
         getContentInBrackets(_setupFile, buf, NORMAL_OPENING_TAG);
@@ -69,7 +69,7 @@ void Importer::importNormal(std::ifstream &_setupFile, vector &_normal) {
     }
 }
 
-void Importer::importVector(std::ifstream &_setupFile, vector &_vector) {
+void Importer::importVector(std::ifstream &_setupFile, std::vector<double> &_vector) {
     std::string buf;
     try {
         _setupFile >> buf;
@@ -147,8 +147,8 @@ void Importer::importStp(List &_lst, std::string _filename) {
             while (buf != SETUP_CLOSING_TAG && setupFile.is_open()) {
                 try {
                     getContentInBrackets(setupFile, buf);
-                    vector _position(3);
-                    vector _normal(3);
+                    std::vector<double> _position(3);
+                    std::vector<double> _normal(3);
                     if (buf == FILTER_OPENING_TAG) {
                         int _lowerLim;
                         int _upperLim;

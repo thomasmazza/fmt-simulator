@@ -4,5 +4,5 @@
 const double &MirrorSquare::getLength() {
     return getLengthW();
 }
-MirrorSquare::MirrorSquare(vector& _pos, vector& _normal, double _length):MirrorRectangle(_pos, _normal, _length, _length, mirrorCircle){
+MirrorSquare::MirrorSquare(std::vector<double>& _pos, std::vector<double>& _normal, double _length):MirrorRectangle(_pos, _normal, _length, _length, mirrorCircle){
 }

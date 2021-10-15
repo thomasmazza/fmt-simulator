@@ -3,7 +3,6 @@
 #include <boost/numeric/ublas/vector.hpp>
 #include "photon.hpp"
 #include "../../utils/include/objectPoint.hpp"
-typedef typename boost::numeric::ublas::vector<double> vector;
 class PhotonGenerator{
 private:
     //Der Erste Eintrag ist der Oberflaechenpunkt, des Photonen austrahlenden Objektes das zweite die wellenlaenge wenn, die intensitaet auch aus dem object auslesbar

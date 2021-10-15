@@ -1,24 +1,24 @@
 #include "component.hpp"
 #include <assert.h>
 
-Component::Component(vector &_position, vector &_normal, ComponentType _type) : position(_position), normal(_normal),
+Component::Component(std::vector<double> &_position, std::vector<double> &_normal, ComponentType _type) : position(_position), normal(_normal),
                                                                                  type(_type) {
 }
 
-const vector &Component::getPosition() {
+const std::vector<double> &Component::getPosition() {
     return position;
 }
 
-const vector &Component::getNormal() {
+const std::vector<double> &Component::getNormal() {
     return normal;
 }
 
-void Component::setPosition(vector &_position) {
+void Component::setPosition(std::vector<double> &_position) {
     assert(_position.size() == 3);
     position = _position;
 }
 
-void Component::setNormal(vector &_normal) {
+void Component::setNormal(std::vector<double> &_normal) {
     normal = _normal;
 }
 

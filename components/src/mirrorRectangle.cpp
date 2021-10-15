@@ -1,11 +1,11 @@
 #include "mirrorRectangle.hpp"
 #include "../../utils/include/utils.hpp"
 
-bool MirrorRectangle::hitComponent(Photon &p, vector &_dirOA) {
+bool MirrorRectangle::hitComponent(Photon &p, std::vector<double> &_dirOA) {
     double rS = 0;
     double lS = 0;
-    vector pV = p.getPosition();
-    vector dV = p.getDirection();
+    std::vector<double> pV = p.getPosition();
+    std::vector<double> dV = p.getDirection();
 
     //Improvisierte Skalarprodukte
     for (int i = 0; i < 3; i++) {
@@ -18,15 +18,15 @@ bool MirrorRectangle::hitComponent(Photon &p, vector &_dirOA) {
     //Existiert ein sinnvoller Schnittpunkt oder annähernd Parallel zw. Ebene und Gerade?
     if (abs(lS) > 0.000001 && t>0) {
 
-        vector intersect(3);
+        std::vector<double> intersect(3);
         //Berechne den Schnittpunkt
         for (int i = 0; i < 3; i++) {
             intersect[i] = pV[i] + t * dV[i];
         }
 
         //Überprüfen ob im Bereich, Erst Bereich definieren
-        vector mHigh(3);
-        vector mWidth(3);
+        std::vector<double> mHigh(3);
+        std::vector<double> mWidth(3);
         Utils::cross_product(mHigh, normal, _dirOA);
         Utils::cross_product(mWidth, mHigh, normal);
 
@@ -46,7 +46,7 @@ bool MirrorRectangle::hitComponent(Photon &p, vector &_dirOA) {
             mHigh[i] = (mHigh[i] / lS);
             mWidth[i] = (mWidth[i] / rS);
         }
-        vector normWidth = mWidth;
+        std::vector<double> normWidth = mWidth;
 
         //Vektor auf Höhe Skalieren
         mHigh = lengthH * mHigh;
@@ -77,12 +77,12 @@ bool MirrorRectangle::hitComponent(Photon &p, vector &_dirOA) {
     return isComponentHit;
 }
 
-bool MirrorRectangle::getOutDir(Photon &p, vector &intersect, vector &normWidth) {
+bool MirrorRectangle::getOutDir(Photon &p, std::vector<double> &intersect, std::vector<double> &normWidth) {
     //neuer Stützvektor wird der Schnittpunkt
     p.setPosition(intersect);
 
-    vector out(3);
-    vector dV = p.getDirection();
+    std::vector<double> out(3);
+    std::vector<double> dV = p.getDirection();
     double sumVE = 0;
     double sumVN = 0;
 
@@ -126,7 +126,7 @@ const double &MirrorRectangle::getLengthW() {
     return lengthW;
 }
 
-MirrorRectangle::MirrorRectangle(vector &_pos, vector &_normal, double _lengthH, double _lengthW): Mirror(_pos,_normal, mirrorRectangle), lengthH(_lengthH), lengthW(_lengthW) {
+MirrorRectangle::MirrorRectangle(std::vector<double> &_pos, std::vector<double> &_normal, double _lengthH, double _lengthW): Mirror(_pos,_normal, mirrorRectangle), lengthH(_lengthH), lengthW(_lengthW) {
 }
 
-MirrorRectangle::MirrorRectangle(vector &_pos, vector &_normal, double _lengthH, double _lengthW, ComponentType _type):Mirror(_pos, _normal, _type), lengthH(_lengthH), lengthW(_lengthW) {}
+MirrorRectangle::MirrorRectangle(std::vector<double> &_pos, std::vector<double> &_normal, double _lengthH, double _lengthW, ComponentType _type):Mirror(_pos, _normal, _type), lengthH(_lengthH), lengthW(_lengthW) {}

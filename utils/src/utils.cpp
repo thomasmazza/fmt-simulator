@@ -2,10 +2,10 @@
 #include <math.h>
 #include <iomanip>
 
-void Utils::cross_product(vector &result, vector &a, vector &b) {
-    result(0) = a(1) * b(2) - a(2) * b(2);
-    result(1) = a(2) * b(0) - a(0) * b(2);
-    result(2) = a(0) * b(1) - a(1) * b(0);
+void Utils::cross_product(std::vector<double> &result, std::vector<double> &a, std::vector<double> &b) {
+    result[0] = a[1] * b[2] - a[2] * b[2];
+    result[1] = a[2] * b[0] - a[0] * b[2];
+    result[2] = a[0] * b[1] - a[1] * b[0];
 }
 
 std::string Utils::wavelengthToRGB(const int &wavelength) {
@@ -81,7 +81,7 @@ void Utils::coreTranslationInColor(const int &wavelength, double &r, double &g, 
 
 }
 
-void Utils::normalizeVector(vector &_vec) {
+void Utils::normalizeVector(std::vector<double> &_vec) {
     double vecAbs = 0;
     //Laenge des Vektors bestimmen
     for (int i = 0; i < 3; i++) vecAbs += pow(_vec[i], 2);

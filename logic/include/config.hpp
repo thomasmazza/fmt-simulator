@@ -1,8 +1,11 @@
 #pragma once
 
 #include <string>
+#include "objectPoint.hpp"
 
 namespace Config {
+    typedef typename std::vector<objectPoint> objectRow;
+    typedef typename std::vector<objectRow> object;
     const std::string FILTER_OPENING_TAG = "Filter";
     const std::string FILTER_CLOSING_TAG = "/Filter";
     const std::string LENS_ONE_SIDED_OPENING_TAG = "LensOneSided";
@@ -49,4 +52,12 @@ namespace Config {
     const std::string D_CLOSING_TAG = "/D";
     const std::string PLANE_IS_FRONT_OPENING_TAG = "PlaneIsFront";
     const std::string PLANE_IS_FRONT_CLOSING_TAG = "/PlaneIsFront";
+    const std::string OBJECT_OPENING_TAG = "<object>";
+    const std::string OBJECT_CLOSING_TAG = "</object>";
+    const std::string NAME_OPENING_TAG = "<name>";
+    const std::string NAME_CLOSING_TAG = "</name>";
+    const std::string POINT_OPENING_TAG = "<point>";
+    const std::string POINT_CLOSING_TAG = "</point>";
+    const std::string WAVELENGTH_OPENING_TAG = "<wavelength>";
+    const std::string WAVELENGTH_CLOSING_TAG = "</wavelength>";
 }

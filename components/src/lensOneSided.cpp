@@ -3,8 +3,8 @@
 
 
 bool LensOneSided::getOutDir(Photon &p) {
-    vector pV = p.getPosition();
-    vector dV = p.getDirection();
+    std::vector<double> pV = p.getPosition();
+    std::vector<double> dV = p.getDirection();
     double d1 = radiusW - sqrt(pow(radiusW, 2) - pow(radiusH, 2));
     bool getsOut;
 
@@ -23,13 +23,13 @@ bool LensOneSided::getOutDir(Photon &p) {
         //Existiert ein sinnvoller Schnittpunkt oder annähernd parallel zwischen Ebene und Gerade?
         if (abs(lS) > 0.000001 && t > 0) {
 
-            vector intersect(3);
+            std::vector<double> intersect(3);
 
             //Berechne den Schnittpunkt
             intersect = pV + t * dV;
 
             //Berechne Vektor von Pos bis zum Schnittpunkt
-            vector posInter(3);
+            std::vector<double> posInter(3);
             posInter = intersect - position;
             t = 0;
 
@@ -51,7 +51,7 @@ bool LensOneSided::getOutDir(Photon &p) {
             }
 
             //Winkel berechnen
-            vector coalphaV(3);
+            std::vector<double> coalphaV(3);
             double coalphaS = 0;
             Utils::cross_product(coalphaV, dV, normal);
             for (int i = 0; i < 3; i++) {
@@ -64,7 +64,7 @@ bool LensOneSided::getOutDir(Photon &p) {
             }
 
             //Neuen Richtungsvektor berechnen
-            vector inLensDir(3);
+            std::vector<double> inLensDir(3);
             inLensDir = (1 / n) * dV -
                         (-1) * normal * ((1 / n) * (skpr1) - sqrt(1 - (pow((1 / n), 2) * (1 - pow(skpr1, 2)))));
 
@@ -82,7 +82,7 @@ bool LensOneSided::getOutDir(Photon &p) {
             dV = inLensDir;
             pV = intersect;
             //Schnittpunkt mit Kugel berechnen, zuerst Kugel formulieren
-            vector OM1(3);
+            std::vector<double> OM1(3);
             OM1 = position - normal * (d1 - radiusW);
 
             //Summenvariablen für Schnittpunktberechnung erstellen
@@ -90,7 +90,7 @@ bool LensOneSided::getOutDir(Photon &p) {
             double b = 0;
             double c = 0;
             double y = pow(radiusW, 2);
-            vector P = pV - OM1;
+            std::vector<double> P = pV - OM1;
 
             //Summenrechnung für quadratische Gleichung
             for (int i = 0; i < 3; i++) {
@@ -128,7 +128,7 @@ bool LensOneSided::getOutDir(Photon &p) {
             }
 
             //Überprüfen ob im Höhenradius
-            vector check = intersect - position;
+            std::vector<double> check = intersect - position;
             double sum1 = 0;
             for (int i = 0; i < 3; i++) {
                 sum1 += pow(check[i], 2);
@@ -139,7 +139,7 @@ bool LensOneSided::getOutDir(Photon &p) {
             }
 
             //Flächennormale berechnen
-            vector normalA1(3);
+            std::vector<double> normalA1(3);
             if (radiusW > 0) {
                 normalA1 = intersect - OM1;
             } else {
@@ -170,7 +170,7 @@ bool LensOneSided::getOutDir(Photon &p) {
                 getsOut = false;
             }
 
-            vector outLensDir(3);
+            std::vector<double> outLensDir(3);
             outLensDir = n * dV - normalA1 * (n * (skpr1) - sqrt(1 - pow(n, 2) * (1 - pow(skpr1, 2))));
 
             //neuer Ausgangspunkt und Richtung normieren & setzen
@@ -197,7 +197,7 @@ bool LensOneSided::getOutDir(Photon &p) {
 
 
         //Schnittpunkt mit Kugel berechnen, zuerst Kugel formulieren
-        vector OM1(3);
+        std::vector<double> OM1(3);
         OM1 = position - normal * (radiusW);
 
         //Summenvariablen für Schnittpunktberechnung erstellen
@@ -224,7 +224,7 @@ bool LensOneSided::getOutDir(Photon &p) {
 
         t1 = (-b + sqrt((pow(b, 2) - 4 * a * c))) / (2 * a);
         t2 = (-b - sqrt((pow(b, 2) - 4 * a * c))) / (2 * a);
-        vector intersect(3);
+        std::vector<double> intersect(3);
 
         //Unterscheidung zwischen Sammellinse und Zerstreuungslinse
         if (radiusW > 0) {
@@ -242,7 +242,7 @@ bool LensOneSided::getOutDir(Photon &p) {
         }
 
         //Überprüfen ob im Höhenradius
-        vector check = intersect - position;;
+        std::vector<double> check = intersect - position;;
         double sum1 = 0;
         for (int i = 0; i < 3; i++) {
             sum1 += pow(check[i], 2);
@@ -253,7 +253,7 @@ bool LensOneSided::getOutDir(Photon &p) {
         }
 
         //Flächennormale berechnen
-        vector normalA1(3);
+        std::vector<double> normalA1(3);
         if (radiusW < 0) {
             normalA1 = intersect - OM1;
         } else {
@@ -273,7 +273,7 @@ bool LensOneSided::getOutDir(Photon &p) {
         }
 
         //Winkel berechnen & überprüfen
-        vector coalphaV(3);
+        std::vector<double> coalphaV(3);
         double coalphaS = 0;
         Utils::cross_product(coalphaV, dV, normalA1);
         for (int i = 0; i < 3; i++) {
@@ -285,7 +285,7 @@ bool LensOneSided::getOutDir(Photon &p) {
             getsOut = false;
         }
 
-        vector inLensDir(3);
+        std::vector<double> inLensDir(3);
         inLensDir = (1 / n) * dV - normalA1 * ((1 / n) * (skpr1) - sqrt(1 - pow((1 / n), 2) * (1 - pow(skpr1, 2))));
 
         //neue Richtung normieren
@@ -321,7 +321,7 @@ bool LensOneSided::getOutDir(Photon &p) {
             intersect = pV + t * dV;
 
             //Berechne Vektor von Pos bis zum Schnittpunkt
-            vector posInter(3);
+            std::vector<double> posInter(3);
             posInter = intersect - position;
 
 
@@ -356,7 +356,7 @@ bool LensOneSided::getOutDir(Photon &p) {
             }
 
             //Neuen Richtungsvektor berechnen
-            vector outLensDir(3);
+            std::vector<double> outLensDir(3);
             outLensDir = n * dV - normalA1 * (n * (skpr1) - sqrt(1 - pow(n, 2) * (1 - pow(skpr1, 2))));
 
             //neue Richtung normieren
@@ -390,7 +390,7 @@ const bool &LensOneSided::getPlaneIsFront() {
     return planeIsFront;
 }
 
-LensOneSided::LensOneSided(vector &_pos, vector &_normal, double _n, double _radiusH, double _radiusW, double _d,
+LensOneSided::LensOneSided(std::vector<double> &_pos, std::vector<double> &_normal, double _n, double _radiusH, double _radiusW, double _d,
                            bool _planeIsFront) : Lens(_pos, _normal, _n, _radiusH, _d, lensOneSided), radiusW(_radiusW),
                                                  planeIsFront(_planeIsFront) {
 }

@@ -8,10 +8,10 @@ class MirrorElliptical: public Mirror{
         double radiusH;
         double radiusW;
     public:
-        MirrorElliptical(vector&, vector&, double, double);
-        MirrorElliptical(vector&, vector&, double, double, ComponentType _type);
-        bool getOutDir(Photon&, vector&, vector&);
-        bool hitComponent(Photon&, vector&);
+        MirrorElliptical(std::vector<double>&, std::vector<double>&, double, double);
+        MirrorElliptical(std::vector<double>&, std::vector<double>&, double, double, ComponentType _type);
+        bool getOutDir(Photon&, std::vector<double>&, std::vector<double>&);
+        bool hitComponent(Photon&, std::vector<double>&);
         const double& getRadiusH();
         const double& getRadiusW();
 };

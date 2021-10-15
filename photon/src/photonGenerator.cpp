@@ -10,13 +10,13 @@ PhotonGenerator::PhotonGenerator(std::vector<objectPoint> _raster):raster(_raste
 Photon PhotonGenerator::generatePhoton() {
     srand(time(NULL));
     int pointSelector = rand()%65536;
-    vector randomDirection(3);
+    std::vector<double> randomDirection(3);
     for (int i = 0; i < randomDirection.size();i++){
-        randomDirection(i) = rand() % 1000;
-        randomDirection(i) = rand()%1?-randomDirection(i):randomDirection(i);
+        randomDirection[i] =(double) (rand() % 1000);
+        randomDirection[i] = rand()%1?-randomDirection[i]:randomDirection[i];
     }
     Utils::normalizeVector(randomDirection);
-    vector position = raster[pointSelector].getPosition();
+    std::vector<double> position = raster[pointSelector].getPosition();
     int wavelength = raster[pointSelector].getWavelength();
     int intensity = rand()%100 +1;
 

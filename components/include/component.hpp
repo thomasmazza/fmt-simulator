@@ -1,20 +1,19 @@
 #pragma once
 
-#include <boost/numeric/ublas/vector.hpp>
 #include "componentType.hpp"
-
-typedef typename boost::numeric::ublas::vector<double> vector;
+#include <vector>
+#include "operators.hpp"
 
 class Component {
     protected:
-        vector position;
-        vector normal;
+        std::vector<double> position;
+        std::vector<double> normal;
         const ComponentType type;
     public:
-        Component(vector& position, vector& normal, ComponentType type);
-        const vector& getPosition();
-        void setPosition(vector&);
-        const vector& getNormal();
-        void setNormal(vector&);
+        Component(std::vector<double>& position, std::vector<double>& normal, ComponentType type);
+        const std::vector<double>& getPosition();
+        void setPosition(std::vector<double>&);
+        const std::vector<double>& getNormal();
+        void setNormal(std::vector<double>&);
         const ComponentType &getType();
 };
