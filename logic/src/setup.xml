@@ -20,9 +20,9 @@
         <Normal>
             10 11 12
         </Normal>
-        <RefIndex>
+        <N>
             3
-        </RefIndex>
+        </N>
         <RadiusH>
             4
         </RadiusH>
@@ -43,9 +43,9 @@
         <Normal>
             16 17 18
         </Normal>
-        <RefIndex>
+        <N>
             7
-        </RefIndex>
+        </N>
         <RadiusH>
             8
         </RadiusH>

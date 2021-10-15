@@ -379,7 +379,6 @@ bool LensOneSided::getOutDir(Photon &p) {
             getsOut = true;
         }
     }
-
     return getsOut;
 }
 

@@ -123,6 +123,14 @@ bool MirrorElliptical::getOutDir(Photon& p, vector& intersect, vector& normWidth
     return true;
 }
 
+const double &MirrorElliptical::getRadiusH() {
+    return radiusH;
+}
+
+const double &MirrorElliptical::getRadiusW() {
+    return radiusW;
+}
+
 MirrorElliptical::MirrorElliptical(vector& _pos, vector& _normal, double _radiusH, double _radiusW):Mirror(_pos, _normal, mirrorElliptical),radiusH(_radiusH),radiusW(_radiusW) {
 }
 

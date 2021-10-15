@@ -6,4 +6,5 @@ class MirrorSquare: public MirrorRectangle{
     private:
     public:
         MirrorSquare(vector&, vector&, double);
+    const double& getLength();
 };

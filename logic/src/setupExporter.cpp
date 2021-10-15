@@ -1,45 +1,103 @@
 #include <fstream>
 
 #include "../include/setupExporter.hpp"
+#include "setupImporter.hpp"
 
+using namespace Config;
 typedef typename boost::numeric::ublas::vector<double> vector;
+std::ostream& operator <<(std::ostream& os, ComponentType _type){
+    switch(_type){
+        case filter : os << "Filter"; break;
+        case lensOneSided : os << "LensOneSided"; break;
+        case lensTwoSided : os << "LensTwoSided"; break;
+        case mirrorRectangle : os << "MirrorRectangle"; break;
+        case mirrorSquare : os << "MirrorSquare"; break;
+        case mirrorElliptical : os << "MirrorElliptical"; break;
+        case mirrorCircle : os << "MirrorCircle"; break;
+        default : os.setstate(std::ios_base::failbit);
+    }
+    return os;
+}
 
+void Exporter::exportInBrackets(std::ofstream &os, const std::string &content) {
+    os << "<" << content << ">" << std::endl;
+}
+
+void Exporter::exportInBrackets(std::ofstream &os, const ComponentType type) {
+    os << "<" << type << ">" << std::endl;
+}
+
+void Exporter::exportInClosingBrackets(std::ofstream &os, const std::string &content) {
+    os << "</" << content << ">" << std::endl;
+}
+
+void Exporter::exportInClosingBrackets(std::ofstream &os, const ComponentType type) {
+    os << "</" << type << ">" << std::endl;
+}
+
+void Exporter::exportVector(std::ofstream &os, const vector &_vector) {
+    os << _vector(0) << " " << _vector(1) << " " << _vector(2) << std::endl;
+}
+
+void Exporter::exportParameter(std::ofstream &os, std::string parameterTag,int number) {
+    exportInBrackets(os, parameterTag);
+    os << number << std::endl;
+    exportInClosingBrackets(os, parameterTag);
+}
 
 void Exporter::exportStp(List &_lst, std::string _filename) {
     std::ofstream dataOut(_filename, std::ios::out);
+    exportInBrackets(dataOut, SETUP_OPENING_TAG);
     for (int i = 0; i < _lst.getLength(); i++) {
         //Klassentyp eintragen
         ComponentType className = _lst.elem(i)->getType();
-        dataOut << "[" << className << "]" << '\n';
+        exportInBrackets(dataOut, className);
         //Position und Normale in Datei eintragen
-        vector _pos = _lst.elem(i)->getPosition();
-        dataOut << _pos(0) << " " << _pos(1) << " " << _pos(2) << '\n';
-        vector _normal = _lst.elem(i)->getNormal();
-        dataOut << _normal(0) << " " << _normal(1) << " " << _normal(2) << '\n';
+        exportInBrackets(dataOut, POSITION_OPENING_TAG);
+        exportVector(dataOut, _lst.elem(i)->getPosition());
+        exportInBrackets(dataOut, POSITION_CLOSING_TAG);
+        exportInBrackets(dataOut, NORMAL_OPENING_TAG);
+        exportVector(dataOut, _lst.elem(i)->getPosition());
+        exportInBrackets(dataOut, NORMAL_CLOSING_TAG);
         switch (className) {
             case filter:
-
-                dataOut << static_cast<Filter&>(*_lst.elem(i)).getLowerLimit() << '\n' <<static_cast<Filter&>(*_lst.elem(i)).getUpperLimit() << '\n' << '\n';
+                exportParameter(dataOut, LOWER_LIMIT_OPENING_TAG, static_cast<Filter &>(*_lst.elem(i)).getLowerLimit());
+                exportParameter(dataOut, UPPER_LIMIT_OPENING_TAG, static_cast<Filter &>(*_lst.elem(i)).getUpperLimit());
                 break;
             case lensOneSided:
-                dataOut <<static_cast<LensOneSided&>(*_lst.elem(i)).getRadiusH() << static_cast<LensOneSided&>(*_lst.elem(i)).getRadiusW() << '\n' << static_cast<LensOneSided&>(*_lst.elem(i)).getPlaneIsFront() << '\n' << '\n';
+                exportParameter(dataOut, N_OPENING_TAG, static_cast<LensOneSided&>(*_lst.elem(i)).getN());
+                exportParameter(dataOut, RADIUS_H_OPENING_TAG, static_cast<LensOneSided&>(*_lst.elem(i)).getRadiusH());
+                exportParameter(dataOut, D_OPENING_TAG, static_cast<LensOneSided&>(*_lst.elem(i)).getD());
+                exportParameter(dataOut, RADIUS_W_OPENING_TAG, static_cast<LensOneSided&>(*_lst.elem(i)).getRadiusW());
+                exportParameter(dataOut, PLANE_IS_FRONT_OPENING_TAG, static_cast<LensOneSided&>(*_lst.elem(i)).getPlaneIsFront());
                 break;
             case lensTwoSided:
-                dataOut << static_cast<LensTwoSided&>(*_lst.elem(i)).getRefIndex() << '\n' << _lst.elem(i)->getRadiusH() << '\n'
-                        << _lst.elem(i)->getRadiusI() << '\n' << _lst.elem(i)->getRadiusO() << '\n' << '\n';
+                exportParameter(dataOut, N_OPENING_TAG, static_cast<LensTwoSided&>(*_lst.elem(i)).getN());
+                exportParameter(dataOut, RADIUS_H_OPENING_TAG, static_cast<LensTwoSided&>(*_lst.elem(i)).getRadiusH());
+                exportParameter(dataOut, RADIUS_I_OPENING_TAG, static_cast<LensTwoSided&>(*_lst.elem(i)).getRadiusI());
+                exportParameter(dataOut, RADIUS_O_OPENING_TAG, static_cast<LensTwoSided&>(*_lst.elem(i)).getRadiusO());
+                exportParameter(dataOut, D_OPENING_TAG, static_cast<LensTwoSided&>(*_lst.elem(i)).getD());
                 break;
             case mirrorElliptical:
-                dataOut << _lst.elem(i)->getRH() << '\n' << _lst.elem(i)->getRW() << '\n' << '\n';
+                exportParameter(dataOut, RADIUS_H_OPENING_TAG,static_cast<MirrorElliptical &>(*_lst.elem(i)).getRadiusH());
+                exportParameter(dataOut, RADIUS_W_OPENING_TAG,static_cast<MirrorElliptical &>(*_lst.elem(i)).getRadiusW());
+                break;
             case mirrorCircle:
-                dataOut << _lst.elem(i)->getRH() << '\n' << '\n';
+                exportParameter(dataOut, RADIUS_OPENING_TAG, static_cast<MirrorCircle &>(*_lst.elem(i)).getRadius());
+                break;
             case mirrorRectangle:
-                dataOut << _lst.elem(i)->getLengthH() << '\n' << _lst.elem(i)->getLengthW() << '\n' << '\n';
+                exportParameter(dataOut, LENGTH_H_OPENING_TAG,static_cast<MirrorRectangle &>(*_lst.elem(i)).getLengthH());
+                exportParameter(dataOut, LENGTH_W_OPENING_TAG, static_cast<MirrorRectangle &>(*_lst.elem(i)).getLengthW());
+                break;
             case mirrorSquare:
-                dataOut << _lst.elem(i)->getLengthH() << '\n' << '\n';
+                exportParameter(dataOut, LENGTH_OPENING_TAG, static_cast<MirrorSquare &>(*_lst.elem(i)).getLength());
+                break;
             default:
                 break;
         }
+        exportInClosingBrackets(dataOut, className);
     }
+    exportInBrackets(dataOut, SETUP_CLOSING_TAG);
     dataOut.close();
 }
 

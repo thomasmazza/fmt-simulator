@@ -24,7 +24,7 @@ std::string Filter::getType() {
     return "Filter";
 }
 
-Filter::Filter(vector& _pos, vector& _normal, int _lowerLimit, int _upperLimit):Component(_pos, _normal,  filter){
+Filter::Filter(vector& _pos, vector& _normal, int _lowerLimit, int _upperLimit):Component(_pos, _normal,  filter),lowerLimit(_lowerLimit),upperLimit(_upperLimit){
 
 
 }

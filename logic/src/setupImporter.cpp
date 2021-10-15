@@ -6,6 +6,7 @@
 #include "../../components/include/mirrorCircle.hpp"
 #include "../../components/include/mirrorSquare.hpp"
 
+using namespace Config;
 struct ImporterException : public std::exception {
     const char *what() const throw() {
         return "Error while import Setup";
@@ -30,52 +31,7 @@ struct NotANumberException : public ImporterException {
     }
 };
 
-const std::string Importer::FILTER_OPENING_TAG = "Filter";
-const std::string Importer::FILTER_CLOSING_TAG = "/Filter";
-const std::string Importer::LENS_ONE_SIDED_OPENING_TAG = "LensOneSided";
-const std::string Importer::LENS_ONE_SIDED_CLOSING_TAG = "/LensOneSided";
-const std::string Importer::LENS_TWO_SIDED_OPENING_TAG = "LensTwoSided";
-const std::string Importer::LENS_TWO_SIDED_CLOSING_TAG = "/LensTwoSided";
-const std::string Importer::MIRROR_ELLIPTICAL_OPENING_TAG = "MirrorElliptical";
-const std::string Importer::MIRROR_ELLIPTICAL_CLOSING_TAG = "/MirrorElliptical";
-const std::string Importer::MIRROR_CIRCLE_OPENING_TAG = "MirrorCircle";
-const std::string Importer::MIRROR_CIRCLE_CLOSING_TAG = "/MirrorCircle";
-const std::string Importer::MIRROR_RECTANGLE_OPENING_TAG = "MirrorRectangle";
-const std::string Importer::MIRROR_RECTANGLE_CLOSING_TAG = "/MirrorRectangle";
-const std::string Importer::MIRROR_SQUARE_OPENING_TAG = "MirrorSquare";
-const std::string Importer::MIRROR_SQUARE_CLOSING_TAG = "/MirrorSquare";
-const std::string Importer::SETUP_OPENING_TAG = "Setup";
-const std::string Importer::SETUP_CLOSING_TAG = "/Setup";
-const std::string Importer::POSITION_OPENING_TAG = "Position";
-const std::string Importer::POSITION_CLOSING_TAG = "/Position";
-const std::string Importer::NORMAL_OPENING_TAG = "Normal";
-const std::string Importer::NORMAL_CLOSING_TAG = "/Normal";
-const std::string Importer::LOWER_LIMIT_OPENING_TAG = "LowerLimit";
-const std::string Importer::LOWER_LIMIT_CLOSING_TAG = "/LowerLimit";
-const std::string Importer::UPPER_LIMIT_OPENING_TAG = "UpperLimit";
-const std::string Importer::UPPER_LIMIT_CLOSING_TAG = "/UpperLimit";
-const std::string Importer::REF_INDEX_OPENING_TAG = "RefIndex";
-const std::string Importer::REF_INDEX_CLOSING_TAG = "/RefIndex";
-const std::string Importer::RADIUS_H_OPENING_TAG = "RadiusH";
-const std::string Importer::RADIUS_H_CLOSING_TAG = "/RadiusH";
-const std::string Importer::RADIUS_W_OPENING_TAG = "RadiusW";
-const std::string Importer::RADIUS_W_CLOSING_TAG = "/RadiusW";
-const std::string Importer::RADIUS_I_OPENING_TAG = "RadiusI";
-const std::string Importer::RADIUS_I_CLOSING_TAG = "/RadiusI";
-const std::string Importer::RADIUS_O_OPENING_TAG = "RadiusO";
-const std::string Importer::RADIUS_O_CLOSING_TAG = "/RadiusO";
-const std::string Importer::RADIUS_OPENING_TAG = "Radius";
-const std::string Importer::RADIUS_CLOSING_TAG = "/Radius";
-const std::string Importer::LENGTH_H_OPENING_TAG = "LengthH";
-const std::string Importer::LENGTH_H_CLOSING_TAG = "/LengthH";
-const std::string Importer::LENGTH_W_OPENING_TAG = "LengthW";
-const std::string Importer::LENGTH_W_CLOSING_TAG = "/LengthW";
-const std::string Importer::LENGTH_OPENING_TAG = "Length";
-const std::string Importer::LENGTH_CLOSING_TAG = "/Length";
-const std::string Importer::D_OPENING_TAG = "D";
-const std::string Importer::D_CLOSING_TAG = "/D";
-const std::string Importer::PLANE_IS_FRONT_OPENING_TAG = "PlaneIsFront";
-const std::string Importer::PLANE_IS_FRONT_CLOSING_TAG = "/PlaneIsFront";
+
 
 
 
@@ -213,7 +169,7 @@ void Importer::importStp(List &_lst, std::string _filename) {
                         //Daten aus Datei einlesen
                         importPosition(setupFile, _position);
                         importNormal(setupFile, _normal);
-                        importNumber(setupFile, REF_INDEX_OPENING_TAG, _refIndex);
+                        importNumber(setupFile, N_OPENING_TAG, _refIndex);
                         importNumber(setupFile, RADIUS_H_OPENING_TAG, _radiusH);
                         importNumber(setupFile, RADIUS_W_OPENING_TAG, _radiusW);
                         importNumber(setupFile, D_OPENING_TAG, _d);
@@ -231,7 +187,7 @@ void Importer::importStp(List &_lst, std::string _filename) {
                         //Daten aus Datei einlesen
                         importPosition(setupFile, _position);
                         importNormal(setupFile, _normal);
-                        importNumber(setupFile, REF_INDEX_OPENING_TAG, _refIndex);
+                        importNumber(setupFile, N_OPENING_TAG, _refIndex);
                         importNumber(setupFile, RADIUS_H_OPENING_TAG, _radiusH);
                         importNumber(setupFile, RADIUS_I_OPENING_TAG, _radiusI);
                         importNumber(setupFile, RADIUS_O_OPENING_TAG, _radiusO);

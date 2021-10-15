@@ -7,4 +7,5 @@ class MirrorCircle : public MirrorElliptical{
     private:
     public:
         MirrorCircle(vector&, vector&, double);
+    const double& getRadius();
 };

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <boost/numeric/ublas/vector.hpp>
-#include "componentsEnum.hpp"
+#include "componentType.hpp"
 
 typedef typename boost::numeric::ublas::vector<double> vector;
 

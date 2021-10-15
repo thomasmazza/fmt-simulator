@@ -12,4 +12,6 @@ class MirrorElliptical: public Mirror{
         MirrorElliptical(vector&, vector&, double, double, ComponentType _type);
         bool getOutDir(Photon&, vector&, vector&);
         bool hitComponent(Photon&, vector&);
+        const double& getRadiusH();
+        const double& getRadiusW();
 };

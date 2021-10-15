@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 enum ComponentType{
     filter,
@@ -9,3 +10,6 @@ enum ComponentType{
     mirrorRectangle,
     mirrorSquare
 };
+
+
+
