@@ -150,7 +150,7 @@ void Detector::getInPoint(Photon& photon) {
     return bitmap;
 }
 
-Detector::Detector(vector& _pos, vector& _normal, vector& _pointOnEdge, vector& _posOfPrevComponent, int _size, double _pixelSize):Detector::Component(_pos, _normal) {
+Detector::Detector(vector& _pos, vector& _normal, vector& _pointOnEdge, vector& _posOfPrevComponent, unsigned int _size, double _pixelSize):Detector::Component(_pos, _normal) {
     pointOnEdge = _pointOnEdge;
     posOfPrevComponent = _posOfPrevComponent;
     size = _size;

@@ -16,17 +16,18 @@ typedef typename boost::numeric::ublas::vector<RGB> rgb_vector;
 typedef typename boost::numeric::ublas::vector<BmpRGB> bmp_vector;
 
 int main() {
-    unsigned int S = 512;
+    unsigned int S = 256;
     vector v (3);
     for (int i = 0; i < 3; i++) {
         v(i) = 0;
     }
-    Photon ph(v, v, 420, 0);
+
     std::vector<Photon> phV;
-    for (int i = 0; i < 200; i++) {
-        for (int j = 0; j < 200; j++) {
-            v(0) = j / 200.0;
-            v(1) = i / 200.0;
+    for (int i = 0; i < 400; i++) {
+        for (int j = 0; j < 400; j++) {
+            Photon ph(v, v, 420 + i%3, 0);
+            v(0) = j / 400.0;
+            v(1) = i / 400.0;
             v(2) = 0.0;
             ph.setPosition(v);
             v(0) = 0.0;
@@ -34,11 +35,8 @@ int main() {
             v(2) = 1.0;
             ph.setDirection(v);
             int wl = 420;
-            ph.setWaveLength(wl);
             phV.push_back(ph);
             if (i > j) {
-                phV.push_back(ph);
-                phV.push_back(ph);
                 phV.push_back(ph);
             }
         }
@@ -63,7 +61,7 @@ int main() {
     vpc(1) = 0.5;
     vpc(2) = 0.0;
 
-    Detector d(v, vn, vpe, vpc, S, 0.002);
+    Detector d(v, vn, vpe, vpc, S, 0.004);
 
     for (int i = 0; i < phV.size(); i++) {
         d.getInPoint(phV[i]);
