@@ -73,15 +73,8 @@ int main() {
     }
 
 
-   /* for (int i = 0; i < 15; i++) {
-        for (int j = 0; j < 15; j++) {
-            std::cout << "red = " << d.sensor(i, j).r << std::endl;
-        }
-    }*/
     bmp_vector image = d.createImage();
-    for (int i = 0; i < image.size(); i++) {
-        std::cout << static_cast<uint16_t>(image[i].r) << " " << static_cast<uint16_t>(image[i].g) << " " << static_cast<uint16_t>(image[i].b) << std::endl;
-    }
+
     BmpFileHeader bfh(S,S);
     BmpInfoHeader bih(S,S);
     std::ofstream fout("output.bmp", std::ios::binary);
