@@ -2,7 +2,7 @@
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/math/constants/constants.hpp>
-#include "../include/utils.hpp"
+#include "../../utils/include/utils.hpp"
 #include <cmath>
 #include <cstdint>
 

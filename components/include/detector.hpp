@@ -23,8 +23,8 @@ protected:
     int size; // Detector hat size * size Pixel
     double pixelSize; //Größe eines Pixels
     double length; // Dimensionen von dem Detektor
-public:
     rgb_matrix sensor;
+public:
     vector getPosOfPrevComponent();
     void setPosOfPrevComponent(vector&);
     vector getPointOnEdge();
