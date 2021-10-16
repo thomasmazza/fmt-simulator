@@ -1,4 +1,5 @@
 #Die ist definitiv noch noch nicht fertig:D Ich hab die jetzt nur so grundlegend eingerichtet, dass es möglich ist die Klassen zu testen
+
 cmake_minimum_required(VERSION 3.20)
 
 project(fmt-simulator LANGUAGES CXX)
