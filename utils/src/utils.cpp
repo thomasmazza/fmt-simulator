@@ -1,5 +1,5 @@
 #include "../include/utils.hpp"
-#include "math.h"
+#include <cmath>
 
 void Utils::cross_product(vector& result,vector& a, vector& b){
     result(0)=a(1)*b(2)-a(2)*b(2);

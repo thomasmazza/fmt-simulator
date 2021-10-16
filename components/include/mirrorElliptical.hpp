@@ -1,7 +1,7 @@
 #pragma once
 
 #include "mirror.hpp"
-#include "utils.hpp"
+#include "../../utils/include/utils.hpp"
 
 class MirrorElliptical: public Mirror{
     private:

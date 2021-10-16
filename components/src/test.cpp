@@ -1,12 +1,9 @@
 #include<iostream>
-
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 #include <vector>
 #include <fstream>
-#include "../include/utils.hpp"
-#include <boost/numeric/ublas/io.hpp>
-#include "../include/component.hpp"
+#include "../../utils/include/utils.hpp"
 #include "../include/detector.hpp"
 #include "rgb.hpp"
 #include "bmprgb.hpp"
@@ -26,10 +23,10 @@ int main() {
     }
     Photon ph(v, v, 420, 0);
     std::vector<Photon> phV;
-    for (int i = 0; i < 400; i++) {
-        for (int j = 0; j < 400; j++) {
-            v(0) = j / 400.0;
-            v(1) = i / 400.0;
+    for (int i = 0; i < 200; i++) {
+        for (int j = 0; j < 200; j++) {
+            v(0) = j / 200.0;
+            v(1) = i / 200.0;
             v(2) = 0.0;
             ph.setPosition(v);
             v(0) = 0.0;

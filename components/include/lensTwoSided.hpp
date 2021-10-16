@@ -2,7 +2,7 @@
 
 #include <boost/numeric/ublas/vector.hpp>
 #include "lens.hpp"
-#include "utils.hpp"
+#include "../../utils/include/utils.hpp"
 
 typedef typename boost::numeric::ublas::vector<double> vector;
 
