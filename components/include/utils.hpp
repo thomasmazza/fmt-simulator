@@ -21,7 +21,7 @@ public:
 
     static void coreTranslationInColor(const int&, double&, double&, double&);
 
-    static double max(double &, double &);
+    static double max(double, double);
 
-    static double min(double &, double &);
+    static double min(double, double);
 };

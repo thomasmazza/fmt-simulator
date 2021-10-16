@@ -15,15 +15,22 @@ vector Utils::cross_product_2(vector& a, vector& b) {
     return result;
 }
 
-void Utils::normalizeVector(vector &) {
-    double t = sqrt(a(0)^2 + a(1)^2 + a(2)^2);
-    a(0) = a(0) / t;
-    a(1) = a(1) / t;
-    a(2) = a(2) / t;
+void Utils::normalizeVector(vector & a) {
+    double t = sqrt(pow(a(0), 2) + pow(a(1), 2) + pow(a(2), 2));
+    if (t != 0) {
+        a(0) = a(0) / t;
+        a(1) = a(1) / t;
+        a(2) = a(2) / t;
+    }
+    else {
+        a(0) = 0;
+        a(1) = 0;
+        a(2) = 0;
+    }
 }
 
 double Utils::dot_product(vector& a, vector& b) {
-    return sqrt(a(0) * b(0) + a(1) * b(1) + a(2) * b(2));
+    return (a(0) * b(0)) + (a(1) * b(1)) + (a(2) * b(2));
 }
 
 std::string Utils::wavelengthToRGB(const int &wavelength) {
@@ -99,12 +106,12 @@ void Utils::coreTranslationInColor(const int &wavelength, double &r, double &g, 
 
 }
 
-double Utils::max(double & a, double & b) {
+double Utils::max(double a, double b) {
     if (a < b) { return b; }
     else return a;
 }
 
-double Utils::min(double & a, double & b) {
+double Utils::min(double a, double b) {
     if (a > b) { return b; }
     else return a;
 }
