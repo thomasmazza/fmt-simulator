@@ -7,10 +7,6 @@ class Utils {
 private:
     static void coreTranslationInColor(const int&, double&, double&, double&);
 public:
-/*
- * Erster Vektor ist der Ergebnisvektor
- * Zweiter und Dritter Vektor sind die b
- */
     static void cross_product(vector &, vector &, vector &);
 
     static std::string wavelengthToRGB(const int&);
