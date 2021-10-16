@@ -123,5 +123,19 @@ int main(int argc, char *argv[]) {
         std::cout << "that"<< std::endl;
     }
 
+    // Exportiert .bmp
+    /*bmp_vector image = d.createImage();
+
+    BmpFileHeader bfh(S,S);
+    BmpInfoHeader bih(S,S);
+    std::ofstream fout("output.bmp", std::ios::binary);
+    fout.write((char *) &bfh, 14);
+    fout.write((char *) &bih, 40);
+    for (int i = 0; i < image.size(); i++) {
+        fout.write((char *) &image[i], 3);
+    }
+    fout.close();
+     */
+
 
 };
