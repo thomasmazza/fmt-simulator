@@ -128,7 +128,7 @@ void Detector::getInPoint(Photon& photon) {
         avg += image[i].intensity;
     }
     avg = avg / (image.size());
-    double factor = 1;
+    double factor = 2;
     double adjustment;
     for (int i = 0; i < image.size(); i++) {
         adjustment = (image[i].intensity - avg) * factor; //Muss testen wie sinnvoll adjustment berechnet wird
