@@ -18,6 +18,7 @@ add_executable(test
         components/src/mirror.cpp
         components/src/mirrorElliptical.cpp
         components/src/mirrorSquare.cpp
+        components/src/mirrorCircle.cpp
         utils/src/utils.cpp photon/src/photon.cpp
         components/src/lens.cpp
         components/src/lensOneSided.cpp

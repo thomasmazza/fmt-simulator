@@ -3,7 +3,6 @@
 #include "../../photon/include/photon.hpp"
 #include "component.hpp"
 
-typedef typename boost::numeric::ublas::vector<double> vector;
 
 class Filter : public Component {
     private:

@@ -91,6 +91,8 @@ void Exporter::exportStp(List &_lst, std::string _filename) {
             case mirrorSquare:
                 exportParameter(dataOut, LENGTH_OPENING_TAG, static_cast<MirrorSquare &>(*_lst.elem(i)).getLength());
                 break;
+            case detector:
+                exportParameter(dataOut, )
             default:
                 break;
         }

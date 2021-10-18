@@ -34,7 +34,13 @@ std::vector<double> operator*(const std::vector<double>& _vector, const double& 
     }
     return vector;
 }
-
 std::vector<double> operator*(const double& scalar, const std::vector<double>& _vector){
     return _vector*scalar;
+}
+
+std::ostream& operator<<(std::ostream& os, const std::vector<double>& _vector){
+    for( unsigned  int i = 0;i<_vector.size();i++){
+        os << _vector[i] << "," ;
+    }
+    return os;
 }

@@ -8,7 +8,8 @@ enum ComponentType{
     mirrorCircle,
     mirrorElliptical,
     mirrorRectangle,
-    mirrorSquare
+    mirrorSquare,
+    detector
 };
 
 

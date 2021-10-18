@@ -104,3 +104,6 @@ double Utils::min(double a, double b) {
     if (a > b) { return b; }
     else return a;
 }
+double Utils::dot_product(std::vector<double>& a, std::vector<double>& b) {
+    return (a[0] * b[0]) + (a[1] * b[1]) + (a[2] * b[2]);
+}

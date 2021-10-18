@@ -53,7 +53,7 @@ bool MirrorRectangle::getOutDir(Photon &p, std::vector<double> &_dirOA) {
 
 
         //Vektor von Mittelpunkt zum Intersect erstellen
-        vector intPos = intersect - position;
+        std::vector<double> intPos = intersect - position;
 
         //lS und rS wiederverwenden zur Speicheroptimierung
         rS = 0;
