@@ -14,6 +14,7 @@
 #include "mirrorSquare.hpp"
 #include "mirrorRectangle.hpp"
 #include "mirrorElliptical.hpp"
+#include "detector.hpp"
 
 #include "componentType.hpp"
 #include "config.hpp"

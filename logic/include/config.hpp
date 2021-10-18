@@ -60,5 +60,12 @@ namespace Config {
     const std::string WAVELENGTH_CLOSING_TAG = "/Wavelength";
     const std::string OBJECT_ROW_OPENING_TAG = "ObjectRow";
     const std::string OBJECT_ROW_CLOSING_TAG = "/ObjectRow";
+    const std::string POINT_ON_EDGE_OPENING_TAG = "PointOnEdge";
+    const std::string POINT_ON_EDGE_CLOSING_TAG = "/PointOnEdge";
+    const std::string POSITION_OF_PREVIOUS_COMPONENT_OPENING_TAG = "PositionOfPreviousComponent";
+    const std::string POSITION_OF_PREVIOUS_COMPONENT_CLOSING_TAG = "/PositionOfPreviousComponent";
+    const std::string SIZE_OPENING_TAG = "/Size";
+    const std::string SIZE_CLOSING_TAG = "/Size";
+
 
 }

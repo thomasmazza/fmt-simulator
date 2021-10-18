@@ -24,11 +24,14 @@ protected:
     double length; // Dimensionen von dem Detektor
     rgb_matrix sensor;
 public:
-    std::vector<double> getPosOfPrevComponent();
+
+    const std::vector<double>& getPointOnEdge();
+
+    const std::vector<double>& getPosOfPrevComponent();
+
+    const int getSize();
 
     void setPosOfPrevComponent(std::vector<double> &);
-
-    std::vector<double> getPointOnEdge();
 
     void setPointOnEdge(std::vector<double> &);
 

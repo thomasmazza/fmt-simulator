@@ -6,7 +6,7 @@
 
 
 
-std::vector<double> Detector::getPosOfPrevComponent() {
+const std::vector<double>& Detector::getPosOfPrevComponent() {
     return posOfPrevComponent;
 }
 
@@ -14,8 +14,12 @@ void Detector::setPosOfPrevComponent(std::vector<double> &_pos) {
     posOfPrevComponent = _pos;
 }
 
-std::vector<double> Detector::getPointOnEdge() {
+const std::vector<double>& Detector::getPointOnEdge() {
     return pointOnEdge;
+}
+
+const int Detector::getSize() {
+    return size;
 }
 
 void Detector::setPointOnEdge(std::vector<double> &_point) {
