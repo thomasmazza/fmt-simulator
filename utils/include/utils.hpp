@@ -4,16 +4,20 @@
 
 typedef typename boost::numeric::ublas::vector<double> vector;
 class Utils {
-private:
-    static void coreTranslationInColor(const int&, double&, double&, double&);
 public:
-/*
- * Erster Vektor ist der Ergebnisvektor
- * Zweiter und Dritter Vektor sind die b
- */
     static void cross_product(vector &, vector &, vector &);
+
+    static vector cross_product_2(vector&, vector&);
+
+    static void normalizeVector(vector &);
+
+    static double dot_product(vector&, vector&);
 
     static std::string wavelengthToRGB(const int&);
 
-    static void normalizeVector(vector& _vec);
+    static void coreTranslationInColor(const int&, double&, double&, double&);
+
+    static double max(double, double);
+
+    static double min(double, double);
 };
