@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
     Photon testPhoton(testVector3, testVector4, 600, 500);
     Filter filter(filterPos, filterDir, 450, 700);
 
-    if (lens2.getOutDir(testPhoton) == true) {
+    if (lens2.getOutDir(testPhoton)) {
         std::cout << "New direction: " << testPhoton.getDirection() << std::endl;
     }
 
@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
 
     LensOneSided lens1(testVector, testVector2, 1.5, 20, 21, 5, false);
 
-    if (lens1.getOutDir(testPhoton) == true) {
+    if (lens1.getOutDir(testPhoton)) {
         std::cout << "New direction 2: " << testPhoton.getDirection() << std::endl;
     }
 
@@ -122,18 +122,18 @@ int main(int argc, char *argv[]) {
     }
 
     // Exportiert .bmp
-    /*bmp_vector image = d.createImage();
+//    bmp_vector image = d.createImage();
 
-    BmpFileHeader bfh(S,S);
-    BmpInfoHeader bih(S,S);
-    std::ofstream fout("output.bmp", std::ios::binary);
-    fout.write((char *) &bfh, 14);
-    fout.write((char *) &bih, 40);
-    for (int i = 0; i < image.size(); i++) {
-        fout.write((char *) &image[i], 3);
-    }
-    fout.close();
-     */
+//    BmpFileHeader bfh(S,S);
+//    BmpInfoHeader bih(S,S);
+//    std::ofstream fout("output.bmp", std::ios::binary);
+//    fout.write((char *) &bfh, 14);
+//    fout.write((char *) &bih, 40);
+//    for (int i = 0; i < image.size(); i++) {
+//        fout.write((char *) &image[i], 3);
+//    }
+//    fout.close();
+
 
 
 };

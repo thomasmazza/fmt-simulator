@@ -4,7 +4,6 @@
 #include <boost/math/constants/constants.hpp>
 #include "../../utils/include/utils.hpp"
 #include <cmath>
-#include <cstdint>
 
 typedef typename boost::numeric::ublas::vector<double> vector;
 typedef typename boost::numeric::ublas::vector<RGB> rgb_vector;
@@ -15,7 +14,7 @@ vector Detector::getPosOfPrevComponent() {
     return posOfPrevComponent;
 }
 
-void Detector::setPosOfPrevComponent(vector& _pos) {
+void Detector::setPosOfPrevComponent(vector &_pos) {
     posOfPrevComponent = _pos;
 }
 
@@ -23,18 +22,19 @@ vector Detector::getPointOnEdge() {
     return pointOnEdge;
 }
 
-void Detector::setPointOnEdge(vector& _point) {
+void Detector::setPointOnEdge(vector &_point) {
     pointOnEdge = _point;
 }
 
-void Detector::getInPoint(Photon& photon) {
+void Detector::getInPoint(Photon &photon) {
     vector pV = photon.getPosition();
     vector dV = photon.getDirection();
     vector intersection(3);
 
     //Berechnet den Schnittpunkt von Photon und Ebene
-    double temp = (normal[0] * (position[0] - pV[0]) + normal[1] * (position[1] - pV[1]) + normal[2] * (position[2] - pV[2])) / (normal[0] * dV[0] + normal[1] * dV[1] + normal[2] * dV[2]);
-    for (int i = 0; i < 3; i++){
+    double temp = (normal[0] * (position[0] - pV[0]) + normal[1] * (position[1] - pV[1]) +
+                   normal[2] * (position[2] - pV[2])) / (normal[0] * dV[0] + normal[1] * dV[1] + normal[2] * dV[2]);
+    for (int i = 0; i < 3; i++) {
         intersection[i] = dV[i] * temp + pV[i];
     }
 
@@ -67,24 +67,21 @@ void Detector::getInPoint(Photon& photon) {
 
                     sensor(i_index, j_index).addRGB(color);
                     sensor(i_index, j_index).intensity = sensor(i_index, j_index).intensity + 1;
-                }
-                else {
+                } else {
                     i_index = floor(size / 2 + i_index);
                     j_index = floor(size / 2 - j_index);
 
                     sensor(i_index, j_index).addRGB(color);
                     sensor(i_index, j_index).intensity = sensor(i_index, j_index).intensity + 1;
                 }
-            }
-            else {
+            } else {
                 if (temp > boost::math::constants::pi<double>() / (-2)) {
                     i_index = floor(size / 2 - i_index);
                     j_index = floor(size / 2 + j_index);
 
                     sensor(i_index, j_index).addRGB(color);
                     sensor(i_index, j_index).intensity = sensor(i_index, j_index).intensity + 1;
-                }
-                else {
+                } else {
                     i_index = floor(size / 2 + i_index);
                     j_index = floor(size / 2 + j_index);
 
@@ -96,8 +93,8 @@ void Detector::getInPoint(Photon& photon) {
     }
 }
 
- bmp_vector Detector::createImage() {
-    rgb_vector image (size * size);
+bmp_vector Detector::createImage() {
+    rgb_vector image(size * size);
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             RGB color;
@@ -105,8 +102,7 @@ void Detector::getInPoint(Photon& photon) {
                 color.r = sensor(i, j).r;
                 color.g = sensor(i, j).g;
                 color.b = sensor(i, j).b;
-            }
-            else {
+            } else {
                 color.r = sensor(i, j).r / sensor(i, j).intensity;
                 color.g = sensor(i, j).g / sensor(i, j).intensity;
                 color.b = sensor(i, j).b / sensor(i, j).intensity;
@@ -121,8 +117,7 @@ void Detector::getInPoint(Photon& photon) {
     for (int i = 0; i < image.size(); i++) {
         if (image[i].intensity > max) {
             max = image[i].intensity;
-        }
-        else if (image[i].intensity < min) {
+        } else if (image[i].intensity < min) {
             min = image[i].intensity;
         }
         avg += image[i].intensity;
@@ -136,8 +131,7 @@ void Detector::getInPoint(Photon& photon) {
             image[i].r = std::round(Utils::min(image[i].r + adjustment, 255));
             image[i].g = std::round(Utils::min(image[i].g + adjustment, 255));
             image[i].b = std::round(Utils::min(image[i].b + adjustment, 255));
-        }
-        else {
+        } else {
             image[i].r = std::round(Utils::max(image[i].r + adjustment, 0));
             image[i].g = std::round(Utils::max(image[i].g + adjustment, 0));
             image[i].b = std::round(Utils::max(image[i].b + adjustment, 0));
@@ -150,11 +144,12 @@ void Detector::getInPoint(Photon& photon) {
     return bitmap;
 }
 
-Detector::Detector(vector& _pos, vector& _normal, vector& _pointOnEdge, vector& _posOfPrevComponent, unsigned int _size, double _pixelSize):Detector::Component(_pos, _normal) {
+Detector::Detector(vector &_pos, vector &_normal, vector &_pointOnEdge, vector &_posOfPrevComponent, unsigned int _size,
+                   double _pixelSize) : Detector::Component(_pos, _normal) {
     pointOnEdge = _pointOnEdge;
     posOfPrevComponent = _posOfPrevComponent;
     size = _size;
     pixelSize = _pixelSize;
     length = static_cast<double>(size) * pixelSize;
-    sensor = rgb_matrix (size, size);
+    sensor = rgb_matrix(size, size);
 }
