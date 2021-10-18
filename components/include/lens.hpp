@@ -1,12 +1,10 @@
 #pragma once
 
 #include "../../utils/include/utils.hpp"
-#include <boost/numeric/ublas/vector.hpp>
 #include "../../photon/include/photon.hpp"
 #include "component.hpp"
 #include "math.h"
 
-typedef typename boost::numeric::ublas::vector<double> vector;
 
 class Lens : public Component {
 protected:
@@ -14,7 +12,9 @@ protected:
     double radiusH;
     double d;
 public:
-    Lens(vector &, vector &, double, double, double);
-
-    virtual bool getOutDir(Photon &) = 0;
+    Lens(std::vector<double>&, std::vector<double>&, double, double, double, ComponentType _type);
+    virtual bool getOutDir(Photon&)=0;
+    const double& getN();
+    const double& getRadiusH();
+    const double& getD();
 };

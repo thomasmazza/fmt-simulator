@@ -1,18 +1,17 @@
 #include "lensTwoSided.hpp"
-#include <boost/numeric/ublas/vector.hpp>
 
 
 bool LensTwoSided::getOutDir(Photon& p){
 
-    vector pV = p.getPosition();
-    vector dV = p.getDirection();
-    vector OM1(3);
-    vector OM2(3);
+    std::vector<double> pV = p.getPosition();
+    std::vector<double> dV = p.getDirection();
+    std::vector<double> OM1(3);
+    std::vector<double> OM2(3);
     bool getsOut = false;
 
-    //Positionsvektor der MIttelpunkte der Kugeln bestimmen
-    OM1 = position - radius1*normal;
-    OM2 = position -normal*(d+radius2);
+    //Positionsvektor der Mittelpunkte der Kugeln bestimmen
+    OM1 = position - radiusI*normal;
+    OM2 = position -normal*(d+radiusO);
 
     //Summenvariablen für Schnittpunktberechnung erstellen
     double a=0;
@@ -25,9 +24,9 @@ bool LensTwoSided::getOutDir(Photon& p){
         b += 2*((pV[i]-OM1[i])*dV[i]);
         c += pow((OM1[i]-pV[i]), 2);
     }
-    c = c-pow(radius1, 2);
+    c = c-pow(radiusI, 2);
 
-    //Prüfen ob reele Lösung ex.
+    //Prüfen, ob reelle Lösung ex.
     if( (pow(b,2)-4*a*c) > 0) {
 
         //Mögliche Lösungen als Variablen
@@ -36,11 +35,11 @@ bool LensTwoSided::getOutDir(Photon& p){
 
         t1 = (-b + sqrt((pow(b, 2) - 4 * a * c))) / (2 * a);
         t2 = (-b - sqrt((pow(b, 2) - 4 * a * c))) / (2 * a);
-        vector intersect(3);
+        std::vector<double> intersect(3);
 
         //Unterscheidung zwischen Sammellinse und Zerstreuungslinse und darauf folgend Schnittpunktberechnung
 
-        if (radius1 > 0 && radius2 < 0) {
+        if (radiusI > 0 && radiusO < 0) {
             if (t1 > 0 && t2 > 0) {
                 if (t1 < t2) {
                     intersect = pV + t1 * dV;
@@ -70,10 +69,10 @@ bool LensTwoSided::getOutDir(Photon& p){
             }
         }
 
-        //Überprüfen ob im Höhenradius
-        double d1 = abs(radius1) - sqrt(pow(radius1, 2) - pow(radiusH, 2));
-        vector check(3);
-        if (radius1 > 0) {
+        //Überprüfen, ob im Höhenradius
+        double d1 = abs(radiusI) - sqrt(pow(radiusI, 2) - pow(radiusH, 2));
+        std::vector<double> check(3);
+        if (radiusI > 0) {
             check = intersect - (position - normal * d1);
         } else {
             check = intersect - (position + normal * d1);
@@ -86,8 +85,8 @@ bool LensTwoSided::getOutDir(Photon& p){
         if (sum1 < radiusH) {
 
             //Flächennormale berechnen
-            vector normalA1(3);
-            if (radius1 < 0 && radius2 > 0) {
+            std::vector<double> normalA1(3);
+            if (radiusI < 0 && radiusO > 0) {
                 normalA1 = intersect - OM1;
             } else {
                 normalA1 = OM1 - intersect;
@@ -110,7 +109,7 @@ bool LensTwoSided::getOutDir(Photon& p){
             }
 
             //Winkel berechnen
-            vector coalphaV(3);
+            std::vector<double> coalphaV(3);
             double coalphaS = 0;
             Utils::cross_product(coalphaV, dV, normalA1);
             for (int i = 0; i < 3; i++) {
@@ -121,7 +120,7 @@ bool LensTwoSided::getOutDir(Photon& p){
             if (coalphaS < 1.5) {
 
 
-                vector inLensDir(3);
+                std::vector<double> inLensDir(3);
                 inLensDir =
                         (1 / n) * dV - normalA1 * ((1 / n) * (skpr1) - sqrt(1 - pow((1 / n), 2) * (1 - pow(skpr1, 2))));
 
@@ -148,9 +147,9 @@ bool LensTwoSided::getOutDir(Photon& p){
                     b += 2 * ((pV[i] - OM2[i]) * dV[i]);
                     c += pow((OM2[i] - pV[i]), 2);
                 }
-                c = c - pow(radius2, 2);
+                c = c - pow(radiusO, 2);
 
-                //Prüfen ob reele Lösung ex.
+                //Prüfen, ob reelle Lösung ex.
                 if ((pow(b, 2) - 4 * a * c) > 0) {
 
                     //Mögliche Lösungen als Variablen
@@ -159,7 +158,7 @@ bool LensTwoSided::getOutDir(Photon& p){
                     t2 = (-b - sqrt((pow(b, 2) - 4 * a * c))) / (2 * a);
 
                     //Unterscheidung zwischen Sammellinse und Zerstreuungslinse und darauf folgend Schnittpunktberechnung
-                    if (radius1 > 0 && radius2 < 0) {
+                    if (radiusI > 0 && radiusO < 0) {
                         if (t1 > 0 && t2 > 0) {
                             if (t1 > t2) {
                                 intersect = pV + t1 * dV;
@@ -189,10 +188,10 @@ bool LensTwoSided::getOutDir(Photon& p){
                         }
                     }
 
-                    //Überprüfen ob im Höhenradius
-                    double d2 = abs(radius2) - sqrt(pow(radius2, 2) - pow(radiusH, 2));
+                    //Überprüfen, ob im Höhenradius
+                    double d2 = abs(radiusO) - sqrt(pow(radiusO, 2) - pow(radiusH, 2));
                     sum2 = 0;
-                    if (radius2 > 0) {
+                    if (radiusO > 0) {
                         check = intersect - (position - (normal * (d2 + d)));
                     } else {
                         check = intersect - (position + (normal * (d2 - d)));
@@ -205,8 +204,8 @@ bool LensTwoSided::getOutDir(Photon& p){
                     if (sum2 < radiusH) {
 
                         //Flächennormale berechnen
-                        vector normalA2(3);
-                        if (radius1 < 0 && radius2 > 0) {
+                        std::vector<double> normalA2(3);
+                        if (radiusI < 0 && radiusO > 0) {
                             normalA2 = OM2 - intersect;
                         } else {
                             normalA2 = intersect - OM2;
@@ -238,7 +237,7 @@ bool LensTwoSided::getOutDir(Photon& p){
 
                         if (coalphaS < 1.5) {
 
-                            vector outLensDir(3);
+                            std::vector<double> outLensDir(3);
                             outLensDir = n * dV - normalA2 * (n * (skpr1) - sqrt(1 - pow(n, 2) * (1 - pow(skpr1, 2))));
 
                             //neuer Ausgangspunkt und Richtung normieren & setzen
@@ -266,8 +265,14 @@ bool LensTwoSided::getOutDir(Photon& p){
     return getsOut;
 }
 
-LensTwoSided::LensTwoSided(vector& _pos, vector& _normal,double _n, double _radiusH, double _radiusI, double _radiusO, double _d)
-:LensTwoSided::Lens(_pos, _normal, _n, _radiusH, _d) {
-    radius1 = _radiusI;
-    radius2 = _radiusO;
+const double &LensTwoSided::getRadiusI() {
+    return radiusI;
+}
+
+const double &LensTwoSided::getRadiusO() {
+    return radiusO;
+}
+
+LensTwoSided::LensTwoSided(std::vector<double>& _pos, std::vector<double>& _normal,double _n, double _radiusH, double _radiusI, double _radiusO, double _d)
+:LensTwoSided::Lens(_pos, _normal, _n, _radiusH, _d, lensTwoSided), radiusI(_radiusI), radiusO(_radiusO) {
 }

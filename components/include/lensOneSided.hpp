@@ -9,6 +9,8 @@ private:
     double radiusW;
     bool planeIsFront;
 public:
-    LensOneSided(vector&, vector&, double, double, double, double, bool);
+    LensOneSided(std::vector<double>&, std::vector<double>&, double, double, double, double, bool);
     bool getOutDir(Photon&);
+    const double& getRadiusW();
+    const bool& getPlaneIsFront();
 };
