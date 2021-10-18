@@ -8,7 +8,7 @@ class MirrorRectangle: public Mirror{
         double lengthW;
     public:
         MirrorRectangle(vector&, vector&, double, double);
-        double getLengthH();
-        double getLengthW();
-        std::string getType();
+        bool calcOut(Photon&, vector&, vector&);
+        bool getOutDir(Photon&, vector&);
 };
+

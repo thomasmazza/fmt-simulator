@@ -1,21 +1,8 @@
-#include "../include/lens.hpp"
+#include "lens.hpp"
 #include <boost/numeric/ublas/vector.hpp>
 
-
-bool Lens::hitComponent(Photon& p){
-    //TODO: Logik einbauen
-    return true;
-}
-
-double Lens::getRefIndex() {
-    return refIndex;
-}
-
-double Lens::getRadiusH() {
-    return radiusH;
-}
-
-Lens::Lens(vector& _pos, vector& _normal, double _refIndex, double _radiusH):Lens::Component(_pos, _normal) {
-    refIndex = _refIndex;
+Lens::Lens(vector &_pos, vector &_normal, double _n, double _radiusH, double _d) : Component(_pos, _normal) {
+    n = _n;
     radiusH = _radiusH;
+    d = _d;
 }

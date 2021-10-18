@@ -1,4 +1,4 @@
-#include "../include/filter.hpp"
+#include"filter.hpp"
 
 int Filter::getLowerLimit() {
     return lowerLimit;
@@ -21,11 +21,11 @@ bool Filter::inRange(int lambda) {
     return true;
 }
 
-std::string Filter::getType() {
-    return "Filter";
+bool Filter::getOutDir(Photon& p){
+    return inRange(p.getWaveLength());
 }
 
-Filter::Filter(vector& _pos, vector& _normal, int _lowerLimit, int _upperLimit):Filter::Component(_pos, _normal){
+Filter::Filter(vector& _pos, vector& _normal, int _lowerLimit, int _upperLimit):Component(_pos, _normal){
     lowerLimit = _lowerLimit;
     upperLimit = _upperLimit;
 }

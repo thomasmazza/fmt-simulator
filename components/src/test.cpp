@@ -1,15 +1,26 @@
 #include<iostream>
-
 #include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>
+#include <vector>
+#include <fstream>
+#include "../../utils/include/utils.hpp"
+#include "detector.hpp"
+#include "rgb.hpp"
 #include "lensOneSided.hpp"
 #include "lens.hpp"
 #include "filter.hpp"
 #include "lensTwoSided.hpp"
 #include "mirrorElliptical.hpp"
 #include "mirrorRectangle.hpp"
+#include "bmprgb.hpp"
+#include "bmpFileHeader.hpp"
+#include "bmpInfoHeader.hpp"
+
 
 typedef typename boost::numeric::ublas::vector<double> vector;
+typedef typename boost::numeric::ublas::vector<RGB> rgb_vector;
+typedef typename boost::numeric::ublas::vector<BmpRGB> bmp_vector;
 
 int main(int argc, char *argv[]) {
     vector testVector(3);

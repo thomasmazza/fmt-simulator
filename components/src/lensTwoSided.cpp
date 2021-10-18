@@ -1,16 +1,17 @@
-#include "../include/lensTwoSided.hpp"
+#include "lensTwoSided.hpp"
 #include <boost/numeric/ublas/vector.hpp>
 
 
-void LensTwoSided::getOutDir(photon& p){
+bool LensTwoSided::getOutDir(Photon& p){
 
-    vector pV = photon.getPosition();
-    vector dV = photon.getDirection();
+    vector pV = p.getPosition();
+    vector dV = p.getDirection();
     vector OM1(3);
     vector OM2(3);
+    bool getsOut = false;
 
     //Positionsvektor der MIttelpunkte der Kugeln bestimmen
-    OM1 = position + radius1*normal;
+    OM1 = position - radius1*normal;
     OM2 = position -normal*(d+radius2);
 
     //Summenvariablen für Schnittpunktberechnung erstellen
@@ -21,226 +22,252 @@ void LensTwoSided::getOutDir(photon& p){
     //Summenrechnung für quadratische Gleichung
     for(int i=0; i<3; i++){
         a += pow(dV[i], 2);
-        b += 2*((pV[i]-OM1[i]*dV[i]);
-        c += pow((OM1[i]-pV[i]), 2) - pow(radius1, 2);
+        b += 2*((pV[i]-OM1[i])*dV[i]);
+        c += pow((OM1[i]-pV[i]), 2);
     }
+    c = c-pow(radius1, 2);
 
     //Prüfen ob reele Lösung ex.
-    if( (pow(b,2)-4*a*c) < 0 && a == 0){
-        return false;
-    }
+    if( (pow(b,2)-4*a*c) > 0) {
 
-    //Mögliche Lösungen als Variablen
-    double t1=0;
-    double t2=0;
+        //Mögliche Lösungen als Variablen
+        double t1;
+        double t2;
 
-    t1 = (-b+sqrt((pow(b,2)-4*a*c))) / (2*a);
-    t2 = (-b-sqrt((pow(b,2)-4*a*c))) / (2*a);
-    vector intersect(3);
+        t1 = (-b + sqrt((pow(b, 2) - 4 * a * c))) / (2 * a);
+        t2 = (-b - sqrt((pow(b, 2) - 4 * a * c))) / (2 * a);
+        vector intersect(3);
 
-    //Unterscheidung zwischen Sammellinse und Zerstreuungslinse und darauf folgend Schnittpunktberechnung
-    if(radius1 > 0 && radius2 < 0){
-        if(t1<t2){
-            intersect = pV+t1*dV;
-        }else{
-            intersect = pV+t2*dV;
+        //Unterscheidung zwischen Sammellinse und Zerstreuungslinse und darauf folgend Schnittpunktberechnung
+
+        if (radius1 > 0 && radius2 < 0) {
+            if (t1 > 0 && t2 > 0) {
+                if (t1 < t2) {
+                    intersect = pV + t1 * dV;
+                } else {
+                    intersect = pV + t2 * dV;
+                }
+            } else if (t1 > 0) {
+                intersect = pV + t1 * dV;
+            } else if (t2 > 0) {
+                intersect = pV + t2 * dV;
+            } else {
+                return false;
+            }
+        } else {
+            if (t1 > 0 && t2 > 0) {
+                if (t1 > t2) {
+                    intersect = pV + t1 * dV;
+                } else {
+                    intersect = pV + t2 * dV;
+                }
+            } else if (t1 > 0) {
+                intersect = pV + t1 * dV;
+            } else if (t2 > 0) {
+                intersect = pV + t2 * dV;
+            } else {
+                return false;
+            }
         }
-    }else{
-        if(t1>t2){
-            intersect = pV+t1*dV;
-        }else{
-            intersect = pV+t2*dV;
+
+        //Überprüfen ob im Höhenradius
+        double d1 = abs(radius1) - sqrt(pow(radius1, 2) - pow(radiusH, 2));
+        vector check(3);
+        if (radius1 > 0) {
+            check = intersect - (position - normal * d1);
+        } else {
+            check = intersect - (position + normal * d1);
+        }
+        double sum1 = 0;
+        for (int i = 0; i < 3; i++) {
+            sum1 += pow(check[i], 2);
+        }
+        sum1 = sqrt(sum1);
+        if (sum1 < radiusH) {
+
+            //Flächennormale berechnen
+            vector normalA1(3);
+            if (radius1 < 0 && radius2 > 0) {
+                normalA1 = intersect - OM1;
+            } else {
+                normalA1 = OM1 - intersect;
+            }
+
+            //Normieren der Flächennormale und des Richtungsvektors + Skalarprodukt
+            sum1 = 0;
+            double sum2 = 0;
+            double skpr1 = 0;
+            for (int i = 0; i < 3; i++) {
+                sum1 += pow(normalA1[i], 2);
+                sum2 += pow(dV[i], 2);
+            }
+            sum1 = sqrt(sum1);
+            sum2 = sqrt(sum2);
+            for (int i = 0; i < 3; i++) {
+                normalA1[i] = normalA1[i] / sum1;
+                dV[i] = dV[i] / sum2;
+                skpr1 += dV[i] * normalA1[i];
+            }
+
+            //Winkel berechnen
+            vector coalphaV(3);
+            double coalphaS = 0;
+            Utils::cross_product(coalphaV, dV, normalA1);
+            for (int i = 0; i < 3; i++) {
+                coalphaS += pow(coalphaV[i], 2);
+            }
+            coalphaS = sqrt(coalphaS);
+
+            if (coalphaS < 1.5) {
+
+
+                vector inLensDir(3);
+                inLensDir =
+                        (1 / n) * dV - normalA1 * ((1 / n) * (skpr1) - sqrt(1 - pow((1 / n), 2) * (1 - pow(skpr1, 2))));
+
+                //neue Richtung normieren
+                sum1 = 0;
+                for (int i = 0; i < 3; i++) {
+                    sum1 += pow(inLensDir[i], 2);
+                }
+                sum1 = sqrt(sum1);
+                for (int i = 0; i < 3; i++) {
+                    inLensDir[i] = inLensDir[i] / sum1;
+                }
+
+                //neuer Ausgangspunkt und Richtung setzen
+                dV = inLensDir;
+                pV = intersect;
+                //Summenvariablen für Schnittpunktberechnung zurücksetzen
+                a = 0;
+                b = 0;
+                c = 0;
+
+                for (int i = 0; i < 3; i++) {
+                    a += pow(dV[i], 2);
+                    b += 2 * ((pV[i] - OM2[i]) * dV[i]);
+                    c += pow((OM2[i] - pV[i]), 2);
+                }
+                c = c - pow(radius2, 2);
+
+                //Prüfen ob reele Lösung ex.
+                if ((pow(b, 2) - 4 * a * c) > 0) {
+
+                    //Mögliche Lösungen als Variablen
+
+                    t1 = (-b + sqrt((pow(b, 2) - 4 * a * c))) / (2 * a);
+                    t2 = (-b - sqrt((pow(b, 2) - 4 * a * c))) / (2 * a);
+
+                    //Unterscheidung zwischen Sammellinse und Zerstreuungslinse und darauf folgend Schnittpunktberechnung
+                    if (radius1 > 0 && radius2 < 0) {
+                        if (t1 > 0 && t2 > 0) {
+                            if (t1 > t2) {
+                                intersect = pV + t1 * dV;
+                            } else {
+                                intersect = pV + t2 * dV;
+                            }
+                        } else if (t1 > 0) {
+                            intersect = pV + t1 * dV;
+                        } else if (t2 > 0) {
+                            intersect = pV + t2 * dV;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        if (t1 > 0 && t2 > 0) {
+                            if (t1 < t2) {
+                                intersect = pV + t1 * dV;
+                            } else {
+                                intersect = pV + t2 * dV;
+                            }
+                        } else if (t1 > 0) {
+                            intersect = pV + t1 * dV;
+                        } else if (t2 > 0) {
+                            intersect = pV + t2 * dV;
+                        } else {
+                            return false;
+                        }
+                    }
+
+                    //Überprüfen ob im Höhenradius
+                    double d2 = abs(radius2) - sqrt(pow(radius2, 2) - pow(radiusH, 2));
+                    sum2 = 0;
+                    if (radius2 > 0) {
+                        check = intersect - (position - (normal * (d2 + d)));
+                    } else {
+                        check = intersect - (position + (normal * (d2 - d)));
+                    }
+                    for (int i = 0; i < 3; i++) {
+                        sum2 += pow(check[i], 2);
+                    }
+                    sum2 = sqrt(sum2);
+
+                    if (sum2 < radiusH) {
+
+                        //Flächennormale berechnen
+                        vector normalA2(3);
+                        if (radius1 < 0 && radius2 > 0) {
+                            normalA2 = OM2 - intersect;
+                        } else {
+                            normalA2 = intersect - OM2;
+                        }
+
+                        //Normieren der Flächennormale und des Richtungsvektors + Skalarprodukt
+                        sum1 = 0;
+                        sum2 = 0;
+                        skpr1 = 0;
+                        for (int i = 0; i < 3; i++) {
+                            sum1 += pow(normalA2[i], 2);
+                            sum2 += pow(dV[i], 2);
+                        }
+                        sum1 = sqrt(sum1);
+                        sum2 = sqrt(sum2);
+                        for (int i = 0; i < 3; i++) {
+                            normalA2[i] = normalA2[i] / sum1;
+                            dV[i] = dV[i] / sum2;
+                            skpr1 += dV[i] * normalA1[i];
+                        }
+
+                        //Winkel berechnen & überprüfen
+                        coalphaS = 0;
+                        Utils::cross_product(coalphaV, dV, normalA1);
+                        for (int i = 0; i < 3; i++) {
+                            coalphaS += pow(coalphaV[i], 2);
+                        }
+                        coalphaS = sqrt(coalphaS);
+
+                        if (coalphaS < 1.5) {
+
+                            vector outLensDir(3);
+                            outLensDir = n * dV - normalA2 * (n * (skpr1) - sqrt(1 - pow(n, 2) * (1 - pow(skpr1, 2))));
+
+                            //neuer Ausgangspunkt und Richtung normieren & setzen
+                            sum1 = 0;
+                            for (int i = 0; i < 3; i++) {
+                                sum1 += pow(outLensDir[i], 2);
+                            }
+                            sum1 = sqrt(sum1);
+                            for (int i = 0; i < 3; i++) {
+                                outLensDir[i] = outLensDir[i] / sum1;
+                            }
+                            dV = outLensDir;
+                            pV = intersect;
+
+                            p.setPosition(pV);
+                            p.setDirection(dV);
+
+                            getsOut = true;
+                        }
+                    }
+                }
+            }
         }
     }
-
-    //Überprüfen ob im Höhenradius
-    double d1 = (2*radius1 - sqrt( 4*pow(radius1, 2) - 4*pow(radiusH, 2) )) / 2;
-    double sum1=0;
-    vector check(3);
-    check = intersect - (position - normal*d1);
-    for(int i=0; i<3; i++){
-        sum1 += pow(check[i], 2);
-    }
-    sum1 = sqrt(sum1);
-    if(sum1>radiusH){
-        return false;
-    }
-
-    //Flächennormale berechnen
-    vector normalA1(3);
-    if(radius1 > 0 && radius2 < 0){
-        normalA1 = intersect - OM1;
-    }else{
-        normalA1 = OM1 - intersect;
-    }
-
-    //Normieren der Flächennormale und des Richtungsvektors + Skalarprodukt
-    sum1=0;
-    double sum2=0;
-    double skpr1=0;
-    for(int i=0; i<3; i++){
-        sum1 += pow(normalA1[i], 2);
-        sum2 += pow(dV[i], 2);
-    }
-    sum1 = sqrt(sum1);
-    sum2 = sqrt(sum2);
-    for(int i=0; i<3; i++){
-        normalA1[i] = normalA1[i]/sum1;
-        dV[i] = dV[i]/sum2;
-        skrp1 += dV[i]*normalA1[i];
-    }
-
-    //Winkel berechnen
-    vector coalphaV(3);
-    double coalphaS=0;
-    cross_product(coalphaV&, dV&, normalA1&);
-    for(int i=0; i<3; i++){
-        coalphaS += pow(coalphaV[i], 2);
-    }
-    coalphaS = sqrt(coalphaS);
-
-    if(coalphaS > 1.5){
-        return false;
-    }
-
-    vector inLensDir(3);
-    inLensDir = (1/n)*dV - normalA1*( (1/n)*(skrp1) - sqrt( 1 - pow((1/n), 2)* (1-pow(skrp1, 2)) ) );
-
-    //neue Richtung normieren
-    sum1=0;
-    for(int i=0; i<3; i++){
-        sum1 += pow(inLensDir[i], 2);
-    }
-    sum1=sqrt(sum1);
-    for(int i=0; i<3; i++){
-        inLensDir[i] = inLensDir[i]/sum1;
-    }
-
-    //neuer Ausgangspunkt und Richtung setzen
-    dV = inLensDir;
-    pV = intersect;
-
-    //Summenvariablen für Schnittpunktberechnung zurücksetzen
-    a=0;
-    b=0;
-    c=0;
-
-    for(int i=0; i<3; i++){
-        a += pow(dV[i], 2);
-        b += 2*((pV[i]-OM2[i]*dV[i]);
-        c += pow((OM2[i]-pV[i]), 2) - pow(radius2, 2);
-    }
-
-    //Prüfen ob reele Lösung ex.
-    if( (pow(b,2)-4*a*c) < 0 && a == 0){
-        return false;
-    }
-
-    //Mögliche Lösungen als Variablen
-    t1=0;
-    t2=0;
-
-    t1 = (-b+sqrt((pow(b,2)-4*a*c))) / (2*a);
-    t2 = (-b-sqrt((pow(b,2)-4*a*c))) / (2*a);
-
-    //Unterscheidung zwischen Sammellinse und Zerstreuungslinse und darauf folgend Schnittpunktberechnung
-    if(radius1 > 0 && radius2 < 0){
-        if(t1>t2){
-            intersect = pV+t1*dV;
-        }else{
-            intersect = pV+t2*dV;
-        }
-    }else{
-        if(t1<t2){
-            intersect = pV+t1*dV;
-        }else{
-            intersect = pV+t2*dV;
-        }
-    }
-
-    //Überprüfen ob im Höhenradius
-    double d2 = (2*radius2 - sqrt( 4*pow(radius2, 2) - 4*pow(radiusH, 2) )) / 2;
-    sum2=0;
-    check = intersect - (position - normal*(d-d2));
-    for(int i=0; i<3; i++){
-        sum2 += pow(check[i], 2);
-    }
-    sum2 = sqrt(sum2);
-    if(sum2>radiusH){
-        return false;
-    }
-
-    //Flächennormale berechnen
-    vector normalA2(3);
-    if(radius1 > 0 && radius2 < 0){
-        normalA2 = OM2 - intersect;
-    }else{
-        normalA2 = intersect - OM2;
-    }
-
-    //Normieren der Flächennormale und des Richtungsvektors + Skalarprodukt
-    sum1=0;
-    sum2=0;
-    double skpr2=0;
-    for(int i=0; i<3; i++){
-        sum1 += pow(normalA2[i], 2);
-        sum2 += pow(dV[i], 2);
-    }
-    sum1 = sqrt(sum1);
-    sum2 = sqrt(sum2);
-    for(int i=0; i<3; i++){
-        normalA2[i] = normalA2[i]/sum1;
-        dV[i] = dV[i]/sum2;
-        skrp2 += dV[i]*normalA1[i];
-    }
-
-    //Winkel berechnen & überprüfen
-    coalphaS=0;
-    cross_product(coalphaV&, dV&, normalA1&);
-    for(int i=0; i<3; i++){
-        coalphaS += pow(coalphaV[i], 2);
-    }
-    coalphaS = sqrt(coalphaS);
-
-    if(coalphaS > 1.5){
-        return false;
-    }
-
-    vector outLensDir(3);
-    outLensDir = n*dV - normalA2*( n*(skrp2) - sqrt( 1 - pow(n, 2)* (1-pow(skrp2, 2)) ) );
-
-    //neuer Ausgangspunkt und Richtung normieren & setzen
-    sum1=0;
-    for(int i=0; i<3; i++){
-        sum1 += pow(outLensDir[i], 2);
-    }
-    sum1=sqrt(sum1);
-    for(int i=0; i<3; i++){
-        outLensDir[i] = outLensDir[i]/sum1;
-    }
-    dV = outLensDir;
-    pV = intersect;
-
-    photon.setPosition(pV);
-    photon.setDirection(dV);
-
-    return true;
+    return getsOut;
 }
 
-std::string LensTwoSided::getType() {
-    return "LensTwoSided";
-}
-
-double LensTwoSided::getRadiusI() {
-    return radiusI;
-}
-
-double LensTwoSided::getRadiusO() {
-    return radiusO;
-}
-
-LensTwoSided::LensTwoSided(vector& _pos, vector& _normal, double _refIndex, double _radiusH, double _radiusI, double _radiusO)
-:LensTwoSided::Lens(_pos, _normal, _refIndex, _radiusH) {
-    radiusI = _radiusI;
-    radiusO = _radiusO;
+LensTwoSided::LensTwoSided(vector& _pos, vector& _normal,double _n, double _radiusH, double _radiusI, double _radiusO, double _d)
+:LensTwoSided::Lens(_pos, _normal, _n, _radiusH, _d) {
+    radius1 = _radiusI;
+    radius2 = _radiusO;
 }
