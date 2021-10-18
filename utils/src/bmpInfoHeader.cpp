@@ -2,7 +2,7 @@
 #include <cstdint>
 
 
-BmpInfoHeader::BmpInfoHeader(unsigned int & _width, unsigned int & _height) {
+BmpInfoHeader::BmpInfoHeader(unsigned int &_width, unsigned int &_height) {
     sizeOfThisHeader = 40;
     width = _width;
     height = _height;
