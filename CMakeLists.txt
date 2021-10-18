@@ -11,7 +11,6 @@ add_executable(test
         logic/src/test.cpp
         utils/src/utils.cpp
         utils/src/objectPoint.cpp
-        components/src/test.cpp
         components/src/component.cpp
         components/src/filter.cpp
         components/src/mirrorRectangle.cpp

@@ -23,6 +23,10 @@
 
         static void importNormal(std::ifstream &, std::vector<double> &);
 
+        static void importPointOnEdge(std::ifstream &, std::vector<double> &);
+
+        static void importPosOfPrevComponent(std::ifstream &, std::vector<double> &);
+
         static void normalizeVector(std::vector<double> &);
 
         static void importStp(List &, std::string);

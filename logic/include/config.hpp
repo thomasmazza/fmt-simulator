@@ -20,6 +20,8 @@ namespace Config {
     const std::string MIRROR_RECTANGLE_CLOSING_TAG = "/MirrorRectangle";
     const std::string MIRROR_SQUARE_OPENING_TAG = "MirrorSquare";
     const std::string MIRROR_SQUARE_CLOSING_TAG = "/MirrorSquare";
+    const std::string DETECTOR_OPENING_TAG = "Detector";
+    const std::string DETECTOR_CLOSING_TAG = "/Detector";
     const std::string SETUP_OPENING_TAG = "Setup";
     const std::string SETUP_CLOSING_TAG = "/Setup";
     const std::string POSITION_OPENING_TAG = "Position";
@@ -62,10 +64,12 @@ namespace Config {
     const std::string OBJECT_ROW_CLOSING_TAG = "/ObjectRow";
     const std::string POINT_ON_EDGE_OPENING_TAG = "PointOnEdge";
     const std::string POINT_ON_EDGE_CLOSING_TAG = "/PointOnEdge";
-    const std::string POSITION_OF_PREVIOUS_COMPONENT_OPENING_TAG = "PositionOfPreviousComponent";
-    const std::string POSITION_OF_PREVIOUS_COMPONENT_CLOSING_TAG = "/PositionOfPreviousComponent";
-    const std::string SIZE_OPENING_TAG = "/Size";
+    const std::string POSITION_OF_PREVIOUS_COMPONENT_OPENING_TAG = "PosOfPrevComponent";
+    const std::string POSITION_OF_PREVIOUS_COMPONENT_CLOSING_TAG = "/PosOfPrevComponent";
+    const std::string SIZE_OPENING_TAG = "Size";
     const std::string SIZE_CLOSING_TAG = "/Size";
+    const std::string PIXEL_SIZE_OPENING_TAG = "PixelSize";
+    const std::string PIXEL_SIZE_CLOSING_TAG = "/PixelSize";
 
 
 }

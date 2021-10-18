@@ -7,6 +7,7 @@
 #include "mirrorCircle.hpp"
 #include "mirrorElliptical.hpp"
 #include "mirrorSquare.hpp"
+#include "detector.hpp"
 
 template<typename T> void List::ins(int pos, const T& e){
     lst.insert(pos, std::make_unique<T>(e));
@@ -41,3 +42,4 @@ template void List::append<MirrorElliptical>(const MirrorElliptical&);
 template void List::append<MirrorSquare>(const MirrorSquare&);
 template void List::append<LensTwoSided>(const LensTwoSided&);
 template void List::append<LensOneSided>(const LensOneSided&);
+template void List::append<Detector>(const Detector&);

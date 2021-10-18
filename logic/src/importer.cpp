@@ -5,6 +5,7 @@
 #include "../../components/include/lensTwoSided.hpp"
 #include "../../components/include/mirrorCircle.hpp"
 #include "../../components/include/mirrorSquare.hpp"
+#include "detector.hpp"
 
 using namespace Config;
 
@@ -58,7 +59,7 @@ void Importer::importNormal(std::ifstream &_setupFile, std::vector<double> &_nor
         getContentInBrackets(_setupFile, buf, NORMAL_CLOSING_TAG);
         std::cout << "Normal imported!" << std::endl;
     } catch (InvalidComponentException &e) {
-        std::cerr << e.what() << std::endl << "Error occurred while creating Position Vector" << std::endl;
+        std::cerr << e.what() << std::endl << "Error occurred while creating Normal Vector" << std::endl;
         throw InvalidComponentException();
     } catch (WrongTagException &e) {
         std::cerr << e.what() << std::endl << "Expected Parameter: " << NORMAL_OPENING_TAG << std::endl
@@ -66,6 +67,41 @@ void Importer::importNormal(std::ifstream &_setupFile, std::vector<double> &_nor
         throw WrongTagException();
     }
 }
+
+void Importer::importPointOnEdge(std::ifstream &_setupFile, std::vector<double> &_pointOnEdge) {
+    std::string buf;
+    try {
+        getContentInBrackets(_setupFile, buf, POINT_ON_EDGE_OPENING_TAG);
+        importVector(_setupFile, _pointOnEdge);
+        getContentInBrackets(_setupFile, buf, POINT_ON_EDGE_CLOSING_TAG);
+        std::cout << "PointOnEdge imported!" << std::endl;
+    } catch (InvalidComponentException &e) {
+        std::cerr << e.what() << std::endl << "Error occurred while creating PointOnEdge Vector" << std::endl;
+        throw InvalidComponentException();
+    } catch (WrongTagException &e) {
+        std::cerr << e.what() << std::endl << "Expected Parameter: " << POINT_ON_EDGE_OPENING_TAG << std::endl
+                  << "Retrieved Parameter: " << buf << std::endl;
+        throw WrongTagException();
+    }
+}
+
+void Importer::importPosOfPrevComponent(std::ifstream & _setupFile, std::vector<double> & _posOfPrev) {
+    std::string buf;
+    try {
+        getContentInBrackets(_setupFile, buf, POSITION_OF_PREVIOUS_COMPONENT_OPENING_TAG);
+        importVector(_setupFile, _posOfPrev);
+        getContentInBrackets(_setupFile, buf, POSITION_OF_PREVIOUS_COMPONENT_CLOSING_TAG);
+        std::cout << "posOfPrevComponent imported!" << std::endl;
+    } catch (InvalidComponentException &e) {
+        std::cerr << e.what() << std::endl << "Error occurred while creating posOfPrevComponent Vector" << std::endl;
+        throw InvalidComponentException();
+    } catch (WrongTagException &e) {
+        std::cerr << e.what() << std::endl << "Expected Parameter: " << POSITION_OF_PREVIOUS_COMPONENT_OPENING_TAG << std::endl
+                  << "Retrieved Parameter: " << buf << std::endl;
+        throw WrongTagException();
+    }
+}
+
 
 void Importer::importVector(std::ifstream &_setupFile, std::vector<double> &_vector) {
     std::string buf;
@@ -237,7 +273,22 @@ void Importer::importStp(List &_lst, std::string _filename) {
                 _lst.append<MirrorSquare>(MirrorSquare(_position, _normal, _length));
                 getContentInBrackets(setupFile, buf, MIRROR_SQUARE_CLOSING_TAG);
                 std::cout << MIRROR_SQUARE_OPENING_TAG << " was imported!" << std::endl;
-            } else if (buf == SETUP_CLOSING_TAG) {
+            } else if(buf == DETECTOR_OPENING_TAG){
+                std::vector<double> _pointOnEdge(3);
+                std::vector<double> _posOfPreviousComponent(3);
+                int size;
+                double pixelSize;
+                importPosition(setupFile, _position);
+                importNormal(setupFile, _normal);
+                importPointOnEdge(setupFile, _pointOnEdge);
+                importPosOfPrevComponent(setupFile, _posOfPreviousComponent);
+                importNumber(setupFile, SIZE_OPENING_TAG,size);
+                importNumber(setupFile, PIXEL_SIZE_OPENING_TAG, pixelSize);
+
+                _lst.append<Detector>(Detector(_position, _normal, _pointOnEdge, _posOfPreviousComponent, size, pixelSize));
+                getContentInBrackets(setupFile, buf, DETECTOR_CLOSING_TAG);
+                std::cout << DETECTOR_OPENING_TAG << " was imported!" << std::endl;
+            }else if (buf == SETUP_CLOSING_TAG) {
                 break;
             } else {
                 throw InvalidComponentException();

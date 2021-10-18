@@ -31,6 +31,8 @@ public:
 
     const int getSize();
 
+    const double getPixelSize();
+
     void setPosOfPrevComponent(std::vector<double> &);
 
     void setPointOnEdge(std::vector<double> &);

@@ -26,6 +26,10 @@ void Detector::setPointOnEdge(std::vector<double> &_point) {
     pointOnEdge = _point;
 }
 
+const double Detector::getPixelSize() {
+    return pixelSize;
+}
+
 void Detector::getInPoint(Photon &photon) {
     std::vector<double> pV = photon.getPosition();
     std::vector<double> dV = photon.getDirection();
