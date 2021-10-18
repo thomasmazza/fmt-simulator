@@ -6,7 +6,7 @@
 #include "math.h"
 
 
-class Lens: public Component {
+class Lens : public Component {
 protected:
     double n;
     double radiusH;

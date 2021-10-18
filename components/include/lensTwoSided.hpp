@@ -1,7 +1,7 @@
 #pragma once
 
 #include "lens.hpp"
-#include "utils.hpp"
+#include "../../utils/include/utils.hpp"
 
 
 class LensTwoSided: public Lens {

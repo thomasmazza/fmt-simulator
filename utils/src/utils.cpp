@@ -7,7 +7,13 @@ void Utils::cross_product(std::vector<double> &result, std::vector<double> &a, s
     result[1] = a[2] * b[0] - a[0] * b[2];
     result[2] = a[0] * b[1] - a[1] * b[0];
 }
-
+std::vector<double> Utils::cross_product_2(std::vector<double>& a, std::vector<double>& b) {
+    std::vector<double> result(3);
+    result[0]=a[1]*b[2]-a[2]*b[2];
+    result[1]=a[2]*b[0]-a[0]*b[2];
+    result[2]=a[0]*b[1]-a[1]*b[0];
+    return result;
+}
 std::string Utils::wavelengthToRGB(const int &wavelength) {
     double r = 0;
     double g = 0;
@@ -90,5 +96,11 @@ void Utils::normalizeVector(std::vector<double> &_vec) {
     //Normierten Vektor berechnen
     for (int i = 0; i < 3; i++) _vec[i] = (_vec[i] / vecAbs);
 }
-
-
+double Utils::max(double a, double b) {
+    if (a < b) { return b; }
+    else return a;
+}
+double Utils::min(double a, double b) {
+    if (a > b) { return b; }
+    else return a;
+}

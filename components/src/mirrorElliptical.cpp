@@ -52,7 +52,7 @@ bool MirrorElliptical::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
         mWidth = radiusW * mWidth;
 
         //Vektor von Mittelpunkt zum Intersect erstellen
-        intersect = intersect - position;
+        vector intPos = intersect - position;
 
         //lS und rS wiederverwenden zur Speicheroptimierung
         rS = 0;
@@ -61,8 +61,8 @@ bool MirrorElliptical::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
         //Überprüfen, ob in Grenze
         //Skalarprodukt aus Achse mit Intersect
         for (int i = 0; i < 3; i++) {
-            rS += intersect[i] * mHigh[i];
-            lS += intersect[i] * mWidth[i];
+            rS += intPos[i] * mHigh[i];
+            lS += intPos[i] * mWidth[i];
         }
 
         //lengthW und lengthH ist nicht deklariert

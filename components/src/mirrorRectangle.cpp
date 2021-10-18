@@ -53,7 +53,7 @@ bool MirrorRectangle::getOutDir(Photon &p, std::vector<double> &_dirOA) {
 
 
         //Vektor von Mittelpunkt zum Intersect erstellen
-        intersect = intersect - position;
+        vector intPos = intersect - position;
 
         //lS und rS wiederverwenden zur Speicheroptimierung
         rS = 0;
@@ -61,8 +61,8 @@ bool MirrorRectangle::getOutDir(Photon &p, std::vector<double> &_dirOA) {
 
         //Überprüfen ob in Grenze
         for (int i = 0; i < 3; i++) {
-            rS += intersect[i] * mHigh[i];
-            lS += intersect[i] * mWidth[i];
+            rS += intPos[i] * mHigh[i];
+            lS += intPos[i] * mWidth[i];
         }
 
         double h = abs((rS / (pow(lengthH, 2))));

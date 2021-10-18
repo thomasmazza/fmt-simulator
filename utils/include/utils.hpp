@@ -3,8 +3,6 @@
 #include <boost/numeric/ublas/vector.hpp>
 
 class Utils {
-private:
-    static void coreTranslationInColor(const int&, double&, double&, double&);
 public:
 /*
  * Erster Vektor ist der Ergebnisvektor
@@ -12,7 +10,17 @@ public:
  */
     static void cross_product(std::vector<double> &, std::vector<double> &, std::vector<double> &);
 
+    static std::vector<double> cross_product_2(std::vector<double>&, std::vector<double>&);
+
+    static void normalizeVector(std::vector<double> &);
+
+    static double dot_product(std::vector<double>&, std::vector<double>&);
+
     static std::string wavelengthToRGB(const int&);
 
-    static void normalizeVector(std::vector<double>& _vec);
+    static void coreTranslationInColor(const int&, double&, double&, double&);
+
+    static double max(double, double);
+
+    static double min(double, double);
 };
