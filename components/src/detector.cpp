@@ -115,8 +115,23 @@ void Detector::getInPoint(Photon& photon) {
             image(j + i * size) = color;
         }
     }
+    int sz = image.size() - 1;
+    vector bw (sz * sz);
+    for (int i = 1; i < sz; i++) {
+        for(int j = 1; j < sz; j++) {
+            bw((j - 1) + (i - 1) * sz) = (image(j + i * sz).intensity * (-4)) + (image(j - 1 + i * sz).intensity) + (image(j + 1 + i * sz).intensity) + (image(j + (i - 1) * sz).intensity) + (image(j + (i + 1) * sz).intensity);
+        }
+    }
     double max = 1.0;
     double min = max;
+    for (int i = 0; i < sz * sz; i++) {
+        if (bw(i) >= max) {
+            max = bw(i);
+        }
+    }
+    std::cout << "MAX Sharpness" << max << std::endl;
+    sharpness = max;
+    max = 1.0;
     double avg = 0;
     for (int i = 0; i < image.size(); i++) {
         if (image[i].intensity > max) {
@@ -158,5 +173,6 @@ Detector::Detector(vector& _pos, vector& _normal, vector& _pointOnEdge, vector& 
     pixelSize = _pixelSize;
     length = static_cast<double>(size) * pixelSize;
     brightness = 0;
+    sharpness = 0;
     sensor = rgb_matrix (size, size);
 }
