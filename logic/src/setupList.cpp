@@ -14,7 +14,7 @@ template<typename T> void List::ins(int pos, const T& e){
 }
 
 template<typename T> void List::append(const T& e){
-lst.push_back(std::make_unique<T>(e));
+    lst.push_back(std::make_unique<T>(e));
 }
 
 void List::del(int pos){

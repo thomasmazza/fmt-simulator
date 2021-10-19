@@ -1,4 +1,4 @@
-#include "lensTwoSided.hpp"
+#include "../include/lensTwoSided.hpp"
 
 
 bool LensTwoSided::getOutDir(Photon& p){

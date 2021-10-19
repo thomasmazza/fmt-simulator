@@ -1,4 +1,4 @@
-#include "detector.hpp"
+#include "../include/detector.hpp"
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/math/constants/constants.hpp>
 #include "../../utils/include/utils.hpp"

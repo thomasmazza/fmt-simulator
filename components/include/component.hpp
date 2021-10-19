@@ -2,7 +2,7 @@
 
 #include "componentType.hpp"
 #include <vector>
-#include "operators.hpp"
+#include "../../utils/include/operators.hpp"
 
 class Component {
     protected:

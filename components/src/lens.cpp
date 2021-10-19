@@ -1,4 +1,4 @@
-#include "lens.hpp"
+#include "../include/lens.hpp"
 
 Lens::Lens(std::vector<double>& _pos, std::vector<double>& _normal, double _radiusH,double _n, double _d, ComponentType _type):Component(_pos, _normal, _type), radiusH(_radiusH), n(_n), d(_d){
 }

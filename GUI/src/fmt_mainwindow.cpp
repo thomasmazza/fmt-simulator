@@ -110,7 +110,7 @@ void fmt_mainWindow::on_OpenStpFile_clicked(){
 
 void fmt_mainWindow::on_actionNew_Project_triggered()
 {
-    QString prjDirectoryName = QFileDialog::getExistingDirectory(this, "Select a directory", (QCoreApplication::applicationDirPath() + "/../fmtGUI/setups"), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    QString prjDirectoryName = QFileDialog::getExistingDirectory(this, "Select a directory", (QCoreApplication::applicationDirPath() + "/../fmt-simulator/setups"), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     //Abbrechen falls cancel gedrückt wurde
     if(prjDirectoryName == "") return;
 
@@ -142,7 +142,7 @@ void fmt_mainWindow::createNewProject(QString _name, QString _path){
 
 void fmt_mainWindow::on_actionLoad_Project_triggered()
 {
-    QString prjDirectoryName = QFileDialog::getExistingDirectory(this, "Select the project directory", (QCoreApplication::applicationDirPath() + "/../fmtGUI/setups"), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    QString prjDirectoryName = QFileDialog::getExistingDirectory(this, "Select the project directory", (QCoreApplication::applicationDirPath() + "/../fmt-simulator/setups"), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     //Abfangen, falls Cancel-Button gedrückt wurde
     if(prjDirectoryName == "") return;
 

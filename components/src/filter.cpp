@@ -1,5 +1,5 @@
-#include"filter.hpp"
-#include "photon.hpp"
+#include "../include/filter.hpp"
+#include "../../photon/include/photon.hpp"
 int Filter::getLowerLimit() {
     return lowerLimit;
 }
