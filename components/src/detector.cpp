@@ -128,6 +128,7 @@ void Detector::getInPoint(Photon& photon) {
         avg += image[i].intensity;
     }
     avg = avg / (image.size());
+    brightness = (avg / max) * 100;
     double factor = 2;
     double adjustment;
     for (int i = 0; i < image.size(); i++) {
@@ -156,5 +157,6 @@ Detector::Detector(vector& _pos, vector& _normal, vector& _pointOnEdge, vector& 
     size = _size;
     pixelSize = _pixelSize;
     length = static_cast<double>(size) * pixelSize;
+    brightness = 0;
     sensor = rgb_matrix (size, size);
 }
