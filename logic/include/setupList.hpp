@@ -16,5 +16,6 @@
         void swap(int, int);
         std::unique_ptr<Component>& elem(int);
         int getLength();
+        ~List();
     };
 

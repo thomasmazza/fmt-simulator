@@ -1,8 +1,4 @@
-/*
 #include<iostream>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/io.hpp>
 #include <vector>
 #include <fstream>
 #include "../../utils/include/utils.hpp"
@@ -17,6 +13,7 @@
 #include "bmprgb.hpp"
 #include "bmpFileHeader.hpp"
 #include "bmpInfoHeader.hpp"
+#include "exporter.hpp"
 
 
 typedef typename std::vector<RGB> rgb_vector;
@@ -126,18 +123,8 @@ int main(int argc, char *argv[]) {
     }
 
     // Exportiert .bmp
-//    bmp_vector image = d.createImage();
-
-//    BmpFileHeader bfh(S,S);
-//    BmpInfoHeader bih(S,S);
-//    std::ofstream fout("output.bmp", std::ios::binary);
-//    fout.write((char *) &bfh, 14);
-//    fout.write((char *) &bih, 40);
-//    for (int i = 0; i < image.size(); i++) {
-//        fout.write((char *) &image[i], 3);
-//    }
-//    fout.close();
+    //Exporter::exportBMPImage()
 
 
 
-};*/
+}

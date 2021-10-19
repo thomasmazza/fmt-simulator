@@ -30,5 +30,6 @@ private:
 public:
     static void exportStp(List &, std::string);
     static void exportObject(Config::object & object, std::string filename);
+    static void exportBMPImage( Detector&, std::string filename);
 };
 
