@@ -104,7 +104,16 @@ void fmt_mainWindow::on_OpenStpFile_clicked(){
     //Erstelle Pfad zu gewählter Datei
     QDir _projPath(ui->ProjPath->text());
     ui->StpFilePath->setText(_projPath.relativeFilePath(stpFileName));
-    ui->StpFileAuto->setStyleSheet("QPushButton {color: black}");
+
+    //Bestimme Namen
+    QString prjDirectoryName = ui->ProjPath->text();
+    int posSlash = prjDirectoryName.lastIndexOf(QChar('/')) + 1;
+    QString prjName = prjDirectoryName;
+    prjName.remove(0, posSlash);
+
+    //Auto detect auf aus, falls nicht Standartdatei gewählt
+    if(ui->StpFilePath->toPlainText() != prjName + ".xml") ui->StpFileAuto->setStyleSheet("QPushButton {color: black}");
+    else ui->StpFileAuto->setStyleSheet("QPushButton {color: green}");
 
     //Setup aus Datei importieren und in Liste speichern, Liste dann aktualisieren
     ui->CmpListBox->resetList();
