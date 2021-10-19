@@ -6,5 +6,6 @@ struct BmpFileHeader {
     uint32_t sizeOfFile;
     uint32_t reserved;
     uint32_t offset;
-    BmpFileHeader(unsigned int&, unsigned int&);
+
+    BmpFileHeader(unsigned int &, unsigned int &);
 };

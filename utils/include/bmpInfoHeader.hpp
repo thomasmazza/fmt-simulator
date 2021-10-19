@@ -14,5 +14,6 @@ struct BmpInfoHeader {
     int32_t verticalResolution;
     uint32_t colorTableEntries;
     uint32_t importantColors;
-    BmpInfoHeader(unsigned int &, unsigned  int &);
+
+    BmpInfoHeader(unsigned int &, unsigned int &);
 };
