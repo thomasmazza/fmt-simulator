@@ -1,7 +1,4 @@
 #include<iostream>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/io.hpp>
 #include <vector>
 #include <fstream>
 #include "../../utils/include/utils.hpp"
@@ -126,8 +123,8 @@ int main(int argc, char *argv[]) {
     }
 
     // Exportiert .bmp
-    Exporter::exportBMPImage()
+    //Exporter::exportBMPImage()
 
 
 
-};
+}

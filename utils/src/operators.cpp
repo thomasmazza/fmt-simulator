@@ -12,9 +12,9 @@ std::vector<double> operator+(const std::vector<double>& vector1, const std::vec
 
 std::vector<double> operator-(const std::vector<double>& vector1, const std::vector<double>& vector2){
     assert(vector1.size()==vector2.size());
-    std::vector<double> vector;
+    std::vector<double> vector(vector1.size());
     for(unsigned int i = 0;i<vector1.size();i++){
-        vector = vector1 - vector2;
+        vector[i] = vector1[i] - vector2[i];
     }
     return vector;
 }
