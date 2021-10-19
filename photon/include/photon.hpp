@@ -2,20 +2,17 @@
 
 #include <boost/numeric/ublas/vector.hpp>
 
-typedef typename boost::numeric::ublas::vector<double> vector;
 class Photon {
 private:
     const int waveLength;
-    int intensity;
-    vector position;
-    vector direction;
+    std::vector<double> position;
+    std::vector<double> direction;
 public:
-    Photon(vector&, vector&, int, int);
+    Photon(std::vector<double>&, std::vector<double>&, int);
     int getWaveLength();
-    int getIntensity();
-    vector getPosition();
-    vector getDirection();
-    void setPosition(vector&);
-    void setDirection(vector&);
+    std::vector<double> getPosition();
+    std::vector<double> getDirection();
+    void setPosition(std::vector<double>&);
+    void setDirection(std::vector<double>&);
     void setIntensity(int);
 };

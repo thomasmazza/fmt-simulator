@@ -5,6 +5,6 @@
 class MirrorSquare: public MirrorRectangle{
     private:
     public:
-        MirrorSquare(vector&, vector&, double);
-        std::string getType();
+        MirrorSquare(std::vector<double>&, std::vector<double>&, double);
+    const double& getLength();
 };

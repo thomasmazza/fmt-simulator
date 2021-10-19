@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../include/mirrorElliptical.hpp"
+#include "mirrorElliptical.hpp"
 
 class MirrorCircle : public MirrorElliptical{
     private:
     public:
-        MirrorElliptical(vector&, vector&, double);
-        std::string getType();
+    MirrorCircle(std::vector<double>&, std::vector<double>&, double);
+    const double getRadius();
 };
