@@ -23,4 +23,6 @@ public:
     static double max(double, double);
 
     static double min(double, double);
+
+    static double getAbs(std::vector<double> &);
 };

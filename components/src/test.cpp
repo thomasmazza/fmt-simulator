@@ -1,5 +1,6 @@
-/*
+
 #include<iostream>
+
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>
@@ -95,7 +96,8 @@ int main(int argc, char *argv[]) {
     MirrorRectangle rec1(testVector, testVector5, 20, 20);
     Photon testPhoton2(testVector3, testVector4, 600);
     Photon testPhoton3(testVector3, testVector4, 800);
-    std::vector<double> trace = rec1.getPosition() - testPhoton2.getPosition();
+    std::vector<double> trace(3);
+    trace = rec1.getPosition() - testPhoton2.getPosition();
 
     Z = 0;
     for (int i = 0; i < 3; i++) {
@@ -140,4 +142,4 @@ int main(int argc, char *argv[]) {
 
 
 
-};*/
+};

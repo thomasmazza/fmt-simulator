@@ -107,3 +107,11 @@ double Utils::min(double a, double b) {
 double Utils::dot_product(std::vector<double>& a, std::vector<double>& b) {
     return (a[0] * b[0]) + (a[1] * b[1]) + (a[2] * b[2]);
 }
+
+double Utils::getAbs(std::vector<double>& _vec) {
+    double vecAbs = 0;
+    //Laenge des Vektors bestimmen
+    for (int i = 0; i < 3; i++) vecAbs += pow(_vec[i], 2);
+    vecAbs = sqrt(vecAbs);
+    return vecAbs;
+}
