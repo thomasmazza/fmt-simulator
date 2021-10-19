@@ -7,6 +7,7 @@
 #include <QMessageBox>
 
 #include <iostream>
+#include <fstream>
 
 fmt_mainWindow::fmt_mainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -105,7 +106,14 @@ void fmt_mainWindow::on_OpenStpFile_clicked(){
     ui->StpFilePath->setText(_projPath.relativeFilePath(stpFileName));
     ui->StpFileAuto->setStyleSheet("QPushButton {color: black}");
 
-    //TODO: Importiere Liste aus Setup, aktualisere List Box
+    //Setup aus Datei importieren und in Liste speichern, Liste dann aktualisieren
+    ui->CmpListBox->resetList();
+
+    //Prüfen, ob Datei leer ist
+    std::ifstream file;
+    file.open((ui->ProjPath->text() + "/" + ui->StpFilePath->toPlainText()).toStdString());
+    if(file.peek() != std::ifstream::traits_type::eof()) Importer::importStp(*(ui->CmpListBox->getComponentList()), (ui->ProjPath->text() + "/" + ui->StpFilePath->toPlainText()).toStdString());
+    ui->CmpListBox->rebuildFromList();
 }
 
 void fmt_mainWindow::on_actionNew_Project_triggered()
@@ -138,6 +146,10 @@ void fmt_mainWindow::createNewProject(QString _name, QString _path){
     ui->InFilePath->setText("Please select an input file");
     ui->StpFilePath->setText(_name + ".xml");
     ui->StpFileAuto->setStyleSheet("QPushButton {color: green}");
+
+    //Liste zurücksetzen
+    ui->CmpListBox->resetList();
+    ui->CmpListBox->rebuildFromList();
 }
 
 void fmt_mainWindow::on_actionLoad_Project_triggered()
@@ -166,6 +178,15 @@ void fmt_mainWindow::on_actionLoad_Project_triggered()
     if(autoDetect(prjName, ".xml")){
         ui->StpFilePath->setText(prjName + ".xml");
         ui->StpFileAuto->setStyleSheet("QPushButton {color: green}");
+
+        //Setup aus Datei importieren und in Liste speichern, Liste dann aktualisieren
+        ui->CmpListBox->resetList();
+
+        //Prüfen, ob Datei leer ist
+        std::ifstream file;
+        file.open((ui->ProjPath->text() + "/" + ui->StpFilePath->toPlainText()).toStdString());
+        if(file.peek() != std::ifstream::traits_type::eof()) Importer::importStp(*(ui->CmpListBox->getComponentList()), (ui->ProjPath->text() + "/" + ui->StpFilePath->toPlainText()).toStdString());
+        ui->CmpListBox->rebuildFromList();
     }
     else{
         ui->StpFilePath->setText("Auto detection failed");
@@ -217,7 +238,14 @@ void fmt_mainWindow::on_StpFileAuto_clicked()
         ui->StpFilePath->setText(prjName + ".xml");
         ui->StpFileAuto->setStyleSheet("QPushButton {color: green}");
 
-        //TODO: Setup aus Datei importieren und in Liste speichern, Liste dann aktualisieren
+        //Setup aus Datei importieren und in Liste speichern, Liste dann aktualisieren
+        ui->CmpListBox->resetList();
+
+        //Prüfen, ob Datei leer ist
+        std::ifstream file;
+        file.open((ui->ProjPath->text() + "/" + ui->StpFilePath->toPlainText()).toStdString());
+        if(file.peek() != std::ifstream::traits_type::eof()) Importer::importStp(*(ui->CmpListBox->getComponentList()), (ui->ProjPath->text() + "/" + ui->StpFilePath->toPlainText()).toStdString());
+        ui->CmpListBox->rebuildFromList();
     }
     else{
         if(ui->StpFilePath->toPlainText() == (prjName + ".xml")) ui->StpFilePath->setText("Auto detection failed");
@@ -236,7 +264,8 @@ void fmt_mainWindow::on_actionSave_Project_triggered()
     //Benachrichtigen, dass vorherige Datei überschrieben wird
     QMessageBox::StandardButton saveAgreement = QMessageBox::warning(this, "Warning", "Setup File " + ui->StpFilePath->toPlainText() + " is about to be overwritten.\nAre you sure you want to continue?", QMessageBox::Yes|QMessageBox::No);
     if(saveAgreement == QMessageBox::Yes){
-        //TODO: Export Setup aus der Liste
+        //Export Setup aus der Liste
+        Exporter::exportStp(*(ui->CmpListBox->getComponentList()), (ui->ProjPath->text() + "/" + ui->StpFilePath->toPlainText()).toStdString());
         return;
     }
 }
@@ -272,9 +301,11 @@ void fmt_mainWindow::saveWithOtherName(QString _name){
     QMessageBox::StandardButton autoStpName = QMessageBox::warning(this, "Warning", "Setup File has to be an '.xml'-File.\nDo you want to save it as '" + _name + ".xml' ?", QMessageBox::Yes|QMessageBox::No);
     if(autoStpName == QMessageBox::Yes){
         _name = _name + ".xml";
-        //TODO: Export Setup aus der Liste
         ui->StpFilePath->setText(_name);
         ui->StpFileAuto->setStyleSheet("QPushButton {color: black}");
+
+        //Export Setup aus der Liste
+        Exporter::exportStp(*(ui->CmpListBox->getComponentList()), (ui->ProjPath->text() + "/" + ui->StpFilePath->toPlainText()).toStdString());
         return;
     }
     else if(autoStpName == QMessageBox::No){
@@ -300,7 +331,8 @@ void fmt_mainWindow::closeEvent(QCloseEvent *event){
         return;
     }
     else if(closeAgreement == QMessageBox::Save){
-        //TODO: Export Setup aus der Liste
+        //Export Setup aus der Liste
+        Exporter::exportStp(*(ui->CmpListBox->getComponentList()), (ui->ProjPath->text() + "/" + ui->StpFilePath->toPlainText()).toStdString());
         event->accept();
         return;
     }

@@ -11,6 +11,18 @@
 
 #include "cmpAddWindow.hpp"
 
+#include "../../logic/include/setupList.hpp"
+#include "../../logic/include/exporter.hpp"
+#include "../../logic/include/importer.hpp"
+#include "../../components/include/detector.hpp"
+#include "../../components/include/filter.hpp"
+#include "../../components/include/lensOneSided.hpp"
+#include "../../components/include/lensTwoSided.hpp"
+#include "../../components/include/mirrorCircle.hpp"
+#include "../../components/include/mirrorElliptical.hpp"
+#include "../../components/include/mirrorRectangle.hpp"
+#include "../../components/include/mirrorSquare.hpp"
+
 class CmpList_element : public QFrame{
     Q_OBJECT
 public:
@@ -37,6 +49,8 @@ private:
     QPushButton* elmButtonRemove;
     QPushButton* elmButtonUp;
     QPushButton* elmButtonDown;
+
+    List componentList;
 };
 
 class CmpList_box : public QWidget{
@@ -44,12 +58,17 @@ class CmpList_box : public QWidget{
 public:
     CmpList_box();
     ~CmpList_box();
+    List* getComponentList();
+    void rebuildFromList();
+    void resetList();
 public slots:
     void addCmpButtonPressed();
     void addCmpToList(QString, double, double, double, double, double, double, double, double, double, double, double, bool);
 private:
     QVBoxLayout* layout;
     QSpacerItem* bottomSpacer;
+
+    List* componentList;
 };
 
 #endif // CMPLIST_H

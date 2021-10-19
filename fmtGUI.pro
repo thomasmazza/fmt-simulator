@@ -16,6 +16,7 @@ INCLUDEPATH += \
     utils/include/
 
 SOURCES += \
+    GUI/src/utilsGUI.cpp \
     components/src/component.cpp \
     components/src/componentType.cpp \
     components/src/detector.cpp \
@@ -52,10 +53,10 @@ SOURCES += \
     GUI/src/prjNewWindow.cpp \
     GUI/src/saveStpAsWindow.cpp \
     GUI/src/simStartWindow.cpp \
-    GUI/src/utils.cpp \
     fmt_simulator.cpp
 
 HEADERS += \
+    GUI/include/utilsGUI.hpp \
     components/include/component.hpp \
     components/include/componentType.hpp \
     components/include/detector.hpp \

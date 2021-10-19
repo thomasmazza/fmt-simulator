@@ -1,10 +1,8 @@
 #include "../include/cmpAddWindow.hpp"
 
-#include "utils.cpp"
-
 void CmpAddWindow::changeCmpType(QString _type){
     auto del = layout->takeAt(1)->layout();
-    utils::removeItems(del);
+    utilsGUI::removeItems(del);
 
     QFormLayout* _inputHolder = new QFormLayout();
     _inputHolder->setSpacing(6);

@@ -1,10 +1,7 @@
-#include <QWidget>
-#include <QLayout>
-
-namespace utils{
+#include "../include/utilsGUI.hpp"
 
 //Zurhilfenahme von https://forum.qt.io/topic/16660/solved-remove-items-from-layout/5
-void removeItems(QLayout* layout){
+void utilsGUI::removeItems(QLayout* layout){
     QLayoutItem* child;
     while(!(layout->isEmpty())) {
         child = layout->takeAt(0);
@@ -14,4 +11,3 @@ void removeItems(QLayout* layout){
     }
 }
 
-}

@@ -1,6 +1,8 @@
 #ifndef CMPADDWINDOW_HPP
 #define CMPADDWINDOW_HPP
 
+#include "utilsGUI.hpp"
+
 #include <QDialog>
 #include <QBoxLayout>
 #include <QPushButton>

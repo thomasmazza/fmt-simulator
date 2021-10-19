@@ -149,6 +149,93 @@ void CmpList_element::moveDownElm(){
     //TODO: Liste aktualisieren
 }
 
+void CmpList_box::rebuildFromList(){
+    auto del = layout->layout();
+    utilsGUI::removeItems(del);
+
+    int length = componentList->getLength();
+    //Lade alle Components aus der Liste neu und stelle grafisch dar
+    for(int i = 0; i < length; i++){
+        ComponentType _type = componentList->elem(i)->getType();
+
+        CmpList_element* element;
+        switch(_type){
+        case detector:
+            element = new CmpList_element(i + 1, "Detector");
+
+            //Element einfügen
+            layout->removeItem(bottomSpacer);
+            layout->addWidget(element);
+            layout->addItem(bottomSpacer);
+            break;
+        case filter:
+            element = new CmpList_element(i + 1, "Filter");
+
+            //Element einfügen
+            layout->removeItem(bottomSpacer);
+            layout->addWidget(element);
+            layout->addItem(bottomSpacer);
+            break;
+        case lensOneSided:
+            element = new CmpList_element(i + 1, "One Sided Lens");
+
+            //Element einfügen
+            layout->removeItem(bottomSpacer);
+            layout->addWidget(element);
+            layout->addItem(bottomSpacer);
+            break;
+        case lensTwoSided:
+            element = new CmpList_element(i + 1, "Two Sided Lens");
+
+            //Element einfügen
+            layout->removeItem(bottomSpacer);
+            layout->addWidget(element);
+            layout->addItem(bottomSpacer);
+            break;
+        case mirrorCircle:
+            element = new CmpList_element(i + 1, "Circle Mirror");
+
+            //Element einfügen
+            layout->removeItem(bottomSpacer);
+            layout->addWidget(element);
+            layout->addItem(bottomSpacer);
+            break;
+        case mirrorElliptical:
+            element = new CmpList_element(i + 1, "Elliptical Mirror");
+
+            //Element einfügen
+            layout->removeItem(bottomSpacer);
+            layout->addWidget(element);
+            layout->addItem(bottomSpacer);
+            break;
+        case mirrorRectangle:
+            element = new CmpList_element(i + 1, "Rectangular Mirror");
+
+            //Element einfügen
+            layout->removeItem(bottomSpacer);
+            layout->addWidget(element);
+            layout->addItem(bottomSpacer);
+            break;
+        case mirrorSquare:
+            element = new CmpList_element(i + 1, "Square Mirror");
+
+            //Element einfügen
+            layout->removeItem(bottomSpacer);
+            layout->addWidget(element);
+            layout->addItem(bottomSpacer);
+            break;
+        }
+    }
+}
+
+void CmpList_box::resetList(){
+    componentList = new List();
+}
+
+List* CmpList_box::getComponentList(){
+    return componentList;
+}
+
 void CmpList_box::addCmpButtonPressed(){
     CmpAddWindow* addWin = new CmpAddWindow(this);
 
@@ -159,12 +246,49 @@ void CmpList_box::addCmpButtonPressed(){
 void CmpList_box::addCmpToList(QString _type, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _in1, double _in2, double _in3, double _in4, double _in5a, bool _in5b){
     layout->removeItem(bottomSpacer);
     //TODO: Ermittle Element-Nummer aus Listenplatz/Listenlänge
-    CmpList_element* element = new CmpList_element(1, _type); //TODO: Add List reference transfer
-
-    //TODO: Füge Element in Liste ein
+    short elmNumber = componentList->getLength() + 1;
+    CmpList_element* element = new CmpList_element(elmNumber, _type); //TODO: Add List reference transfer
 
     layout->addWidget(element);
     layout->addItem(bottomSpacer);
+
+    //Füge Element in die Liste ein
+    std::vector<double> _pos(3); _pos[0] = _xPos; _pos[1] = _yPos; _pos[2] = _zPos;
+    std::vector<double> _norm(3); _norm[0] = _xNorm; _norm[1] = _yNorm; _norm[2] = _zNorm;
+    //If-Verzweigung weil switch-cases nicht mit Strings kompatibel sind...
+    if(_type == "Detector"){
+        //TODO: Übergebene Werte beheben
+        Detector _new(_pos, _norm, _norm, _norm, 3, 0.1);
+        componentList->append<Detector>(_new);
+    }
+    else if(_type == "Filter"){
+        Filter _new(_pos, _norm, _in1, _in2);
+        componentList->append<Filter>(_new);
+    }
+    else if(_type == "One Sided Lens"){
+        LensOneSided _new(_pos, _norm, _in1, _in2, _in3, _in4, _in5b);
+        componentList->append<LensOneSided>(_new);
+    }
+    else if(_type == "Two Sided Lens"){
+        LensTwoSided _new(_pos, _norm, _in1, _in2, _in3, _in4, _in5a);
+        componentList->append<LensTwoSided>(_new);
+    }
+    else if(_type == "Circle Mirror"){
+        MirrorCircle _new(_pos, _norm, _in1);
+        componentList->append<MirrorCircle>(_new);
+    }
+    else if(_type == "Elliptical Mirror"){
+        MirrorElliptical _new(_pos, _norm, _in1, _in2);
+        componentList->append<MirrorElliptical>(_new);
+    }
+    else if(_type == "Rectangular Mirror"){
+        MirrorRectangle _new(_pos, _norm, _in1, _in2);
+        componentList->append<MirrorRectangle>(_new);
+    }
+    else if(_type == "Square Mirror"){
+        MirrorSquare _new(_pos, _norm, _in1);
+        componentList->append<MirrorSquare>(_new);
+    }
 }
 
 CmpList_box::CmpList_box(){
@@ -172,6 +296,8 @@ CmpList_box::CmpList_box(){
     bottomSpacer = new QSpacerItem(100, 10, QSizePolicy::Minimum, QSizePolicy::Expanding);
     layout->addItem(bottomSpacer);
     setLayout(layout);
+
+    componentList = new List();
 }
 
 CmpList_box::~CmpList_box(){
