@@ -9,7 +9,7 @@
 #include "mirrorSquare.hpp"
 #include "detector.hpp"
 
-template<typename T> void List::ins(int pos, const T e){
+template<typename T> void List::ins(int pos, const T& e){
     lst.insert(pos, std::make_unique<T>(e));
 }
 

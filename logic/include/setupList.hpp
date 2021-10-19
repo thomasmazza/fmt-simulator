@@ -10,7 +10,7 @@
     private:
         std::vector<std::unique_ptr<Component>> lst;
     public:
-        template<typename T> void ins(int, const T);
+        template<typename T> void ins(int, const T&);
         template<typename T> void append(const T&);
         void del(int);
         void swap(int, int);
