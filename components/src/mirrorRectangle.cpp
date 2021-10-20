@@ -129,3 +129,5 @@ MirrorRectangle::MirrorRectangle(std::vector<double> &_pos, std::vector<double> 
 }
 
 MirrorRectangle::MirrorRectangle(std::vector<double> &_pos, std::vector<double> &_normal, double _lengthH, double _lengthW, ComponentType _type):Mirror(_pos, _normal, _type), lengthH(_lengthH), lengthW(_lengthW) {}
+
+MirrorRectangle::MirrorRectangle(const MirrorRectangle &mirrorRectangle1): Mirror(mirrorRectangle1),lengthW(mirrorRectangle1.lengthW), lengthH(mirrorRectangle1.lengthH) {}
