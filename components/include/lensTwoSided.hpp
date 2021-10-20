@@ -13,4 +13,6 @@ public:
     bool getOutDir(Photon&);
     const double& getRadiusI();
     const double& getRadiusO();
+    void setRadiusI(double  _radiusI);
+    void setRadiusO(double _radiusO);
 };

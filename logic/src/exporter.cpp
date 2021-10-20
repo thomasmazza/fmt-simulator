@@ -59,7 +59,7 @@ void Exporter::exportStp(List &_lst, std::string _filename) {
         exportVector(dataOut, _lst.elem(i)->getPosition());
         exportInBrackets(dataOut, POSITION_CLOSING_TAG);
         exportInBrackets(dataOut, NORMAL_OPENING_TAG);
-        exportVector(dataOut, _lst.elem(i)->getPosition());
+        exportVector(dataOut, _lst.elem(i)->getNormal());
         exportInBrackets(dataOut, NORMAL_CLOSING_TAG);
         switch (className) {
             case filter:

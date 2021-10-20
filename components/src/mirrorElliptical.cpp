@@ -131,6 +131,14 @@ const double &MirrorElliptical::getRadiusW() {
     return radiusW;
 }
 
+void MirrorElliptical::setRadiusW(double _radiusW) {
+    radiusW = _radiusW;
+}
+
+void MirrorElliptical::setRadiusH(double _radiusH) {
+    radiusH = _radiusH;
+}
+
 MirrorElliptical::MirrorElliptical(std::vector<double>& _pos, std::vector<double>& _normal, double _radiusH, double _radiusW):Mirror(_pos, _normal, mirrorElliptical),radiusH(_radiusH),radiusW(_radiusW) {
 }
 

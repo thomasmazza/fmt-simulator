@@ -29,7 +29,7 @@ const double Detector::getPixelSize() {
 }
 
 void Detector::getInPoint(Photon &photon) {
-    const double PI = std::atan(1.0)*4;
+    const double PI = atan(1.0)*4;
     std::vector<double> pV = photon.getPosition();
     std::vector<double> dV = photon.getDirection();
     std::vector<double> intersection(3);
@@ -65,28 +65,28 @@ void Detector::getInPoint(Photon &photon) {
             int j_index = floor(a / pixelSize);
             if (temp >= 0) {
                 if (temp < PI / 2) {
-                    i_index = floor(size / 2.0 - i_index);
-                    j_index = floor(size / 2.0 - j_index);
+                    i_index = floor(size / 2 - i_index);
+                    j_index = floor(size / 2 - j_index);
 
                     sensor[i_index][j_index].addRGB(color);
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 } else {
-                    i_index = floor(size / 2.0 + i_index);
-                    j_index = floor(size / 2.0 - j_index);
+                    i_index = floor(size / 2 + i_index);
+                    j_index = floor(size / 2 - j_index);
 
                     sensor[i_index][j_index].addRGB(color);
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
             } else {
                 if (temp > PI / (-2)) {
-                    i_index = floor(size / 2.0 - i_index);
-                    j_index = floor(size / 2.0 + j_index);
+                    i_index = floor(size / 2 - i_index);
+                    j_index = floor(size / 2 + j_index);
 
                     sensor[i_index][j_index].addRGB(color);
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 } else {
-                    i_index = floor(size / 2.0 + i_index);
-                    j_index = floor(size / 2.0 + j_index);
+                    i_index = floor(size / 2 + i_index);
+                    j_index = floor(size / 2 + j_index);
 
                     sensor[i_index][j_index].addRGB(color);
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
@@ -138,8 +138,9 @@ bmp_vector Detector::createImage() {
         for(int j = 1; j < sz; j++) {
             bw[(j - 1) + (i - 1) * sz] = (image[j + i * sz].intensity * (-4)) + (image[j - 1 + i * sz].intensity) + (image[j + 1 + i * sz].intensity) + (image[j + (i - 1) * sz].intensity) + (image[j + (i + 1) * sz].intensity);
         }
+        avg += image[i].intensity;
     }
-
+    sharpness = 0;
     for (int i = 0; i < sz * sz; i++) {
         if (bw[i] >= sharpness) {
             sharpness = bw[i];
@@ -167,14 +168,6 @@ bmp_vector Detector::createImage() {
         bitmap[i].setBmpRGB(image[i]);
     }
     return bitmap;
-}
-
-const double & Detector::getBrightness() {
-    return brightness;
-}
-
-const double & Detector::getSharpness() {
-    return sharpness;
 }
 
 Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_pointOnEdge, std::vector<double> &_posOfPrevComponent, unsigned int _size,

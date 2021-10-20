@@ -2,8 +2,6 @@
 
 #include <string>
 
-#include <boost/numeric/ublas/vector.hpp>
-
 #include "setupList.hpp"
 #include "../../components/include/component.hpp"
 
