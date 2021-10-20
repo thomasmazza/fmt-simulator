@@ -1,6 +1,7 @@
 #pragma once
 
-#include <boost/numeric/ublas/vector.hpp>
+#include <vector>
+#include <string>
 
 class Utils {
 public:

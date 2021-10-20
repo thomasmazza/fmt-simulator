@@ -1,5 +1,5 @@
 #include "../include/utils.hpp"
-#include <math.h>
+#include <cmath>
 #include <iomanip>
 
 void Utils::cross_product(std::vector<double> &result, std::vector<double> &a, std::vector<double> &b) {
