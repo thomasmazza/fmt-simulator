@@ -14,3 +14,15 @@ const double &Lens::getN(){
 const double &Lens::getRadiusH() {
     return radiusH;
 }
+
+void Lens::setN(double _n) {
+    n = _n;
+}
+
+void Lens::setD(double _d) {
+    d = _d;
+}
+
+void Lens::setRadiusH(double _radiusH) {
+    radiusH = _radiusH;
+}
