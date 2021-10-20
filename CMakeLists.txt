@@ -12,12 +12,10 @@ add_executable(test
         components/src/component.cpp
         components/src/filter.cpp
         components/src/mirrorRectangle.cpp
-        components/src/mirror.cpp
         components/src/mirrorElliptical.cpp
         components/src/mirrorSquare.cpp
         components/src/mirrorCircle.cpp
         utils/src/utils.cpp photon/src/photon.cpp
-        components/src/lens.cpp
         components/src/lensOneSided.cpp
         components/src/lensTwoSided.cpp
         photon/src/photonGenerator.cpp
