@@ -1,38 +1,19 @@
 #include "../include/utils.hpp"
-#include <cmath>
+#include <math.h>
+#include <iomanip>
 
-void Utils::cross_product(vector& result,vector& a, vector& b){
-    result(0)=a(1)*b(2)-a(2)*b(2);
-    result(1)=a(2)*b(0)-a(0)*b(2);
-    result(2)=a(0)*b(1)-a(1)*b(0);
+void Utils::cross_product(std::vector<double> &result, std::vector<double> &a, std::vector<double> &b) {
+    result[0] = a[1] * b[2] - a[2] * b[2];
+    result[1] = a[2] * b[0] - a[0] * b[2];
+    result[2] = a[0] * b[1] - a[1] * b[0];
 }
-
-vector Utils::cross_product_2(vector& a, vector& b) {
-    vector result(3);
-    result(0)=a(1)*b(2)-a(2)*b(2);
-    result(1)=a(2)*b(0)-a(0)*b(2);
-    result(2)=a(0)*b(1)-a(1)*b(0);
+std::vector<double> Utils::cross_product_2(std::vector<double>& a, std::vector<double>& b) {
+    std::vector<double> result(3);
+    result[0]=a[1]*b[2]-a[2]*b[2];
+    result[1]=a[2]*b[0]-a[0]*b[2];
+    result[2]=a[0]*b[1]-a[1]*b[0];
     return result;
 }
-
-void Utils::normalizeVector(vector & a) {
-    double t = sqrt(pow(a(0), 2) + pow(a(1), 2) + pow(a(2), 2));
-    if (t != 0) {
-        a(0) = a(0) / t;
-        a(1) = a(1) / t;
-        a(2) = a(2) / t;
-    }
-    else {
-        a(0) = 0;
-        a(1) = 0;
-        a(2) = 0;
-    }
-}
-
-double Utils::dot_product(vector& a, vector& b) {
-    return (a(0) * b(0)) + (a(1) * b(1)) + (a(2) * b(2));
-}
-
 std::string Utils::wavelengthToRGB(const int &wavelength) {
     double r = 0;
     double g = 0;
@@ -106,14 +87,25 @@ void Utils::coreTranslationInColor(const int &wavelength, double &r, double &g, 
 
 }
 
+void Utils::normalizeVector(std::vector<double> &_vec) {
+    double vecAbs = 0;
+    //Laenge des Vektors bestimmen
+    for (int i = 0; i < 3; i++) vecAbs += pow(_vec[i], 2);
+    vecAbs = sqrt(vecAbs);
+
+    //Normierten Vektor berechnen
+    for (int i = 0; i < 3; i++) _vec[i] = (_vec[i] / vecAbs);
+}
 double Utils::max(double a, double b) {
     if (a < b) { return b; }
     else return a;
 }
-
 double Utils::min(double a, double b) {
     if (a > b) { return b; }
     else return a;
+}
+double Utils::dot_product(std::vector<double>& a, std::vector<double>& b) {
+    return (a[0] * b[0]) + (a[1] * b[1]) + (a[2] * b[2]);
 }
 
 // Approximiert die Tiefenschärfe bei konstanter Blende
