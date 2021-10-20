@@ -132,22 +132,27 @@ bmp_vector Detector::createImage() {
             image[j + i * size] = color;
         }
     }
-    double max = 1.0;
-    double min = max;
-    double avg = 0;
-    for (int i = 0; i < image.size(); i++) {
-        if (image[i].intensity > max) {
-            max = image[i].intensity;
-        } else if (image[i].intensity < min) {
-            min = image[i].intensity;
+
+    unsigned const int sz = size - 1;
+    std::vector<double> bw (sz * sz);
+    for (int i = 1; i < sz; i++) {
+        for(int j = 1; j < sz; j++) {
+            bw[(j - 1) + (i - 1) * sz] = (image[j + i * sz].intensity * (-4)) + (image[j - 1 + i * sz].intensity) + (image[j + 1 + i * sz].intensity) + (image[j + (i - 1) * sz].intensity) + (image[j + (i + 1) * sz].intensity);
         }
-        avg += image[i].intensity;
     }
-    avg = avg / (image.size());
-    double factor = 2;
+
+    for (int i = 0; i < sz * sz; i++) {
+        if (bw[i] >= sharpness) {
+            sharpness = bw[i];
+        }
+    }
+    // Obwohl die Werte auf [0, 100] verteilt sind, bedeuten Werte wie 35 - 40 besonders hohe Schärfe;
+    // Dies liegt daran, dass das Bild ganz spezifische Struktur haben muss um Schärfewerte im Bereich [60 - 100] zu erzeugen;
+    sharpness = (sharpness / (max * 4)) * 100;
+
     double adjustment;
     for (int i = 0; i < image.size(); i++) {
-        adjustment = (image[i].intensity - avg) * factor; //Muss testen wie sinnvoll adjustment berechnet wird
+        adjustment = (image[i].intensity - avg) * 2.0; //Muss testen wie sinnvoll adjustment berechnet wird
         if (image[i].intensity >= avg) {
             image[i].r = std::round(Utils::min(image[i].r + adjustment, 255));
             image[i].g = std::round(Utils::min(image[i].g + adjustment, 255));
