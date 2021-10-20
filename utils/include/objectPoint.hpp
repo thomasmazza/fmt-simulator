@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/numeric/ublas/vector.hpp>
 
 
 class objectPoint{

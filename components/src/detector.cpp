@@ -1,6 +1,4 @@
 #include "detector.hpp"
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/math/constants/constants.hpp>
 #include "../../utils/include/utils.hpp"
 #include <cmath>
 
@@ -65,7 +63,7 @@ void Detector::getInPoint(Photon &photon) {
             int i_index = floor(b / pixelSize);
             int j_index = floor(a / pixelSize);
             if (temp >= 0) {
-                if (temp < boost::math::constants::pi<double>() / 2) {
+                if (temp < M_PI_2) {
                     i_index = floor(size / 2 - i_index);
                     j_index = floor(size / 2 - j_index);
 
@@ -79,7 +77,7 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
             } else {
-                if (temp > boost::math::constants::pi<double>() / (-2)) {
+                if (temp > -M_PI_2) {
                     i_index = floor(size / 2 - i_index);
                     j_index = floor(size / 2 + j_index);
 
