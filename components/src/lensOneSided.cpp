@@ -381,7 +381,17 @@ const bool &LensOneSided::getPlaneIsFront() {
     return planeIsFront;
 }
 
+void LensOneSided::setPlaneIsFront(bool _planeIsFront) {
+    planeIsFront =_planeIsFront;
+}
+
+void LensOneSided::setRadiusW(double _radiusW) {
+    radiusW = _radiusW;
+}
+
 LensOneSided::LensOneSided(std::vector<double> &_pos, std::vector<double> &_normal, double _n, double _radiusH, double _radiusW, double _d,
                            bool _planeIsFront) : Lens(_pos, _normal, _n, _radiusH, _d, lensOneSided), radiusW(_radiusW),
                                                  planeIsFront(_planeIsFront) {
 }
+
+LensOneSided::LensOneSided(const LensOneSided &lensOneSided1): Lens(lensOneSided1), radiusW(lensOneSided1.radiusW), planeIsFront(lensOneSided1.planeIsFront) {}

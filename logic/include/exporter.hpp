@@ -2,8 +2,6 @@
 
 #include <string>
 
-#include <boost/numeric/ublas/vector.hpp>
-
 #include "setupList.hpp"
 #include "../../components/include/component.hpp"
 
@@ -30,5 +28,6 @@ private:
 public:
     static void exportStp(List &, std::string);
     static void exportObject(Config::object & object, std::string filename);
+    static void exportBMPImage( Detector&, std::string filename);
 };
 

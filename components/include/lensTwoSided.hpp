@@ -10,7 +10,10 @@ private:
     double radiusO;
 public:
     LensTwoSided(std::vector<double>&, std::vector<double>&, double, double, double, double, double);
+    LensTwoSided(const LensTwoSided& lensTwoSided1);
     bool getOutDir(Photon&);
     const double& getRadiusI();
     const double& getRadiusO();
+    void setRadiusI(double  _radiusI);
+    void setRadiusO(double _radiusO);
 };

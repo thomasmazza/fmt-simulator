@@ -10,6 +10,7 @@ class Filter : public Component {
         int upperLimit;
     public:
         Filter(std::vector<double>&, std::vector<double>&, int, int);
+        Filter(const Filter& filter1);
         int getLowerLimit();
         void setLowerLimit(int);
         int getUpperLimit();

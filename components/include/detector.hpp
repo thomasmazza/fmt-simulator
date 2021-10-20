@@ -1,8 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
 #include "component.hpp"
 #include "../../photon/include/photon.hpp"
 #include "../../utils/include/rgb.hpp"
@@ -38,6 +36,8 @@ public:
     void setPointOnEdge(std::vector<double> &);
 
     Detector(std::vector<double> &, std::vector<double> &, std::vector<double> &, std::vector<double> &, unsigned int, double);
+
+    Detector(const Detector& detector1);
 
     void getInPoint(Photon &);
 

@@ -4,7 +4,7 @@
 Component::Component(std::vector<double> &_position, std::vector<double> &_normal, ComponentType _type) : position(_position), normal(_normal),
                                                                                  type(_type) {
 }
-
+Component::Component(const Component &component):position(component.position), normal(component.normal), type(component.type){}
 const std::vector<double> &Component::getPosition() {
     return position;
 }

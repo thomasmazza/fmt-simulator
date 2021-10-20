@@ -1,6 +1,4 @@
 #include "../include/detector.hpp"
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/math/constants/constants.hpp>
 #include "../../utils/include/utils.hpp"
 #include <cmath>
 
@@ -65,7 +63,7 @@ void Detector::getInPoint(Photon &photon) {
             int i_index = floor(b / pixelSize);
             int j_index = floor(a / pixelSize);
             if (temp >= 0) {
-                if (temp < boost::math::constants::pi<double>() / 2) {
+                if (temp < M_PI_2) {
                     i_index = floor(size / 2 - i_index);
                     j_index = floor(size / 2 - j_index);
 
@@ -79,7 +77,7 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
             } else {
-                if (temp > boost::math::constants::pi<double>() / (-2)) {
+                if (temp > -M_PI_2) {
                     i_index = floor(size / 2 - i_index);
                     j_index = floor(size / 2 + j_index);
 
@@ -151,3 +149,5 @@ bmp_vector Detector::createImage() {
 Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_pointOnEdge, std::vector<double> &_posOfPrevComponent, unsigned int _size,
                    double _pixelSize) : Component(_pos, _normal, detector), pointOnEdge(_pointOnEdge),posOfPrevComponent(_posOfPrevComponent),size(_size),pixelSize(_pixelSize), length(static_cast<double>(size) * pixelSize),sensor(size, std::vector<RGB>(size)) {
 }
+
+Detector::Detector(const Detector &detector1): Component(detector1), pointOnEdge(detector1.pointOnEdge), posOfPrevComponent(detector1.posOfPrevComponent), size(detector1.size), pixelSize(detector1.pixelSize) {}

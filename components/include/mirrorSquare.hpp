@@ -2,10 +2,12 @@
 
 #include "mirrorRectangle.hpp"
 
-class MirrorSquare: public MirrorRectangle{
-    private:
-    public:
-        MirrorSquare(std::vector<double>&, std::vector<double>&, double);
+class MirrorSquare : public MirrorRectangle {
+public:
+    MirrorSquare(std::vector<double> &, std::vector<double> &, double);
+
+    MirrorSquare(const MirrorSquare& mirrorSquare1);
+
         std::string getType();
-        const double& getLength();
+        const double &getLength();
 };
