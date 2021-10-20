@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include<vector>
 class objectPoint{
 private:
     const int wavelength;

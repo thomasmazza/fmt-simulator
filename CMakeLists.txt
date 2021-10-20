@@ -34,4 +34,4 @@ add_executable(test
         utils/src/bmprgb.cpp
         components/src/detector.cpp
         utils/src/rgb.cpp
-        logic/include/simulation.hpp logic/src/simulation.cpp)
+        )
