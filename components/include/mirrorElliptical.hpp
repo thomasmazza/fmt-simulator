@@ -4,10 +4,14 @@
 
 class MirrorElliptical: public Mirror{
     private:
-        double rH;
-        double rW;
+        double radiusH;
+        double radiusW;
+    protected:
+    MirrorElliptical(std::vector<double>&, std::vector<double>&, double, double, ComponentType _type);
     public:
-        MirrorElliptical(vector&, vector&, double, double);
-        bool calcOut(Photon&, vector&, vector&);
-        bool getOutDir(Photon&, vector&);
+        MirrorElliptical(std::vector<double>&, std::vector<double>&, double, double);
+        bool calcOut(Photon&, std::vector<double>&, std::vector<double>&);
+        bool getOutDir(Photon&, std::vector<double>&);
+        const double& getRadiusH();
+        const double& getRadiusW();
 };

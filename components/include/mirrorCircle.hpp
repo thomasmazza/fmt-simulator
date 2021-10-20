@@ -5,5 +5,6 @@
 class MirrorCircle : public MirrorElliptical{
     private:
     public:
-        MirrorElliptical(vector&, vector&, double);
+    MirrorCircle(std::vector<double>&, std::vector<double>&, double);
+    const double getRadius();
 };

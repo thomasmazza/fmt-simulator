@@ -1,4 +1,7 @@
 #include "mirrorCircle.hpp"
 
-MirrorCircle::MirrorCircle(vector& _pos, vector& _normal, double _radius):MirrorElliptical(vector& pos, vector& _normal, double _radius, double _radius) {
+const double MirrorCircle::getRadius() {
+    return getRadiusW();
+}
+MirrorCircle::MirrorCircle(std::vector<double>& _pos, std::vector<double>& _normal, double _radius):MirrorElliptical(_pos,  _normal, _radius, _radius, mirrorCircle){
 }
