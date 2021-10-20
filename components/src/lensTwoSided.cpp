@@ -276,3 +276,5 @@ const double &LensTwoSided::getRadiusO() {
 LensTwoSided::LensTwoSided(std::vector<double>& _pos, std::vector<double>& _normal,double _n, double _radiusH, double _radiusI, double _radiusO, double _d)
 :LensTwoSided::Lens(_pos, _normal, _n, _radiusH, _d, lensTwoSided), radiusI(_radiusI), radiusO(_radiusO) {
 }
+
+LensTwoSided::LensTwoSided(const LensTwoSided &lensTwoSided1): Lens(lensTwoSided1), radiusO(lensTwoSided1.radiusO), radiusI(lensTwoSided1.radiusI) {}
