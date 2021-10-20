@@ -13,5 +13,7 @@ class MirrorRectangle: public Mirror{
         bool getOutDir(Photon&, std::vector<double>&);
         const double& getLengthH();
         const double& getLengthW();
+        void setLengthH(double  _lengthH);
+        void setLengthW(double _lengthW);
 };
 
