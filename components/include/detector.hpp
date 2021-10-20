@@ -37,9 +37,13 @@ public:
 
     void setPointOnEdge(std::vector<double> &);
 
-    Detector(std::vector<double> &, std::vector<double> &, std::vector<double> &, std::vector<double> &, unsigned int, double);
-
     void getInPoint(Photon &);
 
     bmp_vector createImage();
+
+    const double & getBrightness();
+
+    const double & getSharpness();
+
+    Detector(std::vector<double> &, std::vector<double> &, std::vector<double> &, std::vector<double> &, unsigned int, double);
 };
