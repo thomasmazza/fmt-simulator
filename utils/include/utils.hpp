@@ -1,21 +1,25 @@
 #pragma once
 
-#include <boost/numeric/ublas/vector.hpp>
+#include <vector>
+#include <string>
 
-typedef typename boost::numeric::ublas::vector<double> vector;
 class Utils {
 public:
-    static void cross_product(vector &, vector &, vector &);
+/*
+ * Erster Vektor ist der Ergebnisvektor
+ * Zweiter und Dritter Vektor sind die b
+ */
+    static void cross_product(std::vector<double> &, std::vector<double> &, std::vector<double> &);
 
-    static vector cross_product_2(vector &, vector &);
+    static std::vector<double> cross_product_2(std::vector<double>&, std::vector<double>&);
 
-    static void normalizeVector(vector &);
+    static void normalizeVector(std::vector<double> &);
 
-    static double dot_product(vector &, vector &);
+    static double dot_product(std::vector<double>&, std::vector<double>&);
 
-    static std::string wavelengthToRGB(const int &);
+    static std::string wavelengthToRGB(const int&);
 
-    static void coreTranslationInColor(const int &, double &, double &, double &);
+    static void coreTranslationInColor(const int&, double&, double&, double&);
 
     static double max(double, double);
 
