@@ -97,10 +97,28 @@ void Detector::getInPoint(Photon& photon) {
 }
 
  bmp_vector Detector::createImage() {
-    rgb_vector image (size * size);
+
+    double max = sensor(0, 0).intensity;
+    double min = max;
+    double avg = 0.0;
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            RGB color;
+            if (sensor(i, j).intensity > max) {
+                max = sensor(i, j).intensity;
+            } else if (sensor(i, j).intensity < min) {
+                min = sensor(i, j).intensity;
+            }
+            avg += sensor(i, j).intensity;
+        }
+    }
+    avg = avg / (size * size);
+    brightness = (avg / max) * 100;
+
+    rgb_vector image (size * size);
+    RGB color;
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+
             if (sensor(i, j).intensity == 0) {
                 color.r = sensor(i, j).r;
                 color.g = sensor(i, j).g;
@@ -111,43 +129,32 @@ void Detector::getInPoint(Photon& photon) {
                 color.g = sensor(i, j).g / sensor(i, j).intensity;
                 color.b = sensor(i, j).b / sensor(i, j).intensity;
                 color.intensity = sensor(i, j).intensity;
+
             }
             image(j + i * size) = color;
         }
     }
-    int sz = image.size() - 1;
+
+    unsigned const int sz = size - 1;
     vector bw (sz * sz);
     for (int i = 1; i < sz; i++) {
         for(int j = 1; j < sz; j++) {
             bw((j - 1) + (i - 1) * sz) = (image(j + i * sz).intensity * (-4)) + (image(j - 1 + i * sz).intensity) + (image(j + 1 + i * sz).intensity) + (image(j + (i - 1) * sz).intensity) + (image(j + (i + 1) * sz).intensity);
         }
     }
-    double max = 1.0;
-    double min = max;
+
     for (int i = 0; i < sz * sz; i++) {
-        if (bw(i) >= max) {
-            max = bw(i);
+        if (bw(i) >= sharpness) {
+            sharpness = bw(i);
         }
     }
-    std::cout << "MAX Sharpness" << max << std::endl;
-    sharpness = max;
-    max = 1.0;
-    double avg = 0;
-    for (int i = 0; i < image.size(); i++) {
-        if (image[i].intensity > max) {
-            max = image[i].intensity;
-        }
-        else if (image[i].intensity < min) {
-            min = image[i].intensity;
-        }
-        avg += image[i].intensity;
-    }
-    avg = avg / (image.size());
-    brightness = (avg / max) * 100;
-    double factor = 2;
+    // Obwohl die Werte auf [0, 100] verteilt sind, bedeuten Werte wie 35 - 40 besonders hohe Schärfe;
+    // Dies liegt daran, dass das Bild ganz spezifische Struktur haben muss um Schärfewerte im Bereich [60 - 100] zu erzeugen;
+    sharpness = (sharpness / (max * 4)) * 100;
+
     double adjustment;
     for (int i = 0; i < image.size(); i++) {
-        adjustment = (image[i].intensity - avg) * factor; //Muss testen wie sinnvoll adjustment berechnet wird
+        adjustment = (image[i].intensity - avg) * 5.5; //Muss testen wie sinnvoll adjustment berechnet wird
         if (image[i].intensity >= avg) {
             image[i].r = std::round(Utils::min(image[i].r + adjustment, 255));
             image[i].g = std::round(Utils::min(image[i].g + adjustment, 255));

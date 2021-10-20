@@ -115,3 +115,13 @@ double Utils::min(double a, double b) {
     if (a > b) { return b; }
     else return a;
 }
+
+// Approximiert die Tiefenschärfe bei konstanter Blende
+// _f = Brennweite der Linse
+// _d = Abstand zum Objekt
+// _f / 1720 approximiert das CoC (Circle of Confusion); Wir können auch anderes Modell für CoC nehmen, zB Detektordiagonal/1442;
+// Wir können auch uns einfach überlegen was wir als akzeptables CoC nehmen;
+// Ich bin nicht sicher wie wir depthOfField sinnvoll auf [0,100] normieren können, denn depthOfField kann technisch von 0 bis unendlich groß sein;
+double Utils::depthOfField(double & _f, double & _d) {
+    return 2 * (_f / 1720) * pow((_d / _f), 2);
+}
