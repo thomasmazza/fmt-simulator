@@ -1,5 +1,8 @@
 #include "../include/mirrorElliptical.hpp"
 
+#include "../../utils/include/utils.hpp"
+#include <cmath>
+
 bool MirrorElliptical::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
     double rS=0;
     double lS=0;
@@ -139,7 +142,7 @@ void MirrorElliptical::setRadiusH(double _radiusH) {
     radiusH = _radiusH;
 }
 
-MirrorElliptical::MirrorElliptical(std::vector<double>& _pos, std::vector<double>& _normal, double _radiusH, double _radiusW):Mirror(_pos, _normal, mirrorElliptical),radiusH(_radiusH),radiusW(_radiusW) {
+MirrorElliptical::MirrorElliptical(std::vector<double>& _pos, std::vector<double>& _normal, double _radiusH, double _radiusW):Component(_pos, _normal, mirrorElliptical),radiusH(_radiusH),radiusW(_radiusW) {
 }
 
-MirrorElliptical::MirrorElliptical(std::vector<double> &_pos, std::vector<double> &_normal, double _radiusH, double _radiusW, ComponentType _type): Mirror(_pos, _normal, _type), radiusH(_radiusH), radiusW(_radiusW) {}
+MirrorElliptical::MirrorElliptical(const MirrorElliptical &mirrorElliptical1): Component(mirrorElliptical1), radiusH(mirrorElliptical1.radiusH), radiusW(mirrorElliptical1.radiusW) {}

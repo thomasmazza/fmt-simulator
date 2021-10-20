@@ -1,3 +1,3 @@
-#include "componentType.hpp"
+#include "../include/componentType.hpp"
 
 

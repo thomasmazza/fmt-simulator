@@ -1,5 +1,7 @@
 #include "../include/lensOneSided.hpp"
 
+#include "../../utils/include/utils.hpp"
+#include <cmath>
 
 bool LensOneSided::getOutDir(Photon &p) {
     std::vector<double> pV = p.getPosition();
@@ -373,6 +375,30 @@ bool LensOneSided::getOutDir(Photon &p) {
     return getsOut;
 }
 
+const double &LensOneSided::getD() {
+    return d;
+}
+
+const double &LensOneSided::getN(){
+    return n;
+}
+
+const double &LensOneSided::getRadiusH() {
+    return radiusH;
+}
+
+void LensOneSided::setN(double _n) {
+    n = _n;
+}
+
+void LensOneSided::setD(double _d) {
+    d = _d;
+}
+
+void LensOneSided::setRadiusH(double _radiusH) {
+    radiusH = _radiusH;
+}
+
 const double &LensOneSided::getRadiusW() {
     return radiusW;
 }
@@ -390,6 +416,8 @@ void LensOneSided::setRadiusW(double _radiusW) {
 }
 
 LensOneSided::LensOneSided(std::vector<double> &_pos, std::vector<double> &_normal, double _n, double _radiusH, double _radiusW, double _d,
-                           bool _planeIsFront) : Lens(_pos, _normal, _n, _radiusH, _d, lensOneSided), radiusW(_radiusW),
-                                                 planeIsFront(_planeIsFront) {
+                           bool _planeIsFront) : Component(_pos, _normal, lensOneSided), n(_n), radiusH(_radiusH), radiusW(_radiusW), d(_d), planeIsFront(_planeIsFront) {
 }
+
+LensOneSided::LensOneSided(const LensOneSided &lensOneSided1):
+    Component(lensOneSided1), n(lensOneSided1.n), radiusH(lensOneSided1.radiusH), radiusW(lensOneSided1.radiusW), d(lensOneSided1.d), planeIsFront(lensOneSided1.planeIsFront) {}

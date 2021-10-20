@@ -1,4 +1,4 @@
-#include "detector.hpp"
+#include "../include/detector.hpp"
 #include "../../utils/include/utils.hpp"
 #include <cmath>
 
@@ -182,3 +182,5 @@ const double & Detector::getSharpness() {
 Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_pointOnEdge, std::vector<double> &_posOfPrevComponent, unsigned int _size,
                    double _pixelSize) : Component(_pos, _normal, detector), pointOnEdge(_pointOnEdge),posOfPrevComponent(_posOfPrevComponent),size(_size),pixelSize(_pixelSize), length(static_cast<double>(size) * pixelSize),sensor(size, std::vector<RGB>(size)) {
 }
+
+Detector::Detector(const Detector &detector1): Component(detector1), pointOnEdge(detector1.pointOnEdge), posOfPrevComponent(detector1.posOfPrevComponent), size(detector1.size), pixelSize(detector1.pixelSize) {}

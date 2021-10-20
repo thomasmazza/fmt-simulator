@@ -1,5 +1,8 @@
 #include "mirrorRectangle.hpp"
 
+#include "../../utils/include/utils.hpp"
+#include <cmath>
+
 bool MirrorRectangle::getOutDir(Photon &p, std::vector<double> &_dirOA) {
     double rS = 0;
     double lS = 0;
@@ -133,7 +136,7 @@ void MirrorRectangle::setLengthW(double _lengthW) {
     lengthW = _lengthW;
 }
 
-MirrorRectangle::MirrorRectangle(std::vector<double> &_pos, std::vector<double> &_normal, double _lengthH, double _lengthW): Mirror(_pos,_normal, mirrorRectangle), lengthH(_lengthH), lengthW(_lengthW) {
+MirrorRectangle::MirrorRectangle(std::vector<double> &_pos, std::vector<double> &_normal, double _lengthH, double _lengthW): Component(_pos,_normal, mirrorRectangle), lengthH(_lengthH), lengthW(_lengthW) {
 }
 
-MirrorRectangle::MirrorRectangle(std::vector<double> &_pos, std::vector<double> &_normal, double _lengthH, double _lengthW, ComponentType _type):Mirror(_pos, _normal, _type), lengthH(_lengthH), lengthW(_lengthW) {}
+MirrorRectangle::MirrorRectangle(const MirrorRectangle &mirrorRectangle1): Component(mirrorRectangle1), lengthH(mirrorRectangle1.lengthH), lengthW(mirrorRectangle1.lengthW) {}
