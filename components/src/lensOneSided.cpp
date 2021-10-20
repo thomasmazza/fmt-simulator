@@ -419,4 +419,5 @@ LensOneSided::LensOneSided(std::vector<double> &_pos, std::vector<double> &_norm
                            bool _planeIsFront) : Component(_pos, _normal, lensOneSided), n(_n), radiusH(_radiusH), radiusW(_radiusW), d(_d), planeIsFront(_planeIsFront) {
 }
 
-LensOneSided::LensOneSided(const LensOneSided &lensOneSided1): Component(lensOneSided1), radiusW(lensOneSided1.radiusW), planeIsFront(lensOneSided1.planeIsFront) {}
+LensOneSided::LensOneSided(const LensOneSided &lensOneSided1):
+    Component(lensOneSided1), n(lensOneSided1.n), radiusH(lensOneSided1.radiusH), radiusW(lensOneSided1.radiusW), d(lensOneSided1.d), planeIsFront(lensOneSided1.planeIsFront) {}

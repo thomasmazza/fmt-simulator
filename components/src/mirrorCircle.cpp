@@ -140,4 +140,4 @@ double MirrorCircle::getRadius() {
 MirrorCircle::MirrorCircle(std::vector<double>& _pos, std::vector<double>& _normal, double _radius):Component(_pos,  _normal, mirrorCircle), radius(_radius){
 }
 
-MirrorCircle::MirrorCircle(const MirrorCircle &mirrorCircle1): Component(mirrorCircle1) {}
+MirrorCircle::MirrorCircle(const MirrorCircle &mirrorCircle1): Component(mirrorCircle1), radius(mirrorCircle1.radius) {}

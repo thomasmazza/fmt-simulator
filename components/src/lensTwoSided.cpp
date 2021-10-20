@@ -311,4 +311,5 @@ LensTwoSided::LensTwoSided(std::vector<double>& _pos, std::vector<double>& _norm
 :Component(_pos, _normal, lensTwoSided), n(_n), radiusH(_radiusH), radiusI(_radiusI), radiusO(_radiusO), d(_d) {
 }
 
-LensTwoSided::LensTwoSided(const LensTwoSided &lensTwoSided1): Component(lensTwoSided1), radiusO(lensTwoSided1.radiusO), radiusI(lensTwoSided1.radiusI) {}
+LensTwoSided::LensTwoSided(const LensTwoSided &lensTwoSided1):
+    Component(lensTwoSided1), n(lensTwoSided1.n), radiusH(lensTwoSided1.radiusH), radiusI(lensTwoSided1.radiusI), radiusO(lensTwoSided1.radiusO), d(lensTwoSided1.d) {}

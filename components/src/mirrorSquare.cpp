@@ -132,7 +132,7 @@ void MirrorSquare::setLength(double _length) {
     length = _length;
 }
 
-MirrorSquare::MirrorSquare(std::vector<double>& _pos, std::vector<double>& _normal, double _length):Component(_pos, _normal, mirrorCircle), length(_length){
+MirrorSquare::MirrorSquare(std::vector<double>& _pos, std::vector<double>& _normal, double _length):Component(_pos, _normal, mirrorSquare), length(_length){
 }
 
-MirrorSquare::MirrorSquare(const MirrorSquare &mirrorSquare1): Component(mirrorSquare1) {}
+MirrorSquare::MirrorSquare(const MirrorSquare &mirrorSquare1): Component(mirrorSquare1), length(mirrorSquare1.length) {}
