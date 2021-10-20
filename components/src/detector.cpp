@@ -29,6 +29,7 @@ const double Detector::getPixelSize() {
 }
 
 void Detector::getInPoint(Photon &photon) {
+    const double PI = atan(1.0)*4;
     std::vector<double> pV = photon.getPosition();
     std::vector<double> dV = photon.getDirection();
     std::vector<double> intersection(3);
@@ -63,7 +64,7 @@ void Detector::getInPoint(Photon &photon) {
             int i_index = floor(b / pixelSize);
             int j_index = floor(a / pixelSize);
             if (temp >= 0) {
-                if (temp < M_PI_2) {
+                if (temp < PI / 2) {
                     i_index = floor(size / 2 - i_index);
                     j_index = floor(size / 2 - j_index);
 
@@ -77,7 +78,7 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
             } else {
-                if (temp > -M_PI_2) {
+                if (temp > PI / (-2)) {
                     i_index = floor(size / 2 - i_index);
                     j_index = floor(size / 2 + j_index);
 
@@ -96,6 +97,23 @@ void Detector::getInPoint(Photon &photon) {
 }
 
 bmp_vector Detector::createImage() {
+    double max = sensor[0][0].intensity;
+    double min = max;
+    double avg = 0.0;
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            if (sensor[i][j].intensity > max) {
+                max = sensor[i][j].intensity;
+            } else if (sensor[i][j].intensity < min) {
+                min = sensor[i][j].intensity;
+            }
+            avg += sensor[i][j].intensity;
+        }
+    }
+    avg = avg / (size * size);
+    brightness = (avg / max) * 100;
+
+
     rgb_vector image(size * size);
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
@@ -113,22 +131,28 @@ bmp_vector Detector::createImage() {
             image[j + i * size] = color;
         }
     }
-    double max = 1.0;
-    double min = max;
-    double avg = 0;
-    for (int i = 0; i < image.size(); i++) {
-        if (image[i].intensity > max) {
-            max = image[i].intensity;
-        } else if (image[i].intensity < min) {
-            min = image[i].intensity;
+
+    unsigned const int sz = size - 1;
+    std::vector<double> bw (sz * sz);
+    for (int i = 1; i < sz; i++) {
+        for(int j = 1; j < sz; j++) {
+            bw[(j - 1) + (i - 1) * sz] = (image[j + i * sz].intensity * (-4)) + (image[j - 1 + i * sz].intensity) + (image[j + 1 + i * sz].intensity) + (image[j + (i - 1) * sz].intensity) + (image[j + (i + 1) * sz].intensity);
         }
         avg += image[i].intensity;
     }
-    avg = avg / (image.size());
-    double factor = 2;
+    sharpness = 0;
+    for (int i = 0; i < sz * sz; i++) {
+        if (bw[i] >= sharpness) {
+            sharpness = bw[i];
+        }
+    }
+    // Obwohl die Werte auf [0, 100] verteilt sind, bedeuten Werte wie 35 - 40 besonders hohe Schärfe;
+    // Dies liegt daran, dass das Bild ganz spezifische Struktur haben muss um Schärfewerte im Bereich [60 - 100] zu erzeugen;
+    sharpness = (sharpness / (max * 4)) * 100;
+
     double adjustment;
     for (int i = 0; i < image.size(); i++) {
-        adjustment = (image[i].intensity - avg) * factor; //Muss testen wie sinnvoll adjustment berechnet wird
+        adjustment = (image[i].intensity - avg) * 2.0; //Muss testen wie sinnvoll adjustment berechnet wird
         if (image[i].intensity >= avg) {
             image[i].r = std::round(Utils::min(image[i].r + adjustment, 255));
             image[i].g = std::round(Utils::min(image[i].g + adjustment, 255));
@@ -145,6 +169,15 @@ bmp_vector Detector::createImage() {
     }
     return bitmap;
 }
+
+const double & Detector::getBrightness() {
+    return brightness;
+}
+
+const double & Detector::getSharpness() {
+    return sharpness;
+}
+
 
 Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_pointOnEdge, std::vector<double> &_posOfPrevComponent, unsigned int _size,
                    double _pixelSize) : Component(_pos, _normal, detector), pointOnEdge(_pointOnEdge),posOfPrevComponent(_posOfPrevComponent),size(_size),pixelSize(_pixelSize), length(static_cast<double>(size) * pixelSize),sensor(size, std::vector<RGB>(size)) {

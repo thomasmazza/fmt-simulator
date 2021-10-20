@@ -20,6 +20,8 @@ protected:
     unsigned int size; // Detector hat size * size Pixel
     double pixelSize; //Größe eines Pixels
     double length; // Dimensionen von dem Detektor
+    double brightness;
+    double sharpness;
     rgb_matrix sensor;
 public:
 
@@ -42,4 +44,10 @@ public:
     void getInPoint(Photon &);
 
     bmp_vector createImage();
+
+    const double & getBrightness();
+
+    const double & getSharpness();
+
+    Detector(std::vector<double> &, std::vector<double> &, std::vector<double> &, std::vector<double> &, unsigned int, double);
 };

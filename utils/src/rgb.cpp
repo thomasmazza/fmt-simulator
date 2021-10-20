@@ -1,4 +1,5 @@
 #include "rgb.hpp"
+#include<cmath>
 
 void RGB::setRGB(double &_r, double &_g, double &_b) {
     r = _r;
@@ -6,7 +7,7 @@ void RGB::setRGB(double &_r, double &_g, double &_b) {
     b = _b;
 }
 
-void RGB::addRGB(RGB &_rgb) {
+void RGB::addRGB(RGB & _rgb) {
     r = r + _rgb.r;
     g = g + _rgb.g;
     b = b + _rgb.b;
