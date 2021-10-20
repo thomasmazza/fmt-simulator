@@ -1,5 +1,7 @@
-#include "lensTwoSided.hpp"
+#include "../include/lensTwoSided.hpp"
 
+#include "../../utils/include/utils.hpp"
+#include <cmath>
 
 bool LensTwoSided::getOutDir(Photon& p){
 
@@ -265,6 +267,30 @@ bool LensTwoSided::getOutDir(Photon& p){
     return getsOut;
 }
 
+const double &LensTwoSided::getD() {
+    return d;
+}
+
+const double &LensTwoSided::getN(){
+    return n;
+}
+
+const double &LensTwoSided::getRadiusH() {
+    return radiusH;
+}
+
+void LensTwoSided::setN(double _n) {
+    n = _n;
+}
+
+void LensTwoSided::setD(double _d) {
+    d = _d;
+}
+
+void LensTwoSided::setRadiusH(double _radiusH) {
+    radiusH = _radiusH;
+}
+
 const double &LensTwoSided::getRadiusI() {
     return radiusI;
 }
@@ -282,7 +308,8 @@ void LensTwoSided::setRadiusO(double _radiusO) {
 }
 
 LensTwoSided::LensTwoSided(std::vector<double>& _pos, std::vector<double>& _normal,double _n, double _radiusH, double _radiusI, double _radiusO, double _d)
-:LensTwoSided::Lens(_pos, _normal, _n, _radiusH, _d, lensTwoSided), radiusI(_radiusI), radiusO(_radiusO) {
+:Component(_pos, _normal, lensTwoSided), n(_n), radiusH(_radiusH), radiusI(_radiusI), radiusO(_radiusO), d(_d) {
 }
 
-LensTwoSided::LensTwoSided(const LensTwoSided &lensTwoSided1): Lens(lensTwoSided1), radiusO(lensTwoSided1.radiusO), radiusI(lensTwoSided1.radiusI) {}
+LensTwoSided::LensTwoSided(const LensTwoSided &lensTwoSided1):
+    Component(lensTwoSided1), n(lensTwoSided1.n), radiusH(lensTwoSided1.radiusH), radiusI(lensTwoSided1.radiusI), radiusO(lensTwoSided1.radiusO), d(lensTwoSided1.d) {}

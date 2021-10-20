@@ -9,12 +9,14 @@
 #include "mirrorSquare.hpp"
 #include "detector.hpp"
 
-template<typename T> void List::ins(int pos, const T& e){
-    lst.insert(pos, std::make_unique<T>(e));
+template<typename T> void List::ins(int pos, const T& _e){
+    auto it = lst.begin();
+    for(int i = 1; i < pos; i++) it++;
+    lst.insert(it, std::make_unique<T>(_e));
 }
 
-template<typename T> void List::append(const T& e){
-lst.push_back(std::make_unique<T>(e));
+template<typename T> void List::append(const T& _e){
+    lst.push_back(std::make_unique<T>(_e));
 }
 
 void List::del(int pos){
@@ -35,6 +37,14 @@ int List::getLength(){
     return lst.size();
 }
 
+template void List::ins<Filter>(int, const  Filter&);
+template void List::ins<MirrorCircle>(int, const MirrorCircle&);
+template void List::ins<MirrorRectangle>(int, const MirrorRectangle&);
+template void List::ins<MirrorElliptical>(int, const MirrorElliptical&);
+template void List::ins<MirrorSquare>(int, const MirrorSquare&);
+template void List::ins<LensTwoSided>(int, const LensTwoSided&);
+template void List::ins<LensOneSided>(int, const LensOneSided&);
+template void List::ins<Detector>(int, const Detector&);
 
 template void List::append<Filter>(const  Filter&);
 template void List::append<MirrorCircle>(const MirrorCircle&);
@@ -45,3 +55,15 @@ template void List::append<LensTwoSided>(const LensTwoSided&);
 template void List::append<LensOneSided>(const LensOneSided&);
 template void List::append<Detector>(const Detector&);
 
+//auto it = lst.begin();
+//for(int i = 1; i < pos; i++) it++;
+//T* e = new T(_e);
+
+//int size = lst.size();
+//std::vector<std::unique_ptr<Component>> _lst(lst.size() - 1);
+//for(int i = 0; i < size; i++){
+//    if(i != pos){
+
+//        _lst.push_back(lst[i]);
+//    }
+//}

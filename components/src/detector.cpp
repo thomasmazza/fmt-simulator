@@ -1,4 +1,4 @@
-#include "detector.hpp"
+#include "../include/detector.hpp"
 #include "../../utils/include/utils.hpp"
 #include <cmath>
 

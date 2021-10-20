@@ -3,8 +3,8 @@
 #include <vector>
 #include "component.hpp"
 #include "../../photon/include/photon.hpp"
-#include "rgb.hpp"
-#include "bmprgb.hpp"
+#include "../../utils/include/rgb.hpp"
+#include "../../utils/include/bmprgb.hpp"
 
 
 typedef typename std::vector<RGB> rgb_dynamic_v;//Kann verändert sein, abhängig davon wie die Photon und wie die Wellenlängen zuerst gespeichert werden

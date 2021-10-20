@@ -1,4 +1,4 @@
-#include "component.hpp"
+#include "../include/component.hpp"
 #include <assert.h>
 
 Component::Component(std::vector<double> &_position, std::vector<double> &_normal, ComponentType _type) : position(_position), normal(_normal),
