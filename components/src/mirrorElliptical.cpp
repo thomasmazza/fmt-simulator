@@ -135,3 +135,5 @@ MirrorElliptical::MirrorElliptical(std::vector<double>& _pos, std::vector<double
 }
 
 MirrorElliptical::MirrorElliptical(std::vector<double> &_pos, std::vector<double> &_normal, double _radiusH, double _radiusW, ComponentType _type): Mirror(_pos, _normal, _type), radiusH(_radiusH), radiusW(_radiusW) {}
+
+MirrorElliptical::MirrorElliptical(const MirrorElliptical &mirrorElliptical1): Mirror(mirrorElliptical1), radiusW(mirrorElliptical1.radiusW), radiusH(mirrorElliptical1.radiusH) {}
