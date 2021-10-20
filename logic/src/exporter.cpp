@@ -2,6 +2,8 @@
 
 #include "../include/exporter.hpp"
 #include "importer.hpp"
+#include "bmpFileHeader.hpp"
+#include "bmpInfoHeader.hpp"
 
 using namespace Config;
 std::ostream& operator <<(std::ostream& os, ComponentType _type){
@@ -57,7 +59,7 @@ void Exporter::exportStp(List &_lst, std::string _filename) {
         exportVector(dataOut, _lst.elem(i)->getPosition());
         exportInBrackets(dataOut, POSITION_CLOSING_TAG);
         exportInBrackets(dataOut, NORMAL_OPENING_TAG);
-        exportVector(dataOut, _lst.elem(i)->getPosition());
+        exportVector(dataOut, _lst.elem(i)->getNormal());
         exportInBrackets(dataOut, NORMAL_CLOSING_TAG);
         switch (className) {
             case filter:
@@ -130,4 +132,19 @@ void Exporter::exportObject(Config::object &object, std::string filename) {
     }
     exportInBrackets(dataOut, OBJECT_CLOSING_TAG);
     dataOut.close();
+}
+
+void Exporter::exportBMPImage( Detector &_detector, std::string filename) {
+    bmp_vector image = _detector.createImage();
+
+    BmpFileHeader bfh(_detector.getSize(),_detector.getSize());
+    BmpInfoHeader bih(_detector.getSize(),_detector.getSize());
+    std::ofstream fout(filename + ".bmp", std::ios::binary);
+    fout.write((char *) &bfh, 14);
+    fout.write((char *) &bih, 40);
+    for (int i = 0; i < image.size(); i++) {
+        fout.write((char *) &image[i], 3);
+    }
+    fout.close();
+
 }

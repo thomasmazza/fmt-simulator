@@ -1,9 +1,4 @@
-
 #include<iostream>
-
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/io.hpp>
 #include <vector>
 #include <fstream>
 #include "../../utils/include/utils.hpp"
@@ -18,6 +13,7 @@
 #include "bmprgb.hpp"
 #include "bmpFileHeader.hpp"
 #include "bmpInfoHeader.hpp"
+#include "exporter.hpp"
 
 
 typedef typename std::vector<RGB> rgb_vector;
@@ -96,8 +92,7 @@ int main(int argc, char *argv[]) {
     MirrorRectangle rec1(testVector, testVector5, 20, 20);
     Photon testPhoton2(testVector3, testVector4, 600);
     Photon testPhoton3(testVector3, testVector4, 800);
-    std::vector<double> trace(3);
-    trace = rec1.getPosition() - testPhoton2.getPosition();
+    std::vector<double> trace = rec1.getPosition() - testPhoton2.getPosition();
 
     Z = 0;
     for (int i = 0; i < 3; i++) {
@@ -128,18 +123,8 @@ int main(int argc, char *argv[]) {
     }
 
     // Exportiert .bmp
-//    bmp_vector image = d.createImage();
-
-//    BmpFileHeader bfh(S,S);
-//    BmpInfoHeader bih(S,S);
-//    std::ofstream fout("output.bmp", std::ios::binary);
-//    fout.write((char *) &bfh, 14);
-//    fout.write((char *) &bih, 40);
-//    for (int i = 0; i < image.size(); i++) {
-//        fout.write((char *) &image[i], 3);
-//    }
-//    fout.close();
+    //Exporter::exportBMPImage()
 
 
 
-};
+}

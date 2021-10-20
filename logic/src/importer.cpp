@@ -205,9 +205,7 @@ void Importer::importStp(List &_lst, std::string _filename) {
                 importNumber(setupFile, RADIUS_W_OPENING_TAG, _radiusW);
                 importNumber(setupFile, D_OPENING_TAG, _d);
                 importBool(setupFile, PLANE_IS_FRONT_OPENING_TAG, _planeIsFront);
-
-                _lst.append<LensOneSided>(
-                        LensOneSided(_position, _normal, _refIndex, _radiusH, _radiusW, _d, _planeIsFront));
+                _lst.append<LensOneSided>( LensOneSided(_position, _normal, _refIndex, _radiusH, _radiusW, _d, _planeIsFront));
                 getContentInBrackets(setupFile, buf, LENS_ONE_SIDED_CLOSING_TAG);
                 std::cout << LENS_ONE_SIDED_OPENING_TAG << " was imported!" << std::endl;
             } else if (buf == LENS_TWO_SIDED_OPENING_TAG) {

@@ -35,7 +35,8 @@ int List::getLength(){
     return lst.size();
 }
 
-template void List::append<Filter>(const Filter&);
+
+template void List::append<Filter>(const  Filter&);
 template void List::append<MirrorCircle>(const MirrorCircle&);
 template void List::append<MirrorRectangle>(const MirrorRectangle&);
 template void List::append<MirrorElliptical>(const MirrorElliptical&);
@@ -43,3 +44,4 @@ template void List::append<MirrorSquare>(const MirrorSquare&);
 template void List::append<LensTwoSided>(const LensTwoSided&);
 template void List::append<LensOneSided>(const LensOneSided&);
 template void List::append<Detector>(const Detector&);
+

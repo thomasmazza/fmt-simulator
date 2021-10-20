@@ -1,6 +1,5 @@
 #pragma once
 #include <unordered_map>
-#include <boost/numeric/ublas/vector.hpp>
 #include "photon.hpp"
 #include "../../utils/include/objectPoint.hpp"
 #include "config.hpp"
