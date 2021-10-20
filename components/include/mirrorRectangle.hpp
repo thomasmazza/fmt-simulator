@@ -1,14 +1,12 @@
 #pragma once
 
-#include "mirror.hpp"
+#include "component.hpp"
+#include "../../photon/include/photon.hpp"
 
-class MirrorRectangle : public Mirror {
+class MirrorRectangle : public Component {
 private:
     double lengthH;
     double lengthW;
-protected:
-    MirrorRectangle(std::vector<double> &, std::vector<double> &, double, double, ComponentType _type);
-
 public:
     MirrorRectangle(std::vector<double> &, std::vector<double> &, double, double);
 

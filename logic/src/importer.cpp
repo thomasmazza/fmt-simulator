@@ -4,7 +4,9 @@
 #include "../../components/include/lensOneSided.hpp"
 #include "../../components/include/lensTwoSided.hpp"
 #include "../../components/include/mirrorCircle.hpp"
+#include "../../components/include/mirrorElliptical.hpp"
 #include "../../components/include/mirrorSquare.hpp"
+#include "../../components/include/mirrorRectangle.hpp"
 #include "detector.hpp"
 
 using namespace Config;

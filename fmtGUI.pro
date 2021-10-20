@@ -21,10 +21,8 @@ SOURCES += \
     components/src/componentType.cpp \
     components/src/detector.cpp \
     components/src/filter.cpp \
-    components/src/lens.cpp \
     components/src/lensOneSided.cpp \
     components/src/lensTwoSided.cpp \
-    components/src/mirror.cpp \
     components/src/mirrorCircle.cpp \
     components/src/mirrorElliptical.cpp \
     components/src/mirrorRectangle.cpp \
@@ -61,10 +59,8 @@ HEADERS += \
     components/include/componentType.hpp \
     components/include/detector.hpp \
     components/include/filter.hpp \
-    components/include/lens.hpp \
     components/include/lensOneSided.hpp \
     components/include/lensTwoSided.hpp \
-    components/include/mirror.hpp \
     components/include/mirrorCircle.hpp \
     components/include/mirrorElliptical.hpp \
     components/include/mirrorRectangle.hpp \
