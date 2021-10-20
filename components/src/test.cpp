@@ -17,69 +17,134 @@
 #include "bmpFileHeader.hpp"
 #include "bmpInfoHeader.hpp"
 
+
 typedef typename boost::numeric::ublas::vector<double> vector;
 typedef typename boost::numeric::ublas::vector<RGB> rgb_vector;
 typedef typename boost::numeric::ublas::vector<BmpRGB> bmp_vector;
 
-int main() {
-    unsigned int S = 256;
-    vector v (3);
+int main(int argc, char *argv[]) {
+    vector testVector(3);
+    vector testVector2(3);
+    vector testVector3(3);
+    vector testVector4(3);
+    vector testVector5(3);
+
+    vector filterPos(3);
+    vector filterDir(3);
+
+    testVector2(0) = -1;
+    testVector2(1) = 0;
+    testVector2(2) = 0;
+
+    testVector3(0) = -1;
+    testVector3(1) = 1;
+    testVector3(2) = 1;
+
+    testVector4(0) = 1;
+    testVector4(1) = 0;
+    testVector4(2) = 0;
+
+    testVector5[0] = -1;
+    testVector5[1] = 0;
+    testVector5[2] = 1;
+
+    filterPos(0) = 0;
+    filterPos(1) = 1;
+    filterPos(2) = 1;
+
+    filterDir(0) = -1;
+    filterDir(1) = 0;
+    filterDir(2) = 0;
+
+
+    int sum1 = 0;
     for (int i = 0; i < 3; i++) {
-        v(i) = 0;
+        sum1 += pow(testVector4[i], 2);
     }
-    Photon ph(v, v, 420, 0);
-    std::vector<Photon> phV;
-    for (int i = 0; i < 1000; i++) {
-        for (int j = 0; j < 1000; j++) {
-            v(0) = j / 1000.0;
-            v(1) = i / 1000.0;
-            v(2) = 0.0;
-            ph.setPosition(v);
-            v(0) = 0.0;
-            v(1) = 0.0;
-            v(2) = 1.0;
-            ph.setDirection(v);
-            phV.push_back(ph);
+    sum1 = sqrt(sum1);
+    for (int i = 0; i < 3; i++) {
+        testVector4[i] = testVector4[i] / sum1;
+    }
+
+    for (unsigned i = 0; i < testVector.size(); i++) {
+        testVector(i) = 1;
+    }
+
+
+    LensTwoSided lens2(testVector, testVector2, 1.5, 10, -30, 30, 5);
+    Photon testPhoton(testVector3, testVector4, 600, 500);
+    Filter filter(filterPos, filterDir, 450, 700);
+
+    if (lens2.getOutDir(testPhoton)) {
+        std::cout << "New direction: " << testPhoton.getDirection() << std::endl;
+    }
+
+    testVector[0] = 10;
+
+    LensOneSided lens1(testVector, testVector2, 1.5, 20, 21, 5, false);
+
+    if (lens1.getOutDir(testPhoton)) {
+        std::cout << "New direction 2: " << testPhoton.getDirection() << std::endl;
+    }
+
+    //test mirror
+
+    testVector[0] = 1;
+    double Z = 0;
+    for (int i = 0; i < 3; i++) {
+        Z += pow(testVector5[i], 2);
+    }
+    Z = sqrt(Z);
+    for (int i = 0; i < 3; i++) {
+        testVector5[i] = testVector5[i] / Z;
+    }
+
+    MirrorRectangle rec1(testVector, testVector5, 20, 20);
+    Photon testPhoton2(testVector3, testVector4, 600, 0);
+    Photon testPhoton3(testVector3, testVector4, 800, 0);
+    vector trace = rec1.getPosition() - testPhoton2.getPosition();
+
+    Z = 0;
+    for (int i = 0; i < 3; i++) {
+        Z += pow(trace[i], 2);
+    }
+    Z = sqrt(Z);
+    for (int i = 0; i < 3; i++) {
+        trace[i] = trace[i] / Z;
+    }
+
+    if (rec1.getOutDir(testPhoton2, trace)) {
+        std::cout << "New direction 3: " << testPhoton2.getDirection() << std::endl;
+    }
+
+    if (filter.getOutDir(testPhoton2)) {
+        if (rec1.getOutDir(testPhoton2, trace)) {
+            std::cout << "New direction 3: " << testPhoton2.getDirection() << std::endl;
         }
     }
 
-    v(0) = 0.5;
-    v(1) = 0.5;
-    v(2) = 5.0;
-
-    vector vn(3);
-    vn(0) = 0.0;
-    vn(1) = 0.0;
-    vn(2) = 5.0;
-
-    vector vpe(3);
-    vpe(0) = 0.5;
-    vpe(1) = 1;
-    vpe(2) = 5.0;
-
-    vector vpc(3);
-    vpc(0) = 0.5;
-    vpc(1) = 0.5;
-    vpc(2) = 0.0;
-
-    Detector d(v, vn, vpe, vpc, S, 0.0037);
-
-    for (int i = 0; i < phV.size(); i++) {
-        d.getInPoint(phV[i]);
+    if (filter.getOutDir(testPhoton3)) {
+        if (rec1.getOutDir(testPhoton3, trace)) {
+            std::cout << "New direction 4: " << testPhoton2.getDirection() << std::endl;
+        }
+        std::cout << "this" << std::endl;
+    } else {
+        std::cout << "that" << std::endl;
     }
 
+    // Exportiert .bmp
+//    bmp_vector image = d.createImage();
 
-    bmp_vector image = d.createImage();
+//    BmpFileHeader bfh(S,S);
+//    BmpInfoHeader bih(S,S);
+//    std::ofstream fout("output.bmp", std::ios::binary);
+//    fout.write((char *) &bfh, 14);
+//    fout.write((char *) &bih, 40);
+//    for (int i = 0; i < image.size(); i++) {
+//        fout.write((char *) &image[i], 3);
+//    }
+//    fout.close();
 
-    BmpFileHeader bfh(S,S);
-    BmpInfoHeader bih(S,S);
-    std::ofstream fout("output.bmp", std::ios::binary);
-    fout.write((char *) &bfh, 14);
-    fout.write((char *) &bih, 40);
-    for (int i = 0; i < image.size(); i++) {
-        fout.write((char *) &image[i], 3);
-    }
-    fout.close();
-    return 0;
 
-}
+
+};

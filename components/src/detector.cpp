@@ -154,7 +154,7 @@ void Detector::getInPoint(Photon& photon) {
 
     double adjustment;
     for (int i = 0; i < image.size(); i++) {
-        adjustment = (image[i].intensity - avg) * 5.5; //Muss testen wie sinnvoll adjustment berechnet wird
+        adjustment = (image[i].intensity - avg) * 4.0; // Muss testen wie sinnvoll adjustment berechnet wird. Werte zwischen 1 und 5 scheinen gut zu funktionieren;
         if (image[i].intensity >= avg) {
             image[i].r = std::round(Utils::min(image[i].r + adjustment, 255));
             image[i].g = std::round(Utils::min(image[i].g + adjustment, 255));
