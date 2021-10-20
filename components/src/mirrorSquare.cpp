@@ -5,3 +5,5 @@ const double &MirrorSquare::getLength() {
 }
 MirrorSquare::MirrorSquare(std::vector<double>& _pos, std::vector<double>& _normal, double _length):MirrorRectangle(_pos, _normal, _length, _length, mirrorCircle){
 }
+
+MirrorSquare::MirrorSquare(const MirrorSquare &mirrorSquare1): MirrorRectangle(mirrorSquare1) {}
