@@ -49,5 +49,4 @@ public:
 
     const double & getSharpness();
 
-    Detector(std::vector<double> &, std::vector<double> &, std::vector<double> &, std::vector<double> &, unsigned int, double);
 };

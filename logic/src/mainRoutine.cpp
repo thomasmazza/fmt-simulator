@@ -1,5 +1,7 @@
 #include "mainRoutine.hpp"
 
+#include "../../utils/include/utils.hpp"
+
 namespace simulation {
 
     void startTracing(Config::object &_object, int maxAnzPhot, List* lstComp, std::vector<Photon> &lstPhotonHit) {
