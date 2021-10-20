@@ -30,6 +30,7 @@ const double Detector::getPixelSize() {
 }
 
 void Detector::getInPoint(Photon &photon) {
+    const double PI = atan(1.0)*4;
     std::vector<double> pV = photon.getPosition();
     std::vector<double> dV = photon.getDirection();
     std::vector<double> intersection(3);
@@ -64,7 +65,7 @@ void Detector::getInPoint(Photon &photon) {
             int i_index = floor(b / pixelSize);
             int j_index = floor(a / pixelSize);
             if (temp >= 0) {
-                if (temp < boost::math::constants::pi<double>() / 2) {
+                if (temp < PI / 2) {
                     i_index = floor(size / 2 - i_index);
                     j_index = floor(size / 2 - j_index);
 
@@ -78,7 +79,7 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
             } else {
-                if (temp > boost::math::constants::pi<double>() / (-2)) {
+                if (temp > PI / (-2)) {
                     i_index = floor(size / 2 - i_index);
                     j_index = floor(size / 2 + j_index);
 
@@ -139,7 +140,7 @@ bmp_vector Detector::createImage() {
             bw[(j - 1) + (i - 1) * sz] = (image[j + i * sz].intensity * (-4)) + (image[j - 1 + i * sz].intensity) + (image[j + 1 + i * sz].intensity) + (image[j + (i - 1) * sz].intensity) + (image[j + (i + 1) * sz].intensity);
         }
     }
-
+    sharpness = 0;
     for (int i = 0; i < sz * sz; i++) {
         if (bw[i] >= sharpness) {
             sharpness = bw[i];

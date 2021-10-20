@@ -1,8 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
 #include "component.hpp"
 #include "../../photon/include/photon.hpp"
 #include "rgb.hpp"
