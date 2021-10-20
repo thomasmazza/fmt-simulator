@@ -384,36 +384,36 @@ void CmpList_box::addCmpToList(QString _type, double _xPos, double _yPos, double
     //If-Verzweigung weil switch-cases nicht mit Strings kompatibel sind...
     if(_type == "Detector"){
         //TODO: Übergebene Werte beheben
-        Detector _new(_pos, _norm, _norm, _norm, 3, 0.1);
-        componentList->append<Detector>(_new);
+        Detector* _new = new Detector(_pos, _norm, _norm, _norm, 3, 0.1);
+        componentList->append<Detector>(*_new);
     }
     else if(_type == "Filter"){
-        Filter _new(_pos, _norm, _in1, _in2);
-        componentList->append<Filter>(_new);
+        Filter* _new = new Filter(_pos, _norm, _in1, _in2);
+        componentList->append<Filter>(*_new);
     }
     else if(_type == "One Sided Lens"){
-        LensOneSided _new(_pos, _norm, _in1, _in2, _in3, _in4, _in5b);
-        componentList->append<LensOneSided>(_new);
+        LensOneSided* _new = new LensOneSided(_pos, _norm, _in1, _in2, _in3, _in4, _in5b);
+        componentList->append<LensOneSided>(*_new);
     }
     else if(_type == "Two Sided Lens"){
-        LensTwoSided _new(_pos, _norm, _in1, _in2, _in3, _in4, _in5a);
-        componentList->append<LensTwoSided>(_new);
+        LensTwoSided* _new = new LensTwoSided(_pos, _norm, _in1, _in2, _in3, _in4, _in5a);
+        componentList->append<LensTwoSided>(*_new);
     }
     else if(_type == "Circle Mirror"){
-        MirrorCircle _new(_pos, _norm, _in1);
-        componentList->append<MirrorCircle>(_new);
+        MirrorCircle* _new = new MirrorCircle(_pos, _norm, _in1);
+        componentList->append<MirrorCircle>(*_new);
     }
     else if(_type == "Elliptical Mirror"){
-        MirrorElliptical _new(_pos, _norm, _in1, _in2);
-        componentList->append<MirrorElliptical>(_new);
+        MirrorElliptical* _new = new MirrorElliptical(_pos, _norm, _in1, _in2);
+        componentList->append<MirrorElliptical>(*_new);
     }
     else if(_type == "Rectangular Mirror"){
-        MirrorRectangle _new(_pos, _norm, _in1, _in2);
-        componentList->append<MirrorRectangle>(_new);
+        MirrorRectangle* _new = new MirrorRectangle(_pos, _norm, _in1, _in2);
+        componentList->append<MirrorRectangle>(*_new);
     }
     else if(_type == "Square Mirror"){
-        MirrorSquare _new(_pos, _norm, _in1);
-        componentList->append<MirrorSquare>(_new);
+        MirrorSquare* _new = new MirrorSquare(_pos, _norm, _in1);
+        componentList->append<MirrorSquare>(*_new);
     }
 }
 
