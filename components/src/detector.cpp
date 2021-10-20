@@ -1,5 +1,4 @@
 #include "detector.hpp"
-#include <boost/math/constants/constants.hpp>
 #include "../../utils/include/utils.hpp"
 #include <cmath>
 
