@@ -26,6 +26,8 @@ std::string Filter::getType() {
 
 Filter::Filter(std::vector<double>& _pos, std::vector<double>& _normal, int _lowerLimit, int _upperLimit):Component(_pos, _normal,  filter),lowerLimit(_lowerLimit),upperLimit(_upperLimit){}
 
+Filter::Filter(const Filter &filter1): Component(filter1), upperLimit(filter1.upperLimit), lowerLimit(filter1.lowerLimit) {}
+
 bool Filter::getOutDir(Photon& p){
     return inRange(p.getWaveLength());
 }

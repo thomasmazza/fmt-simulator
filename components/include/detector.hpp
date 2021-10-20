@@ -37,6 +37,8 @@ public:
 
     Detector(std::vector<double> &, std::vector<double> &, std::vector<double> &, std::vector<double> &, unsigned int, double);
 
+    Detector(const Detector& detector1);
+
     void getInPoint(Photon &);
 
     bmp_vector createImage();

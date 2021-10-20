@@ -13,6 +13,8 @@ protected:
     double d;
 public:
     Lens(std::vector<double>&, std::vector<double>&, double, double, double, ComponentType _type);
+    Lens(const Lens& lens);
+
     virtual bool getOutDir(Photon&)=0;
     const double& getN();
     const double& getRadiusH();

@@ -9,6 +9,7 @@
 class Mirror: public Component {
     public:
         Mirror(std::vector<double>&, std::vector<double>&, ComponentType _type);
+        Mirror(const Mirror& mirror);
         virtual bool getOutDir(Photon&, std::vector<double>&)=0;
         virtual bool calcOut(Photon&, std::vector<double>&, std::vector<double>&)=0;
 };

@@ -393,3 +393,5 @@ LensOneSided::LensOneSided(std::vector<double> &_pos, std::vector<double> &_norm
                            bool _planeIsFront) : Lens(_pos, _normal, _n, _radiusH, _d, lensOneSided), radiusW(_radiusW),
                                                  planeIsFront(_planeIsFront) {
 }
+
+LensOneSided::LensOneSided(const LensOneSided &lensOneSided1): Lens(lensOneSided1), radiusW(lensOneSided1.radiusW), planeIsFront(lensOneSided1.planeIsFront) {}
