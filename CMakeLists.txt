@@ -3,9 +3,7 @@ cmake_minimum_required(VERSION 3.20)
 
 project(fmt-simulator LANGUAGES CXX)
 
-# see https://cmake.org/cmake/help/latest/module/FindBoost.html
-find_package(Boost REQUIRED)
-include_directories(${Boost_INCLUDE_DIR})
+
 include_directories(components/include utils/include photon/include logic/include)
 add_executable(test
         logic/src/test.cpp

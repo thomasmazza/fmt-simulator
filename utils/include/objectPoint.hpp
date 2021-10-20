@@ -1,7 +1,6 @@
 #pragma once
-#include <boost/numeric/ublas/vector.hpp>
 
-
+#include<vector>
 class objectPoint{
 private:
     const int wavelength;

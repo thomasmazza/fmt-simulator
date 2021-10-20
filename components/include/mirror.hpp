@@ -1,6 +1,5 @@
 #pragma once
 
-#include <boost/numeric/ublas/vector.hpp>
 #include "../../utils/include/utils.hpp"
 #include "component.hpp"
 #include "../../photon/include/photon.hpp"
