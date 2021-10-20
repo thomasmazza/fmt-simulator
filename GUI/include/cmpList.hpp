@@ -26,8 +26,11 @@
 class CmpList_element : public QFrame{
     Q_OBJECT
 public:
-    CmpList_element(int, QString);
+    CmpList_element(int, QString, List*);
     ~CmpList_element();
+    void changeButtonActivity(bool, bool);
+signals:
+    void triggerRebuildList();
 public slots:
     void editElm();
     void deleteElm();
@@ -50,7 +53,7 @@ private:
     QPushButton* elmButtonUp;
     QPushButton* elmButtonDown;
 
-    List componentList;
+    List* componentList;
 };
 
 class CmpList_box : public QWidget{

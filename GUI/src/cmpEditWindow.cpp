@@ -61,7 +61,7 @@ void DetectorEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
-DetectorEditWindow::DetectorEditWindow(QWidget* parent):QDialog(parent){
+DetectorEditWindow::DetectorEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Detector");
     this->setFixedSize(400, 110);
@@ -85,12 +85,15 @@ DetectorEditWindow::DetectorEditWindow(QWidget* parent):QDialog(parent){
     xPos = new QLineEdit();
     xPos->setValidator(inValidate);
     xPos->setPlaceholderText("X");
+    xPos->setText(QString::number(_xPos));
     yPos = new QLineEdit();
     yPos->setValidator(inValidate);
     yPos->setPlaceholderText("Y");
+    yPos->setText(QString::number(_yPos));
     zPos = new QLineEdit();
     zPos->setValidator(inValidate);
     zPos->setPlaceholderText("Z");
+    zPos->setText(QString::number(_zPos));
     posBox->addWidget(xPos);
     posBox->addWidget(yPos);
     posBox->addWidget(zPos);
@@ -103,12 +106,15 @@ DetectorEditWindow::DetectorEditWindow(QWidget* parent):QDialog(parent){
     xNorm = new QLineEdit();
     xNorm->setValidator(inValidate);
     xNorm->setPlaceholderText("X");
+    xNorm->setText(QString::number(_xNorm));
     yNorm = new QLineEdit();
     yNorm->setValidator(inValidate);
     yNorm->setPlaceholderText("Y");
+    yNorm->setText(QString::number(_yNorm));
     zNorm = new QLineEdit();
     zNorm->setValidator(inValidate);
     zNorm->setPlaceholderText("Z");
+    zNorm->setText(QString::number(_zNorm));
     normBox->addWidget(xNorm);
     normBox->addWidget(yNorm);
     normBox->addWidget(zNorm);
@@ -214,7 +220,7 @@ void FilterEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
-FilterEditWindow::FilterEditWindow(QWidget* parent):QDialog(parent){
+FilterEditWindow::FilterEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _lowerLim, double _upperLim):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Filter");
     this->setFixedSize(400, 180);
@@ -238,12 +244,15 @@ FilterEditWindow::FilterEditWindow(QWidget* parent):QDialog(parent){
     xPos = new QLineEdit();
     xPos->setValidator(inValidate);
     xPos->setPlaceholderText("X");
+    xPos->setText(QString::number(_xPos));
     yPos = new QLineEdit();
     yPos->setValidator(inValidate);
     yPos->setPlaceholderText("Y");
+    yPos->setText(QString::number(_yPos));
     zPos = new QLineEdit();
     zPos->setValidator(inValidate);
     zPos->setPlaceholderText("Z");
+    zPos->setText(QString::number(_zPos));
     posBox->addWidget(xPos);
     posBox->addWidget(yPos);
     posBox->addWidget(zPos);
@@ -256,12 +265,15 @@ FilterEditWindow::FilterEditWindow(QWidget* parent):QDialog(parent){
     xNorm = new QLineEdit();
     xNorm->setValidator(inValidate);
     xNorm->setPlaceholderText("X");
+    xNorm->setText(QString::number(_xNorm));
     yNorm = new QLineEdit();
     yNorm->setValidator(inValidate);
     yNorm->setPlaceholderText("Y");
+    yNorm->setText(QString::number(_yNorm));
     zNorm = new QLineEdit();
     zNorm->setValidator(inValidate);
     zNorm->setPlaceholderText("Z");
+    zNorm->setText(QString::number(_zNorm));
     normBox->addWidget(xNorm);
     normBox->addWidget(yNorm);
     normBox->addWidget(zNorm);
@@ -274,11 +286,13 @@ FilterEditWindow::FilterEditWindow(QWidget* parent):QDialog(parent){
     QLabel* lowerLimLabel = new QLabel("Lower Limit");
     lowerLim = new QLineEdit();
     lowerLim->setValidator(inValidate);
+    lowerLim->setText(QString::number(_lowerLim));
     inputHolder->addRow(lowerLimLabel, lowerLim);
 
     QLabel* upperLimLabel = new QLabel("Upper Limit");
     upperLim = new QLineEdit();
     upperLim->setValidator(inValidate);
+    upperLim->setText(QString::number(_upperLim));
     inputHolder->addRow(upperLimLabel, upperLim);
 
     //Erstelle layout für Ok/Cancel Button
@@ -395,7 +409,7 @@ void LensOneSidedEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
-LensOneSidedEditWindow::LensOneSidedEditWindow(QWidget* parent):QDialog(parent){
+LensOneSidedEditWindow::LensOneSidedEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _refIndex, double _radiusH, double _radiusW, double _thickness, bool _planeIsFront):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit One Sided Lens");
     this->setFixedSize(400, 270);
@@ -419,12 +433,15 @@ LensOneSidedEditWindow::LensOneSidedEditWindow(QWidget* parent):QDialog(parent){
     xPos = new QLineEdit();
     xPos->setValidator(inValidate);
     xPos->setPlaceholderText("X");
+    xPos->setText(QString::number(_xPos));
     yPos = new QLineEdit();
     yPos->setValidator(inValidate);
     yPos->setPlaceholderText("Y");
+    yPos->setText(QString::number(_yPos));
     zPos = new QLineEdit();
     zPos->setValidator(inValidate);
     zPos->setPlaceholderText("Z");
+    zPos->setText(QString::number(_zPos));
     posBox->addWidget(xPos);
     posBox->addWidget(yPos);
     posBox->addWidget(zPos);
@@ -437,12 +454,15 @@ LensOneSidedEditWindow::LensOneSidedEditWindow(QWidget* parent):QDialog(parent){
     xNorm = new QLineEdit();
     xNorm->setValidator(inValidate);
     xNorm->setPlaceholderText("X");
+    xNorm->setText(QString::number(_xNorm));
     yNorm = new QLineEdit();
     yNorm->setValidator(inValidate);
     yNorm->setPlaceholderText("Y");
+    yNorm->setText(QString::number(_yNorm));
     zNorm = new QLineEdit();
     zNorm->setValidator(inValidate);
     zNorm->setPlaceholderText("Z");
+    zNorm->setText(QString::number(_zNorm));
     normBox->addWidget(xNorm);
     normBox->addWidget(yNorm);
     normBox->addWidget(zNorm);
@@ -455,27 +475,32 @@ LensOneSidedEditWindow::LensOneSidedEditWindow(QWidget* parent):QDialog(parent){
     QLabel* refIndexLabel = new QLabel("Refractive Index");
     refIndex = new QLineEdit();
     refIndex->setValidator(inValidate);
+    refIndex->setText(QString::number(_refIndex));
     inputHolder->addRow(refIndexLabel, refIndex);
 
     QLabel* radiusHLabel = new QLabel("Radius of Lens");
     radiusH = new QLineEdit();
     radiusH->setValidator(inValidate);
+    radiusH->setText(QString::number(_radiusH));
     inputHolder->addRow(radiusHLabel, radiusH);
 
     QLabel* radiusWLabel = new QLabel("Radius of Curvature");
     radiusW = new QLineEdit();
     radiusW->setValidator(inValidate);
+    radiusW->setText(QString::number(_radiusW));
     inputHolder->addRow(radiusWLabel, radiusW);
 
     QLabel* thicknessLabel = new QLabel("Thickness");
     thickness = new QLineEdit();
     thickness->setValidator(inValidate);
+    thickness->setText(QString::number(_thickness));
     inputHolder->addRow(thicknessLabel, thickness);
 
     QLabel* planeIsFrontLabel = new QLabel("Position of plane Surface");
     planeIsFront = new QComboBox();
     planeIsFront->addItem("Front");
     planeIsFront->addItem("Back");
+    if(!_planeIsFront) planeIsFront->setCurrentIndex(1);
     inputHolder->addRow(planeIsFrontLabel, planeIsFront);
 
     //Erstelle layout für Ok/Cancel Button
@@ -596,7 +621,7 @@ void LensTwoSidedEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
-LensTwoSidedEditWindow::LensTwoSidedEditWindow(QWidget* parent):QDialog(parent){
+LensTwoSidedEditWindow::LensTwoSidedEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _refIndex, double _radiusH, double _radiusI, double _radiusO, double _thickness):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Two Sided Lens");
     this->setFixedSize(400, 270);
@@ -620,12 +645,15 @@ LensTwoSidedEditWindow::LensTwoSidedEditWindow(QWidget* parent):QDialog(parent){
     xPos = new QLineEdit();
     xPos->setValidator(inValidate);
     xPos->setPlaceholderText("X");
+    xPos->setText(QString::number(_xPos));
     yPos = new QLineEdit();
     yPos->setValidator(inValidate);
     yPos->setPlaceholderText("Y");
+    yPos->setText(QString::number(_yPos));
     zPos = new QLineEdit();
     zPos->setValidator(inValidate);
     zPos->setPlaceholderText("Z");
+    zPos->setText(QString::number(_zPos));
     posBox->addWidget(xPos);
     posBox->addWidget(yPos);
     posBox->addWidget(zPos);
@@ -638,12 +666,15 @@ LensTwoSidedEditWindow::LensTwoSidedEditWindow(QWidget* parent):QDialog(parent){
     xNorm = new QLineEdit();
     xNorm->setValidator(inValidate);
     xNorm->setPlaceholderText("X");
+    xNorm->setText(QString::number(_xNorm));
     yNorm = new QLineEdit();
     yNorm->setValidator(inValidate);
     yNorm->setPlaceholderText("Y");
+    yNorm->setText(QString::number(_yNorm));
     zNorm = new QLineEdit();
     zNorm->setValidator(inValidate);
     zNorm->setPlaceholderText("Z");
+    zNorm->setText(QString::number(_zNorm));
     normBox->addWidget(xNorm);
     normBox->addWidget(yNorm);
     normBox->addWidget(zNorm);
@@ -656,26 +687,31 @@ LensTwoSidedEditWindow::LensTwoSidedEditWindow(QWidget* parent):QDialog(parent){
     QLabel* refIndexLabel = new QLabel("Refractive Index");
     refIndex = new QLineEdit();
     refIndex->setValidator(inValidate);
+    refIndex->setText(QString::number(_refIndex));
     inputHolder->addRow(refIndexLabel, refIndex);
 
     QLabel* radiusHLabel = new QLabel("Radius of Lens");
     radiusH = new QLineEdit();
     radiusH->setValidator(inValidate);
+    radiusH->setText(QString::number(_radiusH));
     inputHolder->addRow(radiusHLabel, radiusH);
 
     QLabel* radiusILabel = new QLabel("Radius of Inner Curvature");
     radiusI = new QLineEdit();
     radiusI->setValidator(inValidate);
+    radiusI->setText(QString::number(_radiusI));
     inputHolder->addRow(radiusILabel, radiusI);
 
     QLabel* radiusOLabel = new QLabel("Radius of Outer Curvature");
     radiusO = new QLineEdit();
     radiusO->setValidator(inValidate);
+    radiusO->setText(QString::number(_radiusO));
     inputHolder->addRow(radiusOLabel, radiusO);
 
     QLabel* thicknessLabel = new QLabel("Thickness");
     thickness = new QLineEdit();
     thickness->setValidator(inValidate);
+    thickness->setText(QString::number(_thickness));
     inputHolder->addRow(thicknessLabel, thickness);
 
     //Erstelle layout für Ok/Cancel Button
@@ -768,7 +804,7 @@ void MirrorCircleEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
-MirrorCircleEditWindow::MirrorCircleEditWindow(QWidget* parent):QDialog(parent){
+MirrorCircleEditWindow::MirrorCircleEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _radius):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Circle Mirror");
     this->setFixedSize(400, 140);
@@ -792,12 +828,15 @@ MirrorCircleEditWindow::MirrorCircleEditWindow(QWidget* parent):QDialog(parent){
     xPos = new QLineEdit();
     xPos->setValidator(inValidate);
     xPos->setPlaceholderText("X");
+    xPos->setText(QString::number(_xPos));
     yPos = new QLineEdit();
     yPos->setValidator(inValidate);
     yPos->setPlaceholderText("Y");
+    yPos->setText(QString::number(_yPos));
     zPos = new QLineEdit();
     zPos->setValidator(inValidate);
     zPos->setPlaceholderText("Z");
+    zPos->setText(QString::number(_zPos));
     posBox->addWidget(xPos);
     posBox->addWidget(yPos);
     posBox->addWidget(zPos);
@@ -810,12 +849,15 @@ MirrorCircleEditWindow::MirrorCircleEditWindow(QWidget* parent):QDialog(parent){
     xNorm = new QLineEdit();
     xNorm->setValidator(inValidate);
     xNorm->setPlaceholderText("X");
+    xNorm->setText(QString::number(_xNorm));
     yNorm = new QLineEdit();
     yNorm->setValidator(inValidate);
     yNorm->setPlaceholderText("Y");
+    yNorm->setText(QString::number(_yNorm));
     zNorm = new QLineEdit();
     zNorm->setValidator(inValidate);
     zNorm->setPlaceholderText("Z");
+    zNorm->setText(QString::number(_zNorm));
     normBox->addWidget(xNorm);
     normBox->addWidget(yNorm);
     normBox->addWidget(zNorm);
@@ -828,6 +870,7 @@ MirrorCircleEditWindow::MirrorCircleEditWindow(QWidget* parent):QDialog(parent){
     QLabel* radiusLabel = new QLabel("Radius");
     radius = new QLineEdit();
     radius->setValidator(inValidate);
+    radius->setText(QString::number(_radius));
     inputHolder->addRow(radiusLabel, radius);
 
     //Erstelle layout für Ok/Cancel Button
@@ -927,7 +970,7 @@ void MirrorEllipticalEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
-MirrorEllipticalEditWindow::MirrorEllipticalEditWindow(QWidget* parent):QDialog(parent){
+MirrorEllipticalEditWindow::MirrorEllipticalEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _radiusH, double _radiusW):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Elliptical Mirror");
     this->setFixedSize(400, 170);
@@ -951,12 +994,15 @@ MirrorEllipticalEditWindow::MirrorEllipticalEditWindow(QWidget* parent):QDialog(
     xPos = new QLineEdit();
     xPos->setValidator(inValidate);
     xPos->setPlaceholderText("X");
+    xPos->setText(QString::number(_xPos));
     yPos = new QLineEdit();
     yPos->setValidator(inValidate);
     yPos->setPlaceholderText("Y");
+    yPos->setText(QString::number(_yPos));
     zPos = new QLineEdit();
     zPos->setValidator(inValidate);
     zPos->setPlaceholderText("Z");
+    zPos->setText(QString::number(_zPos));
     posBox->addWidget(xPos);
     posBox->addWidget(yPos);
     posBox->addWidget(zPos);
@@ -969,12 +1015,15 @@ MirrorEllipticalEditWindow::MirrorEllipticalEditWindow(QWidget* parent):QDialog(
     xNorm = new QLineEdit();
     xNorm->setValidator(inValidate);
     xNorm->setPlaceholderText("X");
+    xNorm->setText(QString::number(_xNorm));
     yNorm = new QLineEdit();
     yNorm->setValidator(inValidate);
     yNorm->setPlaceholderText("Y");
+    yNorm->setText(QString::number(_yNorm));
     zNorm = new QLineEdit();
     zNorm->setValidator(inValidate);
     zNorm->setPlaceholderText("Z");
+    zNorm->setText(QString::number(_zNorm));
     normBox->addWidget(xNorm);
     normBox->addWidget(yNorm);
     normBox->addWidget(zNorm);
@@ -987,11 +1036,13 @@ MirrorEllipticalEditWindow::MirrorEllipticalEditWindow(QWidget* parent):QDialog(
     QLabel* radiusHLabel = new QLabel("Height Radius");
     radiusH = new QLineEdit();
     radiusH->setValidator(inValidate);
+    radiusH->setText(QString::number(_radiusH));
     inputHolder->addRow(radiusHLabel, radiusH);
 
     QLabel* radiusWLabel = new QLabel("Width Radius");
     radiusW = new QLineEdit();
     radiusW->setValidator(inValidate);
+    radiusW->setText(QString::number(_radiusW));
     inputHolder->addRow(radiusWLabel, radiusW);
 
     //Erstelle layout für Ok/Cancel Button
@@ -1091,7 +1142,7 @@ void MirrorRectangularEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
-MirrorRectangularEditWindow::MirrorRectangularEditWindow(QWidget* parent):QDialog(parent){
+MirrorRectangularEditWindow::MirrorRectangularEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _lengthH, double _lengthW):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Rectangular Mirror");
     this->setFixedSize(400, 170);
@@ -1115,12 +1166,15 @@ MirrorRectangularEditWindow::MirrorRectangularEditWindow(QWidget* parent):QDialo
     xPos = new QLineEdit();
     xPos->setValidator(inValidate);
     xPos->setPlaceholderText("X");
+    xPos->setText(QString::number(_xPos));
     yPos = new QLineEdit();
     yPos->setValidator(inValidate);
     yPos->setPlaceholderText("Y");
+    yPos->setText(QString::number(_yPos));
     zPos = new QLineEdit();
     zPos->setValidator(inValidate);
     zPos->setPlaceholderText("Z");
+    zPos->setText(QString::number(_zPos));
     posBox->addWidget(xPos);
     posBox->addWidget(yPos);
     posBox->addWidget(zPos);
@@ -1133,12 +1187,15 @@ MirrorRectangularEditWindow::MirrorRectangularEditWindow(QWidget* parent):QDialo
     xNorm = new QLineEdit();
     xNorm->setValidator(inValidate);
     xNorm->setPlaceholderText("X");
+    xNorm->setText(QString::number(_xNorm));
     yNorm = new QLineEdit();
     yNorm->setValidator(inValidate);
     yNorm->setPlaceholderText("Y");
+    yNorm->setText(QString::number(_yNorm));
     zNorm = new QLineEdit();
     zNorm->setValidator(inValidate);
     zNorm->setPlaceholderText("Z");
+    zNorm->setText(QString::number(_zNorm));
     normBox->addWidget(xNorm);
     normBox->addWidget(yNorm);
     normBox->addWidget(zNorm);
@@ -1151,11 +1208,13 @@ MirrorRectangularEditWindow::MirrorRectangularEditWindow(QWidget* parent):QDialo
     QLabel* heightLabel = new QLabel("Height");
     height = new QLineEdit();
     height->setValidator(inValidate);
+    height->setText(QString::number(_lengthH));
     inputHolder->addRow(heightLabel, height);
 
     QLabel* widthLabel = new QLabel("Width");
     width = new QLineEdit();
     width->setValidator(inValidate);
+    width->setText(QString::number(_lengthW));
     inputHolder->addRow(widthLabel, width);
 
     //Erstelle layout für Ok/Cancel Button
@@ -1248,7 +1307,7 @@ void MirrorSquareEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
-MirrorSquareEditWindow::MirrorSquareEditWindow(QWidget* parent):QDialog(parent){
+MirrorSquareEditWindow::MirrorSquareEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _length):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Square Mirror");
     this->setFixedSize(400, 140);
@@ -1272,12 +1331,15 @@ MirrorSquareEditWindow::MirrorSquareEditWindow(QWidget* parent):QDialog(parent){
     xPos = new QLineEdit();
     xPos->setValidator(inValidate);
     xPos->setPlaceholderText("X");
+    xPos->setText(QString::number(_xPos));
     yPos = new QLineEdit();
     yPos->setValidator(inValidate);
     yPos->setPlaceholderText("Y");
+    yPos->setText(QString::number(_yPos));
     zPos = new QLineEdit();
     zPos->setValidator(inValidate);
     zPos->setPlaceholderText("Z");
+    zPos->setText(QString::number(_zPos));
     posBox->addWidget(xPos);
     posBox->addWidget(yPos);
     posBox->addWidget(zPos);
@@ -1290,12 +1352,15 @@ MirrorSquareEditWindow::MirrorSquareEditWindow(QWidget* parent):QDialog(parent){
     xNorm = new QLineEdit();
     xNorm->setValidator(inValidate);
     xNorm->setPlaceholderText("X");
+    xNorm->setText(QString::number(_xNorm));
     yNorm = new QLineEdit();
     yNorm->setValidator(inValidate);
     yNorm->setPlaceholderText("Y");
+    yNorm->setText(QString::number(_yNorm));
     zNorm = new QLineEdit();
     zNorm->setValidator(inValidate);
     zNorm->setPlaceholderText("Z");
+    zNorm->setText(QString::number(_zNorm));
     normBox->addWidget(xNorm);
     normBox->addWidget(yNorm);
     normBox->addWidget(zNorm);
@@ -1308,6 +1373,7 @@ MirrorSquareEditWindow::MirrorSquareEditWindow(QWidget* parent):QDialog(parent){
     QLabel* lengthLabel = new QLabel("Edge Length");
     length = new QLineEdit();
     length->setValidator(inValidate);
+    length->setText(QString::number(_length));
     inputHolder->addRow(lengthLabel, length);
 
     //Erstelle layout für Ok/Cancel Button

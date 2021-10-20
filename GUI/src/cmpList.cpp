@@ -1,8 +1,10 @@
 #include "../include/cmpList.hpp"
 #include "../include/cmpEditWindow.hpp"
 
-CmpList_element::CmpList_element(int _number, QString _type){
-    //TODO: Process list reference transfer
+CmpList_element::CmpList_element(int _number, QString _type, List* _list){
+    //Übergebe Listen-Referenz
+    componentList = _list;
+
     //Lege Style der Box fest
     setFrameStyle(QFrame::Panel | QFrame::Raised);
     setLineWidth(1);
@@ -38,12 +40,15 @@ CmpList_element::CmpList_element(int _number, QString _type){
     elmButtonRemove = new QPushButton();
     elmButtonRemove->setFixedSize(23, 23);
     elmButtonRemove->setIcon(QIcon::fromTheme("list-remove"));
+    connect(elmButtonRemove, &QPushButton::clicked, this, &CmpList_element::deleteElm);
     elmButtonUp = new QPushButton();
     elmButtonUp->setFixedSize(23, 23);
     elmButtonUp->setIcon(QIcon::fromTheme("go-up"));
+    connect(elmButtonUp, &QPushButton::clicked, this, &CmpList_element::moveUpElm);
     elmButtonDown = new QPushButton();
     elmButtonDown->setFixedSize(23, 23);
     elmButtonDown->setIcon(QIcon::fromTheme("go-down"));
+    connect(elmButtonDown, &QPushButton::clicked, this, &CmpList_element::moveDownElm);
 
     elmButtonBox->addWidget(elmButtonRemove);
     elmButtonBox->addWidget(elmButtonUp);
@@ -69,84 +74,195 @@ CmpList_element::CmpList_element(int _number, QString _type){
 CmpList_element::~CmpList_element(){
 }
 
+void CmpList_element::changeButtonActivity(bool _butUp, bool _butDown){
+    elmButtonUp->setEnabled(_butUp);
+    elmButtonDown->setEnabled(_butDown);
+}
+
 void CmpList_element::editElm(){
     if(elmType->text() == "Detector"){
-        DetectorEditWindow* editWin = new DetectorEditWindow(this);
+        DetectorEditWindow* editWin = new DetectorEditWindow(this,
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[2],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[2]);
         connect(editWin, &DetectorEditWindow::editDetector, this, &CmpList_element::applyEditDetector);
     }
     else if(elmType->text() == "Filter"){
-        FilterEditWindow* editWin = new FilterEditWindow(this);
+        FilterEditWindow* editWin = new FilterEditWindow(this,
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[2],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[2],
+            static_cast<Filter &>(*componentList->elem(elmNumber->text().toInt() - 1)).getLowerLimit(),
+            static_cast<Filter &>(*componentList->elem(elmNumber->text().toInt() - 1)).getUpperLimit());
         connect(editWin, &FilterEditWindow::editFilter, this, &CmpList_element::applyEditFilter);
     }
     else if(elmType->text() == "One Sided Lens"){
-        LensOneSidedEditWindow* editWin = new LensOneSidedEditWindow(this);
+        LensOneSidedEditWindow* editWin = new LensOneSidedEditWindow(this,
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[2],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[2],
+            static_cast<LensOneSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getN(),
+            static_cast<LensOneSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadiusH(),
+            static_cast<LensOneSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadiusW(),
+            static_cast<LensOneSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getD(),
+            static_cast<LensOneSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getPlaneIsFront());
         connect(editWin, &LensOneSidedEditWindow::editLensOneSided, this, &CmpList_element::applyEditLensOneSided);
     }
     else if(elmType->text() == "Two Sided Lens"){
-        LensTwoSidedEditWindow* editWin = new LensTwoSidedEditWindow(this);
+        LensTwoSidedEditWindow* editWin = new LensTwoSidedEditWindow(this,
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[2],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[2],
+            static_cast<LensTwoSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getN(),
+            static_cast<LensTwoSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadiusH(),
+            static_cast<LensTwoSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadiusI(),
+            static_cast<LensTwoSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadiusO(),
+            static_cast<LensTwoSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getD());
         connect(editWin, &LensTwoSidedEditWindow::editLensTwoSided, this, &CmpList_element::applyEditLensTwoSided);
     }
     else if(elmType->text() == "Circle Mirror"){
-        MirrorCircleEditWindow* editWin = new MirrorCircleEditWindow(this);
+        MirrorCircleEditWindow* editWin = new MirrorCircleEditWindow(this,
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[2],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[2],
+            static_cast<MirrorCircle &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadius());
         connect(editWin, &MirrorCircleEditWindow::editMirrorCircle, this, &CmpList_element::applyEditMirrorCircle);
     }
     else if(elmType->text() == "Elliptical Mirror"){
-        MirrorEllipticalEditWindow* editWin = new MirrorEllipticalEditWindow(this);
+        MirrorEllipticalEditWindow* editWin = new MirrorEllipticalEditWindow(this,
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[2],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[2],
+            static_cast<MirrorElliptical &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadiusH(),
+            static_cast<MirrorElliptical &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadiusW());
         connect(editWin, &MirrorEllipticalEditWindow::editMirrorElliptical, this, &CmpList_element::applyEditMirrorElliptical);
     }
     else if(elmType->text() == "Rectangular Mirror"){
-        MirrorRectangularEditWindow* editWin = new MirrorRectangularEditWindow(this);
+        MirrorRectangularEditWindow* editWin = new MirrorRectangularEditWindow(this,
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[2],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[2],
+            static_cast<MirrorRectangle &>(*componentList->elem(elmNumber->text().toInt() - 1)).getLengthH(),
+            static_cast<MirrorRectangle &>(*componentList->elem(elmNumber->text().toInt() - 1)).getLengthW());
         connect(editWin, &MirrorRectangularEditWindow::editMirrorRectangular, this, &CmpList_element::applyEditMirrorRectangular);
     }
     else if(elmType->text() == "Square Mirror"){
-        MirrorSquareEditWindow* editWin = new MirrorSquareEditWindow(this);
+        MirrorSquareEditWindow* editWin = new MirrorSquareEditWindow(this,
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[2],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[2],
+            static_cast<MirrorSquare &>(*componentList->elem(elmNumber->text().toInt() - 1)).getLength());
         connect(editWin, &MirrorSquareEditWindow::editMirrorSquare, this, &CmpList_element::applyEditMirrorSquare);
     }
 }
 
 //Übernehmen der Änderungen der einzelnen Komponententypen
 void CmpList_element::applyEditDetector(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm){
-    //TODO: In Liste übernehmen
+    //In Liste übernehmen
+    componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
 }
 
 void CmpList_element::applyEditFilter(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _lowerLim, double _upperLim){
-    //TODO: In Liste übernehmen
+    //In Liste übernehmen
+    componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
+    static_cast<Filter &>(*componentList->elem(elmNumber->text().toInt() - 1)).setLowerLimit(_lowerLim);
+    static_cast<Filter &>(*componentList->elem(elmNumber->text().toInt() - 1)).setUpperLimit(_upperLim);
 }
 
 void CmpList_element::applyEditLensOneSided(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _refIndex, double _radiusH, double _radiusW, double _thickness, bool _planeIsFront){
-    //TODO: In Liste übernehmen
+    //In Liste übernehmen //TODO: Eigene Methoden auf set ändern, sobald vorhanden
+    componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
+    static_cast<LensOneSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getN();
+    static_cast<LensOneSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadiusH();
+    static_cast<LensOneSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadiusW();
+    static_cast<LensOneSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getD();
+    static_cast<LensOneSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getPlaneIsFront();
 }
 
 void CmpList_element::applyEditLensTwoSided(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _refIndex, double _radiusH, double _radiusI, double _radiusO, double _thickness){
-    //TODO: In Liste übernehmen
+    //In Liste übernehmen //TODO: Eigene Methoden auf set ändern, sobald vorhanden
+    componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
+    static_cast<LensTwoSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getN();
+    static_cast<LensTwoSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadiusH();
+    static_cast<LensTwoSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadiusI();
+    static_cast<LensTwoSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadiusO();
+    static_cast<LensTwoSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).getD();
 }
 
 void CmpList_element::applyEditMirrorCircle(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _radius){
-    //TODO: In Liste übernehmen
+    //In Liste übernehmen //TODO: Eigene Methoden auf set ändern, sobald vorhanden
+    componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
+    static_cast<MirrorCircle &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadius();
 }
 
 void CmpList_element::applyEditMirrorElliptical(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _radiusH, double _radiusW){
-    //TODO: In Liste übernehmen
+    //In Liste übernehmen //TODO: Eigene Methoden auf set ändern, sobald vorhanden
+    componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
+    static_cast<MirrorElliptical &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadiusH();
+    static_cast<MirrorElliptical &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadiusW();
 }
 
 void CmpList_element::applyEditMirrorRectangular(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _height, double _width){
-    //TODO: In Liste übernehmen
+    //In Liste übernehmen //TODO: Eigene Methoden auf set ändern, sobald vorhanden
+    componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
+    static_cast<MirrorRectangle &>(*componentList->elem(elmNumber->text().toInt() - 1)).getLengthH();
+    static_cast<MirrorRectangle &>(*componentList->elem(elmNumber->text().toInt() - 1)).getLengthW();
 }
 
 void CmpList_element::applyEditMirrorSquare(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _length){
-    //TODO: In Liste übernehmen
+    //In Liste übernehmen //TODO: Eigene Methoden auf set ändern, sobald vorhanden
+    componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
+    static_cast<MirrorSquare &>(*componentList->elem(elmNumber->text().toInt() - 1)).getLength();
 }
 
 void CmpList_element::deleteElm(){
-    //TODO: Liste aktualisieren
+    //Element löschen und Liste aktualisieren
+    componentList->del(elmNumber->text().toInt() - 1);
+    emit triggerRebuildList();
 }
 
 void CmpList_element::moveUpElm(){
     //TODO: Liste aktualisieren
+    componentList->swap(elmNumber->text().toInt() - 1, elmNumber->text().toInt() - 2);
+    emit triggerRebuildList();
 }
 
 void CmpList_element::moveDownElm(){
     //TODO: Liste aktualisieren
+    componentList->swap(elmNumber->text().toInt() - 1, elmNumber->text().toInt());
+    emit triggerRebuildList();
 }
 
 void CmpList_box::rebuildFromList(){
@@ -161,7 +277,7 @@ void CmpList_box::rebuildFromList(){
         CmpList_element* element;
         switch(_type){
         case detector:
-            element = new CmpList_element(i + 1, "Detector");
+            element = new CmpList_element(i + 1, "Detector", componentList);
 
             //Element einfügen
             layout->removeItem(bottomSpacer);
@@ -169,7 +285,7 @@ void CmpList_box::rebuildFromList(){
             layout->addItem(bottomSpacer);
             break;
         case filter:
-            element = new CmpList_element(i + 1, "Filter");
+            element = new CmpList_element(i + 1, "Filter", componentList);
 
             //Element einfügen
             layout->removeItem(bottomSpacer);
@@ -177,7 +293,7 @@ void CmpList_box::rebuildFromList(){
             layout->addItem(bottomSpacer);
             break;
         case lensOneSided:
-            element = new CmpList_element(i + 1, "One Sided Lens");
+            element = new CmpList_element(i + 1, "One Sided Lens", componentList);
 
             //Element einfügen
             layout->removeItem(bottomSpacer);
@@ -185,7 +301,7 @@ void CmpList_box::rebuildFromList(){
             layout->addItem(bottomSpacer);
             break;
         case lensTwoSided:
-            element = new CmpList_element(i + 1, "Two Sided Lens");
+            element = new CmpList_element(i + 1, "Two Sided Lens", componentList);
 
             //Element einfügen
             layout->removeItem(bottomSpacer);
@@ -193,7 +309,7 @@ void CmpList_box::rebuildFromList(){
             layout->addItem(bottomSpacer);
             break;
         case mirrorCircle:
-            element = new CmpList_element(i + 1, "Circle Mirror");
+            element = new CmpList_element(i + 1, "Circle Mirror", componentList);
 
             //Element einfügen
             layout->removeItem(bottomSpacer);
@@ -201,7 +317,7 @@ void CmpList_box::rebuildFromList(){
             layout->addItem(bottomSpacer);
             break;
         case mirrorElliptical:
-            element = new CmpList_element(i + 1, "Elliptical Mirror");
+            element = new CmpList_element(i + 1, "Elliptical Mirror", componentList);
 
             //Element einfügen
             layout->removeItem(bottomSpacer);
@@ -209,7 +325,7 @@ void CmpList_box::rebuildFromList(){
             layout->addItem(bottomSpacer);
             break;
         case mirrorRectangle:
-            element = new CmpList_element(i + 1, "Rectangular Mirror");
+            element = new CmpList_element(i + 1, "Rectangular Mirror", componentList);
 
             //Element einfügen
             layout->removeItem(bottomSpacer);
@@ -217,7 +333,7 @@ void CmpList_box::rebuildFromList(){
             layout->addItem(bottomSpacer);
             break;
         case mirrorSquare:
-            element = new CmpList_element(i + 1, "Square Mirror");
+            element = new CmpList_element(i + 1, "Square Mirror", componentList);
 
             //Element einfügen
             layout->removeItem(bottomSpacer);
@@ -225,6 +341,15 @@ void CmpList_box::rebuildFromList(){
             layout->addItem(bottomSpacer);
             break;
         }
+        //Deaktiviere Hoch/Runter-Buttons für erstes/letztes Element
+        if(length == 1) element->changeButtonActivity(false, false);
+        else{
+            if(i == 0) element->changeButtonActivity(false, true);
+            else if(i == length - 1) element->changeButtonActivity(true, false);
+            else element->changeButtonActivity(true, true);
+        }
+
+        connect(element, &CmpList_element::triggerRebuildList, this, &CmpList_box::rebuildFromList);
     }
 }
 
@@ -245,9 +370,10 @@ void CmpList_box::addCmpButtonPressed(){
 
 void CmpList_box::addCmpToList(QString _type, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _in1, double _in2, double _in3, double _in4, double _in5a, bool _in5b){
     layout->removeItem(bottomSpacer);
-    //TODO: Ermittle Element-Nummer aus Listenplatz/Listenlänge
+    //Ermittle Element-Nummer aus Listenplatz/Listenlänge
     short elmNumber = componentList->getLength() + 1;
-    CmpList_element* element = new CmpList_element(elmNumber, _type); //TODO: Add List reference transfer
+    CmpList_element* element = new CmpList_element(elmNumber, _type, componentList);
+    connect(element, &CmpList_element::triggerRebuildList, this, &CmpList_box::rebuildFromList);
 
     layout->addWidget(element);
     layout->addItem(bottomSpacer);
