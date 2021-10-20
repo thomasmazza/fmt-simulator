@@ -17,23 +17,23 @@
 #include "componentType.hpp"
 
 
-    class Optim {
-    private:
-        std::vector<Photon> lstPhoton;
-        List lstComp;
-        std::vector<double> origin;
-        double curMin;
-        double startSum;
-        short weightB;
-        short weightDoF;
-        short weightF;
-    public:
-        Optim(short&, short&, short&, double&, List&, std::vector<Photon>&);
-        void OAimprove();
-        void optBright();
-        void optFocus();
-        void optDoF();
-        void startOptim();//Gewichtung(Hell., Schärfe, Tiefensch.) ; akt. gew.Sum
-
-    };
+class Optim {
+private:
+    std::vector<Photon> lstPhoton;
+    List* lstComp;
+    std::vector<double> origin;
+    double curMin;
+    double startSum;
+    short weightB;
+    short weightDoF;
+    short weightF;
+public:
+    Optim(short&, short&, short&, double&, List*, std::vector<Photon>&);//Gewichtung(Hell., Schärfe, Tiefensch.) ; akt. gew.Sum
+    void OAimprove();
+    void optBright();
+    void optFocus();
+    void optDoF();
+    void startOptim();
+    double calcSum();
+};
 
