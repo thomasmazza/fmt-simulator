@@ -15,6 +15,7 @@
 #include "detector.hpp"
 #include "config.hpp"
 #include "componentType.hpp"
+#include "mainRoutine.hpp"
 
 
 class Optim {
@@ -22,18 +23,18 @@ private:
     std::vector<Photon> lstPhoton;
     List* lstComp;
     std::vector<double> origin;
-    double curMin;
-    double startSum;
     short weightB;
     short weightDoF;
     short weightF;
+    int maxPhot;
+    Config::object* object;
 public:
-    Optim(short&, short&, short&, double&, List*, std::vector<Photon>&);//Gewichtung(Hell., Schärfe, Tiefensch.) ; akt. gew.Sum
+    Optim(short&, short&, short&, List*, std::vector<Photon>&, Config::object*);//Gewichtung(Hell., Schärfe, Tiefensch.) ; akt. gew.Sum
     void OAimprove();
     void optBright();
     void optFocus();
     void optDoF();
     void startOptim();
-    double calcSum();
+    //double calcSum();
 };
 

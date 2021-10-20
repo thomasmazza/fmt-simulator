@@ -5,15 +5,20 @@
 #include "../include/importer.hpp"
 #include "../include/exporter.hpp"
 #include "objectGenerator.hpp"
+#include "mainRoutine.hpp"
 #include "photonGenerator.hpp"
 
 int main() {
     List *testList = new List();
     List *testList1 = new List();
+    int thisI = 5000;
     Importer::importStp(*testList, "/home/thomas/CLionProjects/fmt-simulator/logic/src/setup.xml");
+
+    /*
     Exporter::exportStp(*testList, "/home/thomas/CLionProjects/fmt-simulator/logic/src/testExport.xml");
     Importer::importStp(*testList1, "/home/thomas/CLionProjects/fmt-simulator/logic/src/testExport.xml");
     Exporter::exportStp(*testList1, "/home/thomas/CLionProjects/fmt-simulator/logic/src/testExport1.xml");
+     */
 //    Config::object _object;
 //    ObjectGenerator::generateObject(_object);
 //    Exporter::exportObject(_object, "/home/thomas/CLionProjects/fmt-simulator/logic/src/object.xml");

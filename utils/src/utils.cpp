@@ -117,3 +117,11 @@ double Utils::dot_product(std::vector<double>& a, std::vector<double>& b) {
 double Utils::depthOfField(double & _f, double & _d) {
     return 2 * (_f / 1720) * pow((_d / _f), 2);
 }
+
+double Utils::getAbs(std::vector<double> &_vec) {
+    double vecAbs = 0;
+    //Laenge des Vektors bestimmen
+    for (int i = 0; i < 3; i++) vecAbs += pow(_vec[i], 2);
+    vecAbs = sqrt(vecAbs);
+    return vecAbs;
+}

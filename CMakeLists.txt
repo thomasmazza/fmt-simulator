@@ -6,7 +6,7 @@ project(fmt-simulator LANGUAGES CXX)
 
 include_directories(components/include utils/include photon/include logic/include)
 add_executable(test
-        components/src/test.cpp
+        logic/src/test.cpp
         utils/src/utils.cpp
         utils/src/objectPoint.cpp
         components/src/component.cpp
@@ -36,4 +36,4 @@ add_executable(test
         utils/src/bmprgb.cpp
         components/src/detector.cpp
         utils/src/rgb.cpp
-        )
+        logic/include/mainRoutine.hpp logic/src/mainRoutine.cpp logic/include/mainRoutine.hpp)

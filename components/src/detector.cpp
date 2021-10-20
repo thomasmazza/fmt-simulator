@@ -170,6 +170,15 @@ bmp_vector Detector::createImage() {
     return bitmap;
 }
 
+const double & Detector::getBrightness() {
+    return brightness;
+}
+
+const double & Detector::getSharpness() {
+    return sharpness;
+}
+
+
 Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_pointOnEdge, std::vector<double> &_posOfPrevComponent, unsigned int _size,
                    double _pixelSize) : Component(_pos, _normal, detector), pointOnEdge(_pointOnEdge),posOfPrevComponent(_posOfPrevComponent),size(_size),pixelSize(_pixelSize), length(static_cast<double>(size) * pixelSize),sensor(size, std::vector<RGB>(size)) {
 }

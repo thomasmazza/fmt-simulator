@@ -26,4 +26,6 @@ public:
     static double min(double, double);
 
     static double depthOfField(double &, double &);
+
+    static double getAbs(std::vector<double> &);
 };
