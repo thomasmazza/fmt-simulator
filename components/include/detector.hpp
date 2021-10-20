@@ -22,6 +22,8 @@ protected:
     unsigned int size; // Detector hat size * size Pixel
     double pixelSize; //Größe eines Pixels
     double length; // Dimensionen von dem Detektor
+    double brightness;
+    double sharpness;
     rgb_matrix sensor;
 public:
 
