@@ -1,4 +1,6 @@
 #include "../include/optim.hpp"
+#include "../../utils/include/utils.hpp"
+#include <cmath>
 
 void Optim::OAimprove(){
     //Optimierung über versetzen der Komponenten auf die optische Achse mit Abstand von davor
