@@ -19,4 +19,7 @@ public:
     const double& getN();
     const double& getRadiusH();
     const double& getD();
+    void setN(double _n);
+    void setRadiusH(double _radiusH);
+    void setD(double _d);
 };

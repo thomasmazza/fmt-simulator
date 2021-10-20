@@ -21,5 +21,9 @@ public:
     const double &getLengthH();
 
     const double &getLengthW();
+
+    void setLengthH(double  _lengthH);
+
+    void setLengthW(double _lengthW);
 };
 

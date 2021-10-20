@@ -125,6 +125,14 @@ const double &MirrorRectangle::getLengthW() {
     return lengthW;
 }
 
+void MirrorRectangle::setLengthH(double _lengthH) {
+    lengthH = _lengthH;
+}
+
+void MirrorRectangle::setLengthW(double _lengthW) {
+    lengthW = _lengthW;
+}
+
 MirrorRectangle::MirrorRectangle(std::vector<double> &_pos, std::vector<double> &_normal, double _lengthH, double _lengthW): Mirror(_pos,_normal, mirrorRectangle), lengthH(_lengthH), lengthW(_lengthW) {
 }
 

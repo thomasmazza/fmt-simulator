@@ -15,4 +15,6 @@ class MirrorElliptical: public Mirror{
         bool getOutDir(Photon&, std::vector<double>&);
         const double& getRadiusH();
         const double& getRadiusW();
+        void setRadiusH(double  _radiusH);
+        void setRadiusW(double _radiusW);
 };
