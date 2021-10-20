@@ -1,8 +1,7 @@
 #include "../include/optim.hpp"
 
 void Optim::OAimprove(){
-
-    //TODO: Optimierung über versetzen der Komponenten auf die optische Achse mit Abstand von davor
+    //Optimierung über versetzen der Komponenten auf die optische Achse mit Abstand von davor
     std::vector<double> curDir = lstComp->elem(0)->getPosition();
     Utils::normalizeVector(curDir);
     Photon phot1(origin, curDir, 600);
@@ -53,7 +52,7 @@ void Optim::optBright(){
 }
 
 void Optim::optFocus(){
-    //TODO: Optimierung über einen BP und Abstand von ankommenden Photonen auf dem Detektor
+    //Optimierung über einen BP und Abstand von ankommenden Photonen auf dem Detektor
     double focus = static_cast<Detector&>(*lstComp->elem(lstComp->getLength()-1)).getSharpness();
     for(int i=lstComp->getLength()-1; i>=0; i--){
         ComponentType className = lstComp->elem(i)->getType();
@@ -80,18 +79,18 @@ void Optim::optFocus(){
 
                     while (difference > 0.2) {
                         //Berechne Gradienten
-                        simulation::optTracing(lstComp, lstPhoton);//TODO:: Simulieren
+                        simulation::optTracing(lstComp, lstPhoton);
                         curRes = static_cast<Detector&>(*lstComp->elem(i+1)).getSharpness();
                         funcCalls++;
                         positivePos = newPos + step*diff;
                         negativPos = newPos - step*diff;
 
                         static_cast<Detector&>(*lstComp->elem(i+1)).setPosition(positivePos);
-                        simulation::optTracing(lstComp, lstPhoton);//TODO:: Simulieren
+                        simulation::optTracing(lstComp, lstPhoton);
                         post = static_cast<Detector&>(*lstComp->elem(i+1)).getSharpness();
 
                         static_cast<Detector&>(*lstComp->elem(i+1)).setPosition(negativPos);
-                        simulation::optTracing(lstComp, lstPhoton);//TODO:: Simulieren
+                        simulation::optTracing(lstComp, lstPhoton);
                         prev = static_cast<Detector&>(*lstComp->elem(i+1)).getSharpness();
 
                         funcCalls++;
@@ -107,7 +106,7 @@ void Optim::optFocus(){
                         std::vector<double> next = newPos + ((alpha * (-1) * gradient) * diff);
 
                         static_cast<Detector&>(*lstComp->elem(i+1)).setPosition(next);
-                        simulation::optTracing(lstComp, lstPhoton);//TODO:: Simulieren
+                        simulation::optTracing(lstComp, lstPhoton);
                         newSum1 = static_cast<Detector&>(*lstComp->elem(i+1)).getSharpness();
                         funcCalls++;
 
@@ -118,7 +117,7 @@ void Optim::optFocus(){
                             next = newPos + ((alpha * (-1) * gradient) * diff);
 
                             static_cast<Detector&>(*lstComp->elem(i+1)).setPosition(next);
-                            simulation::optTracing(lstComp, lstPhoton);//TODO:: Simulieren
+                            simulation::optTracing(lstComp, lstPhoton);
                             newSum1 = static_cast<Detector&>(*lstComp->elem(i+1)).getSharpness();
                             funcCalls++;
                             newSum2 = curRes + (alpha * sigma * (gradient * (-1) * gradient));
@@ -129,7 +128,7 @@ void Optim::optFocus(){
                         newPos = newPos + (alpha * gradient * (-1)) * diff;
 
                         static_cast<Detector&>(*lstComp->elem(i+1)).setPosition(newPos);
-                        simulation::optTracing(lstComp, lstPhoton);//TODO:: Simulieren
+                        simulation::optTracing(lstComp, lstPhoton);
                         newRes = static_cast<Detector&>(*lstComp->elem(i+1)).getSharpness();
                         funcCalls++;
 
@@ -161,18 +160,18 @@ void Optim::optFocus(){
 
                     while (difference > 0.2) {
                         //Berechne Gradienten
-                        simulation::optTracing(lstComp, lstPhoton);//TODO:: Simulieren
+                        simulation::optTracing(lstComp, lstPhoton);
                         curRes = static_cast<Detector&>(*lstComp->elem(i+1)).getSharpness();
                         funcCalls++;
                         positivePos = newPos + step*diff;
                         negativPos = newPos - step*diff;
 
                         static_cast<Detector&>(*lstComp->elem(i+1)).setPosition(positivePos);
-                        simulation::optTracing(lstComp, lstPhoton);//TODO:: Simulieren
+                        simulation::optTracing(lstComp, lstPhoton);
                         post = static_cast<Detector&>(*lstComp->elem(i+1)).getSharpness();
 
                         static_cast<Detector&>(*lstComp->elem(i+1)).setPosition(negativPos);
-                        simulation::optTracing(lstComp, lstPhoton);//TODO:: Simulieren
+                        simulation::optTracing(lstComp, lstPhoton);
                         prev = static_cast<Detector&>(*lstComp->elem(i+1)).getSharpness();
 
                         funcCalls++;
@@ -188,7 +187,7 @@ void Optim::optFocus(){
                         std::vector<double> next = newPos + ((alpha * (-1) * gradient) * diff);
 
                         static_cast<Detector&>(*lstComp->elem(i+1)).setPosition(next);
-                        simulation::optTracing(lstComp, lstPhoton);//TODO:: Simulieren
+                        simulation::optTracing(lstComp, lstPhoton);
                         newSum1 = static_cast<Detector&>(*lstComp->elem(i+1)).getSharpness();
                         funcCalls++;
 
@@ -199,7 +198,7 @@ void Optim::optFocus(){
                             next = newPos + ((alpha * (-1) * gradient) * diff);
 
                             static_cast<Detector&>(*lstComp->elem(i+1)).setPosition(next);
-                            simulation::optTracing(lstComp, lstPhoton);//TODO:: Simulieren
+                            simulation::optTracing(lstComp, lstPhoton);
                             newSum1 = static_cast<Detector&>(*lstComp->elem(i+1)).getSharpness();
                             funcCalls++;
                             newSum2 = curRes + (alpha * sigma * (gradient * (-1) * gradient));
@@ -210,7 +209,7 @@ void Optim::optFocus(){
                         newPos = newPos + (alpha * gradient * (-1)) * diff;
 
                         static_cast<Detector&>(*lstComp->elem(i+1)).setPosition(newPos);
-                        simulation::optTracing(lstComp, lstPhoton);//TODO:: Simulieren
+                        simulation::optTracing(lstComp, lstPhoton);
                         newRes = static_cast<Detector&>(*lstComp->elem(i+1)).getSharpness();
                         funcCalls++;
 
