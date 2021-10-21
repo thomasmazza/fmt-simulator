@@ -56,16 +56,16 @@ void Detector::getInPoint(Photon &photon) {
     a = sqrt(pow((c * sin(temp)), 2.0));
     std::cout << c << std::endl;
     std::cout << a << std::endl;
-    if (a < length / 2) {
+    if (a <= length / 2) {
         b = sqrt(c * c - a * a);
-        if (b < length / 2) {
+        if (b <= length / 2) {
             RGB color;
             const int wl = photon.getWaveLength();
             Utils::coreTranslationInColor(wl, color.r, color.g, color.b);
             int i_index = floor(b / pixelSize);
             int j_index = floor(a / pixelSize);
             if (temp >= 0) {
-                if (temp < PI / 2) {
+                if (temp <= PI / 2) {
                     i_index = floor(size / 2.0 - i_index);
                     j_index = floor(size / 2.0 - j_index);
                     std::cout << i_index << std::endl;
@@ -80,7 +80,7 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
             } else {
-                if (temp > PI / (-2)) {
+                if (temp >= PI / (-2)) {
                     i_index = floor(size / 2.0 - i_index);
                     j_index = floor(size / 2.0 + j_index);
 

@@ -13,6 +13,34 @@
 typedef typename std::vector<RGB> rgb_vector;
 typedef typename std::vector<BmpRGB> bmp_vector;
 
+
+void bitmap(int & _width, int & _height, bmp_vector & _im) {
+    BmpFileHeader bfh(_width, _height);
+    BmpInfoHeader bih(_width, _height);
+    unsigned short bfType=0x4d42;
+
+    FILE *file = fopen("output.bmp", "wb");
+
+    fwrite(&bfType,1,sizeof(bfType),file);
+    fwrite(&bfh, 1, sizeof(bfh), file);
+    fwrite(&bih, 1, sizeof(bih), file);
+
+    for (int y = bih.height-1; y>=0; y--)
+    {
+        for (int x = 0; x < bih.width; x++)
+        {
+            unsigned char r = _im[y * bih.height + x].r;
+            unsigned char g = _im[y * bih.height + x].g;
+            unsigned char b = _im[y * bih.height + x].b;
+            fwrite(&b, 1, 1, file);
+            fwrite(&g, 1, 1, file);
+            fwrite(&r, 1, 1, file);
+        }
+    }
+    fclose(file);
+}
+
+
 int main() {
     std::cout << " BBB " << std::endl;
     int S = 256;
@@ -22,10 +50,10 @@ int main() {
     }
     Photon ph(v, v, 420);
     std::vector<Photon> phV;
-    for (int i = 0; i < 400; i++) {
-        for (int j = 0; j < 400; j++) {
-            v[0] = j / 400.0;
-            v[1] = i / 400.0;
+    for (int i = 0; i < 100; i++) {
+        for (int j = 0; j < 100; j++) {
+            v[0] = j / 100.0;
+            v[1] = i / 100.0;
             v[2] = 0.0;
             ph.setPosition(v);
             v[0] = 0.0;
@@ -34,11 +62,6 @@ int main() {
             ph.setDirection(v);
             int wl = 420;
             phV.push_back(ph);
-            if (i > j) {
-                phV.push_back(ph);
-                phV.push_back(ph);
-                phV.push_back(ph);
-            }
         }
     }
     std::cout << " BBB " << std::endl;
@@ -58,22 +81,12 @@ int main() {
     ppc[1] = 0;
     ppc[2] = 0;
 
-    Detector d(pos, pos, poe, ppc, 256, 0.007);
+    Detector d(pos, pos, poe, ppc, S, 0.0014);
     for (int i = 0; i < phV.size(); i++) {
         d.getInPoint(phV[i]);
     }
 
     bmp_vector image = d.createImage();
-
-    BmpFileHeader bfh(S,S);
-    BmpInfoHeader bih(S,S);
-    std::ofstream fout("output.bmp", std::ios::binary);
-    fout.write((char *) &bfh, 14);
-    fout.write((char *) &bih, 40);
-    for (int i = 0; i < image.size(); i++) {
-        fout.write((char *) &image[i], 3);
-    }
-    fout.close();
-
+    bitmap(S, S, image);
     return 0;
 }

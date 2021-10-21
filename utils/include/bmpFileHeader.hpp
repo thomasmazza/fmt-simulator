@@ -1,11 +1,10 @@
+#pragma once
 
-#include <cstdint>
-
-struct BmpFileHeader {
-    char signature[2];
-    uint32_t sizeOfFile;
-    uint32_t reserved;
-    uint32_t offset;
-
-    BmpFileHeader(unsigned int , unsigned int );
+struct BmpFileHeader
+{
+    unsigned int   sizeOfFile;
+    unsigned short reserved1;
+    unsigned short reserved2;
+    unsigned int   offsetBits;
+    BmpFileHeader(int, int);
 };

@@ -1,4 +1,6 @@
 #include "bmprgb.hpp"
+#include "bmpFileHeader.hpp"
+#include "bmpInfoHeader.hpp"
 #include <cstdint>
 #include <cmath>
 
@@ -21,4 +23,3 @@ void BmpRGB::setBmpRGB(RGB& color) {
     t = round(color.r);
     r = t & 0xFF;
 }
-
