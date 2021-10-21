@@ -15,7 +15,7 @@ typedef typename std::vector<BmpRGB> bmp_vector;
 
 int main() {
     std::cout << " BBB " << std::endl;
-    int S = 512;
+    int S = 256;
     std::vector<double> v(3);
     for (int i = 0; i < 3; i++) {
         v[i] = 0;
@@ -58,12 +58,22 @@ int main() {
     ppc[1] = 0;
     ppc[2] = 0;
 
-    Detector d(pos, pos, poe, ppc, 100, 0.01);
+    Detector d(pos, pos, poe, ppc, 256, 0.007);
     for (int i = 0; i < phV.size(); i++) {
         d.getInPoint(phV[i]);
     }
 
     bmp_vector image = d.createImage();
+
+    BmpFileHeader bfh(S,S);
+    BmpInfoHeader bih(S,S);
+    std::ofstream fout("output.bmp", std::ios::binary);
+    fout.write((char *) &bfh, 14);
+    fout.write((char *) &bih, 40);
+    for (int i = 0; i < image.size(); i++) {
+        fout.write((char *) &image[i], 3);
+    }
+    fout.close();
 
     return 0;
 }

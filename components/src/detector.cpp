@@ -179,6 +179,5 @@ const double & Detector::getSharpness() {
 }
 
 Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_pointOnEdge, std::vector<double> &_posOfPrevComponent, int _size,
-                   double _pixelSize) : Component(_pos, _normal, detector), pointOnEdge(_pointOnEdge),posOfPrevComponent(_posOfPrevComponent),size(_size),pixelSize(_pixelSize) ,sensor(size, std::vector<RGB>(size)) {
-    length = static_cast<double>(size) * pixelSize;
+                   double _pixelSize) : Component(_pos, _normal, detector), pointOnEdge(_pointOnEdge),posOfPrevComponent(_posOfPrevComponent),size(_size),pixelSize(_pixelSize),length(static_cast<double>(size) * pixelSize) ,sensor(size, std::vector<RGB>(size)) {
 }
