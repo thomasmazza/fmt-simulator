@@ -249,7 +249,7 @@ void CmpList_element::applyEditMirrorSquare(double _xPos, double _yPos, double _
 
 void CmpList_element::deleteElm(){
     //Element löschen und Liste aktualisieren
-    componentList->del(elmNumber->text().toInt() - 1);
+    componentList->del(elmNumber->text().toInt());
     emit triggerRebuildList();
 }
 
