@@ -11,29 +11,30 @@ namespace simulation {
             Photon pSafe = p;
             std::vector<double> curDir = lstComp->elem(0)->getPosition();
             Utils::normalizeVector(curDir);
+            bool isActive = true;
             for (int i = 0; i < lstComp->getLength(); i++) {
                 ComponentType className = lstComp->elem(i)->getType();
                 switch (className) {
                     case filter:
-                        static_cast<Filter &>(*lstComp->elem(i)).getOutDir(p);
+                        if(!static_cast<Filter &>(*lstComp->elem(i)).getOutDir(p)) isActive=false;
                         break;
                     case lensOneSided:
-                        static_cast<LensOneSided &>(*lstComp->elem(i)).getOutDir(p);
+                        if(static_cast<LensOneSided &>(*lstComp->elem(i)).getOutDir(p))isActive=false;
                         break;
                     case lensTwoSided:
-                        static_cast<LensTwoSided &>(*lstComp->elem(i)).getOutDir(p);
+                        if(static_cast<LensTwoSided &>(*lstComp->elem(i)).getOutDir(p))isActive=false;
                         break;
                     case mirrorElliptical:
-                        static_cast<MirrorElliptical &>(*lstComp->elem(i)).getOutDir(p, curDir);
+                        if(static_cast<MirrorElliptical &>(*lstComp->elem(i)).getOutDir(p, curDir))isActive=false;
                         break;
                     case mirrorCircle:
-                        static_cast<MirrorCircle &>(*lstComp->elem(i)).getOutDir(p, curDir);
+                        if(static_cast<MirrorCircle &>(*lstComp->elem(i)).getOutDir(p, curDir))isActive=false;
                         break;
                     case mirrorRectangle:
-                        static_cast<MirrorRectangle &>(*lstComp->elem(i)).getOutDir(p, curDir);
+                        if(static_cast<MirrorRectangle &>(*lstComp->elem(i)).getOutDir(p, curDir))isActive=false;
                         break;
                     case mirrorSquare:
-                        static_cast<MirrorSquare &>(*lstComp->elem(i)).getOutDir(p, curDir);
+                        if(static_cast<MirrorSquare &>(*lstComp->elem(i)).getOutDir(p, curDir))isActive=false;
                         break;
                     case detector:
                         static_cast<Detector &>(*lstComp->elem(i)).getInPoint(p);
@@ -46,6 +47,8 @@ namespace simulation {
                     curDir = lstComp->elem(i + 1)->getPosition() - lstComp->elem(i)->getPosition();
                     Utils::normalizeVector(curDir);
                 }
+                //Überprüfen ob noch aktiv, sonst Schleife abbrechen
+                if(!isActive)i=lstComp->getLength();
             }
         }
     }
@@ -97,7 +100,7 @@ namespace simulation {
 
     void doStuff(short _bright,short _focus,short _doF, Config::object &_object, List* lstComp, std::vector<Photon> &lstPhotonHit) {
         //aktuelle Summe berechnen, dann Optimierung starten
-        double fLastLens = static_cast<LensTwoSided&>(*lstComp->elem(lstComp->getLength()-2)).getN(); //TODO: getF()
+        double fLastLens = static_cast<LensTwoSided&>(*lstComp->elem(lstComp->getLength()-2)).getF();
         std::vector<double> dif = lstComp->elem(lstComp->getLength()-2)->getPosition() - lstComp->elem(lstComp->getLength()-1)->getPosition();
         double absLastLensDet = Utils::getAbs(dif);
         double focus = static_cast<Detector&>(*lstComp->elem(lstComp->getLength()-1)).getSharpness();

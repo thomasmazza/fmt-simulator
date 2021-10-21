@@ -307,6 +307,13 @@ void LensTwoSided::setRadiusO(double _radiusO) {
     radiusO = _radiusO;
 }
 
+const double &LensTwoSided::getF() {
+    double r1 = abs(radiusI);
+    double r2 = abs(radiusO);
+    f = 1 / ((n - 1) * (1 / r1 + 1 / r2 - d * (n - 1) / (n * r1 * r2)));
+    return f;
+}
+
 LensTwoSided::LensTwoSided(std::vector<double>& _pos, std::vector<double>& _normal,double _n, double _radiusH, double _radiusI, double _radiusO, double _d)
 :Component(_pos, _normal, lensTwoSided), n(_n), radiusH(_radiusH), radiusI(_radiusI), radiusO(_radiusO), d(_d) {
 }

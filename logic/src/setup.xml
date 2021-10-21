@@ -1,132 +1,36 @@
 <Setup>
     <Filter>
         <Position>
-            4 5 6
+            10 0 0
         </Position>
         <Normal>
-            1 2 3
+            -1 0 0
         </Normal>
         <LowerLimit>
-            1
+            100
         </LowerLimit>
         <UpperLimit>
-            2
+            800
         </UpperLimit>
     </Filter>
-    <LensOneSided>
-        <Position>
-            7 8 9
-        </Position>
-        <Normal>
-            10 11 12
-        </Normal>
-        <N>
-            3
-        </N>
-        <RadiusH>
-            4
-        </RadiusH>
-        <RadiusW>
-            5
-        </RadiusW>
-        <D>
-            6
-        </D>
-        <PlaneIsFront>
-            1
-        </PlaneIsFront>
-    </LensOneSided>
-    <LensTwoSided>
-        <Position>
-            13 14 15
-        </Position>
-        <Normal>
-            16 17 18
-        </Normal>
-        <N>
-            7
-        </N>
-        <RadiusH>
-            8
-        </RadiusH>
-        <RadiusI>
-            9
-        </RadiusI>
-        <RadiusO>
-            10
-        </RadiusO>
-        <D>
-            11
-        </D>
-    </LensTwoSided>
-    <MirrorElliptical>
-        <Position>
-            19 20 21
-        </Position>
-        <Normal>
-            22 23 24
-        </Normal>
-        <RadiusH>
-            12
-        </RadiusH>
-        <RadiusW>
-            13
-        </RadiusW>
-    </MirrorElliptical>
-    <MirrorCircle>
-        <Position>
-            25 26 27
-        </Position>
-        <Normal>
-            28 29 30
-        </Normal>
-        <Radius>
-            14
-        </Radius>
-    </MirrorCircle>
-    <MirrorRectangle>
-        <Position>
-            31 32 33
-        </Position>
-        <Normal>
-            34 35 36
-        </Normal>
-        <LengthH>
-            15
-        </LengthH>
-        <LengthW>
-            16
-        </LengthW>
-    </MirrorRectangle>
-    <MirrorSquare>
-        <Position>
-            37 38 39
-        </Position>
-        <Normal>
-            40 41 42
-        </Normal>
-        <Length>
-            17
-        </Length>
-    </MirrorSquare>
     <Detector>
         <Position>
-            43 44 45
+            20 0 0
         </Position>
         <Normal>
-            46 47 48
+            -1 0 0
         </Normal>
         <PointOnEdge>
-            49 50 51
+            20 50 0
         </PointOnEdge>
         <PosOfPrevComponent>
-            52 53 54
+            10 0 0
         </PosOfPrevComponent>
         <Size>
-            18
+            100
         </Size>
         <PixelSize>
-            19
+            1
         </PixelSize>
     </Detector>
 </Setup>

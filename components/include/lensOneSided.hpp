@@ -9,6 +9,7 @@ private:
     double radiusH;
     double radiusW;
     double d;
+    double f;
     bool planeIsFront;
 public:
     LensOneSided(std::vector<double>&, std::vector<double>&, double, double, double, double, bool);
@@ -17,6 +18,7 @@ public:
     const double& getN();
     const double& getRadiusH();
     const double& getD();
+    const double& getF();
     const double& getRadiusW();
     const bool& getPlaneIsFront();
     void setN(double _n);

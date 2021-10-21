@@ -65,7 +65,7 @@ void Optim::optFocus(){
                     std::vector<double> diff = (lstComp->elem(i+1)->getPosition())-(lstComp->elem(i)->getPosition());
                     double abs = Utils::getAbs(diff);
                     Utils::normalizeVector(diff);
-                    double f = static_cast<LensTwoSided&>(*lstComp->elem(i)).getN(); //TODO: getF()
+                    double f = static_cast<LensTwoSided&>(*lstComp->elem(i)).getF();
                     std::vector<double> newPos(3);
                     newPos = (lstComp->elem(i)->getPosition()) + f*diff;
                     lstComp->elem(i+1)->setPosition(newPos);
@@ -113,7 +113,6 @@ void Optim::optFocus(){
                         funcCalls++;
 
                         newSum2 = curRes + (alpha * sigma * (gradient*gradient*(-1)));
-                        //std::cout<<"Pre"<<std::endl;
                         while (newSum1 > newSum2) {
                             alpha = alpha * roh;
                             next = newPos + ((alpha * (-1) * gradient) * diff);
@@ -194,7 +193,6 @@ void Optim::optFocus(){
                         funcCalls++;
 
                         newSum2 = curRes + (alpha * sigma * (gradient*gradient*(-1)));
-                        //std::cout<<"Pre"<<std::endl;
                         while (newSum1 > newSum2) {
                             alpha = alpha * roh;
                             next = newPos + ((alpha * (-1) * gradient) * diff);
