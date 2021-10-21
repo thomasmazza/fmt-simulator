@@ -19,112 +19,56 @@
 typedef typename std::vector<RGB> rgb_vector;
 typedef typename std::vector<BmpRGB> bmp_vector;
 
-int main(int argc, char *argv[]) {
-    std::vector<double> testVector(3);
-    std::vector<double> testVector2(3);
-    std::vector<double> testVector3(3);
-    std::vector<double> testVector4(3);
-    std::vector<double> testVector5(3);
-
-    std::vector<double> filterPos(3);
-    std::vector<double> filterDir(3);
-
-    testVector2[0] = -1;
-    testVector2[1] = 0;
-    testVector2[2] = 0;
-
-    testVector3[0] = -1;
-    testVector3[1] = 1;
-    testVector3[2] = 1;
-
-    testVector4[0] = 1;
-    testVector4[1] = 0;
-    testVector4[2] = 0;
-
-    testVector5[0] = -1;
-    testVector5[1] = 0;
-    testVector5[2] = 1;
-
-    filterPos[0] = 0;
-    filterPos[1] = 1;
-    filterPos[2] = 1;
-
-    filterDir[0] = -1;
-    filterDir[1] = 0;
-    filterDir[2] = 0;
-
-
-    int sum1 = 0;
+int main() {
+    std::cout << " BBB " << std::endl;
+    int S = 512;
+    std::vector v(3);
     for (int i = 0; i < 3; i++) {
-        sum1 += pow(testVector4[i], 2);
+        v[i] = 0;
     }
-    sum1 = sqrt(sum1);
-    for (int i = 0; i < 3; i++) {
-        testVector4[i] = testVector4[i] / sum1;
-    }
-
-    for (unsigned i = 0; i < testVector.size(); i++) {
-        testVector[i] = 1;
-    }
-
-
-    LensTwoSided lens2(testVector, testVector2, 1.5, 10, -30, 30, 5);
-    Photon testPhoton(testVector3, testVector4, 600);
-    Filter filter(filterPos, filterDir, 450, 700);
-
-
-    testVector[0] = 10;
-
-    LensOneSided lens1(testVector, testVector2, 1.5, 20, 21, 5, false);
-
-    //test mirror
-
-    testVector[0] = 1;
-    double Z = 0;
-    for (int i = 0; i < 3; i++) {
-        Z += pow(testVector5[i], 2);
-    }
-    Z = sqrt(Z);
-    for (int i = 0; i < 3; i++) {
-        testVector5[i] = testVector5[i] / Z;
-    }
-
-    MirrorRectangle rec1(testVector, testVector5, 20, 20);
-    Photon testPhoton2(testVector3, testVector4, 600);
-    Photon testPhoton3(testVector3, testVector4, 800);
-    std::vector<double> trace = rec1.getPosition() - testPhoton2.getPosition();
-
-    Z = 0;
-    for (int i = 0; i < 3; i++) {
-        Z += pow(trace[i], 2);
-    }
-    Z = sqrt(Z);
-    for (int i = 0; i < 3; i++) {
-        trace[i] = trace[i] / Z;
-    }
-
-    if (rec1.getOutDir(testPhoton2, trace)) {
-        std::cout << "New direction 3: " << testPhoton2.getDirection() << std::endl;
-    }
-
-    if (filter.getOutDir(testPhoton2)) {
-        if (rec1.getOutDir(testPhoton2, trace)) {
-            std::cout << "New direction 3: " << testPhoton2.getDirection() << std::endl;
+    Photon ph(v, v, 420, 0);
+    std::vector<Photon> phV;
+    for (int i = 0; i < 400; i++) {
+        for (int j = 0; j < 400; j++) {
+            v[0] = j / 400.0;
+            v[1] = i / 400.0;
+            v[2] = 0.0;
+            ph.setPosition(v);
+            v[0] = 0.0;
+            v[1] = 0.0;
+            v[2] = 1.0;
+            ph.setDirection(v);
+            int wl = 420;
+            ph.setWaveLength(wl);
+            phV.push_back(ph);
+            if (i > j) {
+                phV.push_back(ph);
+                phV.push_back(ph);
+                phV.push_back(ph);
+            }
         }
     }
+    std::cout << " BBB " << std::endl;
 
-    if (filter.getOutDir(testPhoton3)) {
-        if (rec1.getOutDir(testPhoton3, trace)) {
-            std::cout << "New direction 4: " << testPhoton2.getDirection() << std::endl;
-        }
-        std::cout << "this" << std::endl;
-    } else {
-        std::cout << "that" << std::endl;
+    std::vector pos (3);
+    pos[0] = 0;
+    pos[1] = 0;
+    pos[2] = 2;
+
+    std::vector poe(3);
+    poe[0] = 0;
+    poe[1] = 0.5;
+    poe[2] = 2;
+
+    std::vector ppc(3);
+    ppc[0] = 0;
+    ppc[1] = 0;
+    ppc[2] = 0;
+
+    Detector d(pos, pos, poe, ppc, 100, 0.01);
+    for (int i = 0; i < phV.size(); i++) {
+        d.getInPoint(phV[i]);
     }
 
-    // Exportiert .bmp
-    //Exporter::exportBMPImage()
-
-
-
+    return 0;
 }

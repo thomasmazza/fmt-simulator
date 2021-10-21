@@ -17,7 +17,7 @@ class Detector : public Component {
 protected:
     std::vector<double> pointOnEdge; // Punkt in der Mitte der obere Kannte des Detectors. Muss gegeben oder irgendwie bestimmt werden
     std::vector<double> posOfPrevComponent; // vector position von dem vorkommenden Komponenten
-    unsigned int size; // Detector hat size * size Pixel
+    int size; // Detector hat size * size Pixel
     double pixelSize; //Größe eines Pixels
     double length; // Dimensionen von dem Detektor
     double brightness;
@@ -45,5 +45,5 @@ public:
 
     const double & getSharpness();
 
-    Detector(std::vector<double> &, std::vector<double> &, std::vector<double> &, std::vector<double> &, unsigned int, double);
+    Detector(std::vector<double> &, std::vector<double> &, std::vector<double> &, std::vector<double> &, int, double);
 };
