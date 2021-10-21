@@ -8,18 +8,22 @@
 #include "bmpFileHeader.hpp"
 #include "bmpInfoHeader.hpp"
 #include "photon.hpp"
+#include <string>
 
 
 typedef typename std::vector<RGB> rgb_vector;
 typedef typename std::vector<BmpRGB> bmp_vector;
 
 
-void bitmap(int & _width, int & _height, bmp_vector & _im) {
-    BmpFileHeader bfh(_width, _height);
-    BmpInfoHeader bih(_width, _height);
+void bitmap(Detector & d, std::string filename) {
+    bmp_vector _im = d.createImage();
+
+    BmpFileHeader bfh(d.getSize(), d.getSize());
+    BmpInfoHeader bih(d.getSize(), d.getSize());
+
     unsigned short bfType=0x4d42;
 
-    FILE *file = fopen("output.bmp", "wb");
+    FILE *file = fopen(filename.c_str(), "wb");
 
     fwrite(&bfType,1,sizeof(bfType),file);
     fwrite(&bfh, 1, sizeof(bfh), file);
@@ -42,6 +46,7 @@ void bitmap(int & _width, int & _height, bmp_vector & _im) {
 
 
 int main() {
+    std::string file = "neue.bmp";
     std::cout << " BBB " << std::endl;
     int S = 256;
     std::vector<double> v(3);
@@ -86,7 +91,7 @@ int main() {
         d.getInPoint(phV[i]);
     }
 
-    bmp_vector image = d.createImage();
-    bitmap(S, S, image);
+    //bmp_vector image = d.createImage();
+    bitmap(d, file);
     return 0;
 }
