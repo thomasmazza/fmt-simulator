@@ -4,6 +4,9 @@
 #include "../include/saveStpAsWindow.hpp"
 #include "../include/simStartWindow.hpp"
 
+#include "../../logic/include/objectGenerator.hpp"
+#include "../../logic/include/mainRoutine.hpp"
+
 #include <QMessageBox>
 
 #include <iostream>
@@ -159,6 +162,7 @@ void fmt_mainWindow::createNewProject(QString _name, QString _path){
     //Liste zurücksetzen
     ui->CmpListBox->resetList();
     ui->CmpListBox->rebuildFromList();
+    ui->SimProgressBar->setValue(0);
 }
 
 void fmt_mainWindow::on_actionLoad_Project_triggered()
@@ -196,6 +200,7 @@ void fmt_mainWindow::on_actionLoad_Project_triggered()
         file.open((ui->ProjPath->text() + "/" + ui->StpFilePath->toPlainText()).toStdString());
         if(file.peek() != std::ifstream::traits_type::eof()) Importer::importStp(*(ui->CmpListBox->getComponentList()), (ui->ProjPath->text() + "/" + ui->StpFilePath->toPlainText()).toStdString());
         ui->CmpListBox->rebuildFromList();
+        ui->SimProgressBar->setValue(0);
     }
     else{
         ui->StpFilePath->setText("Auto detection failed");
@@ -445,5 +450,59 @@ void fmt_mainWindow::on_SimStartSimulation_clicked()
 }
 
 void fmt_mainWindow::startSimulation(int photonNumber){
-    //TODO: Starte Simulation mit Photonen-Anzahl
+    //Leere Photonen-Liste
+    photonList = new std::vector<Photon>();
+
+    //Importiere Objekt
+    Config::object simObj;
+    ObjectGenerator::generateObject(simObj);
+
+    //Konfiguriere Progress Bar
+    ui->SimProgressBar->setRange(0, photonNumber);
+    ui->SimProgressBar->setValue(0);
+
+    //Setze alle Widgets auf Inaktiv, bis auf Progress Bar
+    for(auto* widget : this->findChildren<QPushButton*>()){
+        widget->setEnabled(false);
+    }
+    for(auto* widget : this->findChildren<QLabel*>()){
+        widget->setEnabled(false);
+    }
+    for(auto* widget : this->findChildren<QLineEdit*>()){
+        widget->setEnabled(false);
+    }
+    for(auto* widget : this->findChildren<QTextBrowser*>()){
+        widget->setEnabled(false);
+    }
+    ui->Priority1_Box->setEnabled(false);
+    ui->Priority2_Box->setEnabled(false);
+    ui->Priority3_Box->setEnabled(false);
+    auto inStyle = ui->InFileAuto->styleSheet();
+    auto stpStyle = ui->StpFileAuto->styleSheet();
+    ui->InFileAuto->setStyleSheet("QPushButton {color: grey}");
+    ui->StpFileAuto->setStyleSheet("QPushButton {color: grey}");
+
+    //Starte Simulation mit Parametern
+    simulation::startTracing(simObj, photonNumber, ui->CmpListBox->getComponentList(), *photonList, ui->SimProgressBar);
+
+    //Setze alle Widgets auf Aktiv
+    for(auto* widget : this->findChildren<QPushButton*>()){
+        widget->setEnabled(true);
+    }
+    for(auto* widget : this->findChildren<QLabel*>()){
+        widget->setEnabled(true);
+    }
+    for(auto* widget : this->findChildren<QLineEdit*>()){
+        widget->setEnabled(true);
+    }
+    for(auto* widget : this->findChildren<QTextBrowser*>()){
+        widget->setEnabled(true);
+    }
+    ui->Priority1_Box->setEnabled(true);
+    ui->Priority2_Box->setEnabled(true);
+    ui->Priority3_Box->setEnabled(true);
+    ui->InFileAuto->setStyleSheet(inStyle);
+    ui->StpFileAuto->setStyleSheet(stpStyle);
+
+    ui->SimProgressBar->setValue(photonNumber);
 }

@@ -7,8 +7,8 @@ void SimStartWindow::closeEvent(QCloseEvent* event){
 }
 
 void SimStartWindow::closeOK(){
-    emit simStart(input->value());
     this->accept();
+    emit simStart(input->value());
 }
 
 void SimStartWindow::setQuickTest(){
@@ -18,7 +18,7 @@ void SimStartWindow::setQuickTest(){
 
 void SimStartWindow::setRecommended(){
     //Setze empfohlene Anzahl
-    input->setValue(10000000);
+    input->setValue(1000000);
 }
 
 void SimStartWindow::setMax(){

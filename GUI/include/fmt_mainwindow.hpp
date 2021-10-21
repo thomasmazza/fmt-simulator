@@ -54,5 +54,7 @@ private slots:
 private:
     bool autoDetect(QString, QString);
     Ui::fmt_mainWindow *ui;
+
+    std::vector<Photon>* photonList;
 };
 #endif // FMT_MAINWINDOW_HPP

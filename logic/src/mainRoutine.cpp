@@ -4,7 +4,7 @@
 
 namespace simulation {
 
-    void startTracing(Config::object &_object, int maxAnzPhot, List* lstComp, std::vector<Photon> &lstPhotonHit) {
+    void startTracing(Config::object &_object, int maxAnzPhot, List* lstComp, std::vector<Photon> &lstPhotonHit, QProgressBar* _prog) {
         PhotonGenerator photonGenerator(_object);
         for (int i = 0; i < maxAnzPhot; i++) {
             Photon p = photonGenerator.generatePhoton();
@@ -47,6 +47,7 @@ namespace simulation {
                     Utils::normalizeVector(curDir);
                 }
             }
+            _prog->setValue(i);
         }
     }
 
