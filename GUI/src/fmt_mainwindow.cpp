@@ -415,6 +415,13 @@ void fmt_mainWindow::on_SimStartSimulation_clicked()
         return;
     }
 
+    //Prüfen, ob letztes Element ein Detector ist, sonst abbrechen
+    List* _tempList = ui->CmpListBox->getComponentList();
+    if(_tempList->elem(_tempList->getLength() - 1)->getType() != detector){
+        QMessageBox::critical(this, "Error", "The last Component has to be a Detector.", QMessageBox::Ok);
+        return;
+    }
+
     //Prüfe Ausgabe-Dateiname auf gültige Endung .bmp
     QString filename = ui->ExpFileTextfield->text();
     if(filename.isEmpty()){
@@ -485,6 +492,15 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     //Starte Simulation mit Parametern
     simulation::startTracing(simObj, photonNumber, ui->CmpListBox->getComponentList(), *photonList, ui->SimProgressBar);
 
+    //Aus Detector auslesen
+    int _brightness = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1)).getBrightness();
+    ui->Brightness->setText(QString::number(_brightness));
+    int _focus = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1)).getSharpness();
+    ui->Focus->setText(QString::number(_focus));
+
+    Detector _detect = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1));
+    //std::vector<BmpRGB> _imgVector = _detect.createImage();
+
     //Setze alle Widgets auf Aktiv
     for(auto* widget : this->findChildren<QPushButton*>()){
         widget->setEnabled(true);
@@ -505,4 +521,6 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     ui->StpFileAuto->setStyleSheet(stpStyle);
 
     ui->SimProgressBar->setValue(photonNumber);
+
+    ui->CmpListBox->rebuildFromList();
 }

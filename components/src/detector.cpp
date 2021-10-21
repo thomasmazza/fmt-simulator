@@ -29,7 +29,6 @@ const double Detector::getPixelSize() {
 }
 
 void Detector::getInPoint(Photon &photon) {
-    const double PI = atan(1.0)*4;
     std::vector<double> pV = photon.getPosition();
     std::vector<double> dV = photon.getDirection();
     std::vector<double> intersection(3);
@@ -53,7 +52,7 @@ void Detector::getInPoint(Photon &photon) {
     temp = atan2(temp, dp); //Berechnet Winkel in der Ebene zwischen ref und relativePosition in [-pi,+pi]
     double a, b, c;
     c = sqrt(pow(relativePosition[0], 2) + pow(relativePosition[1], 2) + pow(relativePosition[2], 2));
-    a = abs(c * sin(temp));
+    a = std::abs(c * sin(temp));
 
     if (a < length / 2) {
         b = sqrt(c * c - a * a);
@@ -64,7 +63,7 @@ void Detector::getInPoint(Photon &photon) {
             int i_index = floor(b / pixelSize);
             int j_index = floor(a / pixelSize);
             if (temp >= 0) {
-                if (temp < PI / 2) {
+                if (temp < M_PI_2) {
                     i_index = floor(size / 2 - i_index);
                     j_index = floor(size / 2 - j_index);
 
@@ -77,8 +76,9 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].addRGB(color);
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
+                std::cout << sensor[i_index][j_index].r << std::endl;
             } else {
-                if (temp > PI / (-2)) {
+                if (temp > -M_PI_2) {
                     i_index = floor(size / 2 - i_index);
                     j_index = floor(size / 2 + j_index);
 
@@ -91,6 +91,7 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].addRGB(color);
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
+                std::cout << sensor[i_index][j_index].r << std::endl;
             }
         }
     }
@@ -180,7 +181,7 @@ const double & Detector::getSharpness() {
 
 
 Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_pointOnEdge, std::vector<double> &_posOfPrevComponent, unsigned int _size,
-                   double _pixelSize) : Component(_pos, _normal, detector), pointOnEdge(_pointOnEdge),posOfPrevComponent(_posOfPrevComponent),size(_size),pixelSize(_pixelSize), length(static_cast<double>(size) * pixelSize),sensor(size, std::vector<RGB>(size)) {
+                   double _pixelSize) : Component(_pos, _normal, detector), pointOnEdge(_pointOnEdge),posOfPrevComponent(_posOfPrevComponent),size(_size),pixelSize(_pixelSize), length(_size * _pixelSize),sensor(_size, std::vector<RGB>(_size)) {
 }
 
 Detector::Detector(const Detector &detector1): Component(detector1), pointOnEdge(detector1.pointOnEdge), posOfPrevComponent(detector1.posOfPrevComponent), size(detector1.size), pixelSize(detector1.pixelSize) {}
