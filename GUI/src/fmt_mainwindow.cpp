@@ -492,14 +492,18 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     //Starte Simulation mit Parametern
     simulation::startTracing(simObj, photonNumber, ui->CmpListBox->getComponentList(), *photonList, ui->SimProgressBar);
 
-    //Aus Detector auslesen
+    //Lese generiertes Image, speichere und lade es ins Fenster
+    Detector _detect = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1));
+    Exporter::exportBMPImage(_detect, (ui->ProjPath->text() + "/" + ui->ExpFileTextfield->text()).toStdString());
+
+    resultImage = new QPixmap((ui->ProjPath->text() + "/" + ui->ExpFileTextfield->text()));
+    ui->GraphicalResult->setPixmap(*resultImage);
+
+    //Debug-Werte aus Detector auslesen
     int _brightness = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1)).getBrightness();
     ui->Brightness->setText(QString::number(_brightness));
     int _focus = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1)).getSharpness();
     ui->Focus->setText(QString::number(_focus));
-
-    Detector _detect = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1));
-    //std::vector<BmpRGB> _imgVector = _detect.createImage();
 
     //Setze alle Widgets auf Aktiv
     for(auto* widget : this->findChildren<QPushButton*>()){

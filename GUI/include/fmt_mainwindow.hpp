@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QFileDialog>
+#include <QPixmap>
 
 #include "ui_fmt_mainwindow.h"
 
@@ -56,5 +57,6 @@ private:
     Ui::fmt_mainWindow *ui;
 
     std::vector<Photon>* photonList;
+    QPixmap* resultImage;
 };
 #endif // FMT_MAINWINDOW_HPP

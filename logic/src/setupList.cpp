@@ -54,16 +54,3 @@ template void List::append<MirrorSquare>(const MirrorSquare&);
 template void List::append<LensTwoSided>(const LensTwoSided&);
 template void List::append<LensOneSided>(const LensOneSided&);
 template void List::append<Detector>(const Detector&);
-
-//auto it = lst.begin();
-//for(int i = 1; i < pos; i++) it++;
-//T* e = new T(_e);
-
-//int size = lst.size();
-//std::vector<std::unique_ptr<Component>> _lst(lst.size() - 1);
-//for(int i = 0; i < size; i++){
-//    if(i != pos){
-
-//        _lst.push_back(lst[i]);
-//    }
-//}

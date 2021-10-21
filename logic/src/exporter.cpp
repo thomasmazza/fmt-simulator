@@ -139,7 +139,7 @@ void Exporter::exportBMPImage( Detector &_detector, std::string filename) {
 
     BmpFileHeader bfh(_detector.getSize(),_detector.getSize());
     BmpInfoHeader bih(_detector.getSize(),_detector.getSize());
-    std::ofstream fout(filename + ".bmp", std::ios::binary);
+    std::ofstream fout(filename, std::ios::binary);
     fout.write((char *) &bfh, 14);
     fout.write((char *) &bih, 40);
     for (int i = 0; i < image.size(); i++) {

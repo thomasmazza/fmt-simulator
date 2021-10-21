@@ -11,29 +11,30 @@ namespace simulation {
             Photon pSafe = p;
             std::vector<double> curDir = lstComp->elem(0)->getPosition();
             Utils::normalizeVector(curDir);
+            bool isActive = true;
             for (int i = 0; i < lstComp->getLength(); i++) {
                 ComponentType className = lstComp->elem(i)->getType();
                 switch (className) {
                     case filter:
-                        static_cast<Filter &>(*lstComp->elem(i)).getOutDir(p);
+                        if(!static_cast<Filter &>(*lstComp->elem(i)).getOutDir(p))isActive=false;
                         break;
                     case lensOneSided:
-                        static_cast<LensOneSided &>(*lstComp->elem(i)).getOutDir(p);
+                        if(!static_cast<LensOneSided &>(*lstComp->elem(i)).getOutDir(p))isActive=false;
                         break;
                     case lensTwoSided:
-                        static_cast<LensTwoSided &>(*lstComp->elem(i)).getOutDir(p);
+                        if(!static_cast<LensTwoSided &>(*lstComp->elem(i)).getOutDir(p))isActive=false;
                         break;
                     case mirrorElliptical:
-                        static_cast<MirrorElliptical &>(*lstComp->elem(i)).getOutDir(p, curDir);
+                        if(!static_cast<MirrorElliptical &>(*lstComp->elem(i)).getOutDir(p, curDir))isActive=false;
                         break;
                     case mirrorCircle:
-                        static_cast<MirrorCircle &>(*lstComp->elem(i)).getOutDir(p, curDir);
+                        if(!static_cast<MirrorCircle &>(*lstComp->elem(i)).getOutDir(p, curDir))isActive=false;
                         break;
                     case mirrorRectangle:
-                        static_cast<MirrorRectangle &>(*lstComp->elem(i)).getOutDir(p, curDir);
+                        if(!static_cast<MirrorRectangle &>(*lstComp->elem(i)).getOutDir(p, curDir))isActive=false;
                         break;
                     case mirrorSquare:
-                        static_cast<MirrorSquare &>(*lstComp->elem(i)).getOutDir(p, curDir);
+                        if(!static_cast<MirrorSquare &>(*lstComp->elem(i)).getOutDir(p, curDir))isActive=false;
                         break;
                     case detector:
                         static_cast<Detector &>(*lstComp->elem(i)).getInPoint(p);
@@ -46,6 +47,7 @@ namespace simulation {
                     curDir = lstComp->elem(i + 1)->getPosition() - lstComp->elem(i)->getPosition();
                     Utils::normalizeVector(curDir);
                 }
+                if(!isActive)i=lstComp->getLength();
             }
             _prog->setValue(i);
         }

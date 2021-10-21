@@ -185,7 +185,6 @@ void CmpList_element::applyEditDetector(double _xPos, double _yPos, double _zPos
     //In Liste übernehmen
     componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
     componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
-    int _brightness = static_cast<Detector &>(*componentList->elem(componentList->getLength() - 1)).getBrightness();
 }
 
 void CmpList_element::applyEditFilter(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _lowerLim, double _upperLim){

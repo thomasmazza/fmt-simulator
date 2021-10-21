@@ -1,7 +1,7 @@
 #include "objectGenerator.hpp"
 
 const void ObjectGenerator::generateObject(Config::object& object) {
-    srand(time(NULL));
+    //srand(time(NULL));
     for (unsigned int i = 0; i<256; i++){
         Config::objectRow objectRow;
         for(unsigned int j = 0; j<256;j++){
