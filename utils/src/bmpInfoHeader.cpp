@@ -9,8 +9,8 @@ BmpInfoHeader::BmpInfoHeader(unsigned int _width, unsigned int _height) {
     colorDepth = 24;
     compressionMethod = 0;
     rawBitmapDataSize = 0;
-    horizontalResolution = 3780;
-    verticalResolution = 3780;
+    horizontalResolution = 11811;
+    verticalResolution = 11811;
     colorTableEntries = 0;
     importantColors = 0;
 }
