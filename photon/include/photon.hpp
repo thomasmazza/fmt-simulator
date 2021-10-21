@@ -14,5 +14,5 @@ public:
     std::vector<double> getDirection();
     void setPosition(std::vector<double>&);
     void setDirection(std::vector<double>&);
-    void setIntensity(int);
+    //void setIntensity(int);
 };

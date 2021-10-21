@@ -141,12 +141,11 @@ bmp_vector Detector::createImage() {
             bw[(j - 1) + (i - 1) * sz] = (image[j + i * sz].intensity * (-4)) + (image[j - 1 + i * sz].intensity) + (image[j + 1 + i * sz].intensity) + (image[j + (i - 1) * sz].intensity) + (image[j + (i + 1) * sz].intensity);
         }
     }
-
-    /*for (int i = 0; i < sz * sz; i++) {
+    for (int i = 0; i < sz * sz; i++) {
         if (bw[i] >= sharpness) {
             sharpness = bw[i];
         }
-    }*/
+    }
     // Obwohl die Werte auf [0, 100] verteilt sind, bedeuten Werte wie 35 - 40 besonders hohe Schärfe;
     // Dies liegt daran, dass das Bild ganz spezifische Struktur haben muss um Schärfewerte im Bereich [60 - 100] zu erzeugen;
     sharpness = (sharpness / (max * 4)) * 100;
