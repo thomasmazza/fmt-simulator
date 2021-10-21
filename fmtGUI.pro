@@ -30,7 +30,9 @@ SOURCES += \
     \
     logic/src/exporter.cpp \
     logic/src/importer.cpp \
+    logic/src/mainRoutine.cpp \
     logic/src/objectGenerator.cpp \
+    logic/src/optim.cpp \
     logic/src/setupList.cpp \
     \
     photon/src/photon.cpp \
@@ -69,7 +71,9 @@ HEADERS += \
     logic/include/config.hpp \
     logic/include/exporter.hpp \
     logic/include/importer.hpp \
+    logic/include/mainRoutine.hpp \
     logic/include/objectGenerator.hpp \
+    logic/include/optim.hpp \
     logic/include/setupList.hpp \
     \
     photon/include/photon.hpp \

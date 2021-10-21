@@ -732,7 +732,7 @@
                </size>
               </property>
               <property name="value">
-               <number>24</number>
+               <number>0</number>
               </property>
              </widget>
             </item>
@@ -1149,7 +1149,8 @@
                   <string>Run Optimization</string>
                  </property>
                  <property name="icon">
-                  <iconset theme="system-reboot"/>
+                  <iconset theme="system-reboot">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </widget>
                </item>
