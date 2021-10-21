@@ -295,7 +295,7 @@ bool LensOneSided::getOutDir(Photon &p) {
                     pV = intersect;
 
                     //neue Normale der Planaren Fläche
-                    normalA1 = -normal;
+                    normalA1 = normal*(-1);
 
                     double rS = 0;
                     double lS = 0;

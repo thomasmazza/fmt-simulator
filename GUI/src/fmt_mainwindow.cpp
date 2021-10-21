@@ -462,7 +462,7 @@ void fmt_mainWindow::startSimulation(int photonNumber){
 
     //Importiere Objekt
     Config::object simObj;
-    ObjectGenerator::generateObject(simObj);
+    ObjectGenerator::generateRainbow(simObj);
 
     //Konfiguriere Progress Bar
     ui->SimProgressBar->setRange(0, photonNumber);
@@ -490,7 +490,7 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     ui->StpFileAuto->setStyleSheet("QPushButton {color: grey}");
 
     //Starte Simulation mit Parametern
-    simulation::startTracing(simObj, photonNumber, ui->CmpListBox->getComponentList(), *photonList, ui->SimProgressBar);
+    simulation::startTracing(simObj, photonNumber, ui->CmpListBox->getComponentList(), ui->SimProgressBar);
 
     //Lese generiertes Image, speichere und lade es ins Fenster
     Detector _detect = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1));

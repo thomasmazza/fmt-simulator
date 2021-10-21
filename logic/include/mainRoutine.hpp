@@ -21,7 +21,7 @@
 #include <QProgressBar>
 
 namespace simulation{
-    void startTracing(Config::object &_object, int maxAnzPhot, List* lstComp, std::vector<Photon> &lstPhotonHit, QProgressBar*);
+    void startTracing(Config::object &_object, int maxAnzPhot, List* lstComp, QProgressBar*);
     void doStuff(short _bright,short _focus,short _doF, Config::object &_object, List* lstComp, std::vector<Photon> &lstPhotonHit);
     void optTracing(List* , std::vector<Photon>&);
 }

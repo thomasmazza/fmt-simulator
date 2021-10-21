@@ -1,4 +1,6 @@
 #include <fstream>
+#include <iostream>
+
 
 #include "../include/exporter.hpp"
 #include "importer.hpp"
@@ -133,13 +135,15 @@ void Exporter::exportObject(Config::object &object, std::string filename) {
     exportInBrackets(dataOut, OBJECT_CLOSING_TAG);
     dataOut.close();
 }
-
+/*
 void Exporter::exportBMPImage( Detector &_detector, std::string filename) {
     bmp_vector image = _detector.createImage();
 
     BmpFileHeader bfh(_detector.getSize(),_detector.getSize());
     BmpInfoHeader bih(_detector.getSize(),_detector.getSize());
+    unsigned short bfType=0x4d42;
     std::ofstream fout(filename, std::ios::binary);
+    fout.write((char *) &bfType, sizeof(bfType));
     fout.write((char *) &bfh, 14);
     fout.write((char *) &bih, 40);
     for (int i = 0; i < image.size(); i++) {
@@ -148,3 +152,33 @@ void Exporter::exportBMPImage( Detector &_detector, std::string filename) {
     fout.close();
 
 }
+*/
+
+
+void Exporter::exportBMPImage(Detector &_detector, std::string filename) {
+    bmp_vector image = _detector.createImage();
+    BmpFileHeader bfh(_detector.getSize(), _detector.getSize());
+    BmpInfoHeader bih(_detector.getSize(), _detector.getSize());
+    unsigned short bfType=0x4d42;
+
+    FILE *file = fopen(filename.c_str(), "wb");
+
+    fwrite(&bfType,1,sizeof(bfType),file);
+    fwrite(&bfh, 1, sizeof(bfh), file);
+    fwrite(&bih, 1, sizeof(bih), file);
+
+    for (int y = bih.height-1; y>=0; y--)
+    {
+        for (int x = 0; x < bih.width; x++)
+        {
+            unsigned char r = image[y * bih.height + x].r;
+            unsigned char g = image[y * bih.height + x].g;
+            unsigned char b = image[y * bih.height + x].b;
+            fwrite(&b, 1, 1, file);
+            fwrite(&g, 1, 1, file);
+            fwrite(&r, 1, 1, file);
+        }
+    }
+    fclose(file);
+}
+

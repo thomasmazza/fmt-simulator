@@ -1,16 +1,15 @@
 #include "bmpInfoHeader.hpp"
 
-
-BmpInfoHeader::BmpInfoHeader(unsigned int _width, unsigned int _height) {
-    sizeOfThisHeader = 40;
+BmpInfoHeader::BmpInfoHeader(int _width, int _height) {
+    sizeInfoHeader = sizeof(BmpInfoHeader);
     width = _width;
     height = _height;
-    numberOfColorPlanes = 1;
-    colorDepth = 24;
-    compressionMethod = 0;
-    rawBitmapDataSize = 0;
-    horizontalResolution = 3780;
-    verticalResolution = 3780;
-    colorTableEntries = 0;
+    colorPlanes = 1;
+    bitCount = 24;
+    compression = 0;
+    sizeImageData = 0;
+    xPixelsPerMeter = 5000;
+    yPixelsPerMeter = 5000;
+    colorsUsed = 0;
     importantColors = 0;
 }

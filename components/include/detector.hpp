@@ -29,9 +29,9 @@ public:
 
     const std::vector<double>& getPosOfPrevComponent();
 
-    const int getSize();
+    int getSize();
 
-    const double getPixelSize();
+    double getPixelSize();
 
     void setPosOfPrevComponent(std::vector<double> &);
 

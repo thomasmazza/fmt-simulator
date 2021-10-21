@@ -16,7 +16,7 @@ const std::vector<double>& Detector::getPointOnEdge() {
     return pointOnEdge;
 }
 
-const int Detector::getSize() {
+int Detector::getSize() {
     return size;
 }
 
@@ -24,7 +24,7 @@ void Detector::setPointOnEdge(std::vector<double> &_point) {
     pointOnEdge = _point;
 }
 
-const double Detector::getPixelSize() {
+double Detector::getPixelSize() {
     return pixelSize;
 }
 
