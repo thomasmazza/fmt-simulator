@@ -6,5 +6,5 @@ struct BmpFileHeader
     unsigned short reserved1;
     unsigned short reserved2;
     unsigned int   offsetBits;
-    BmpFileHeader(const int, const int);
+    BmpFileHeader(int, int);
 };

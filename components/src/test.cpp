@@ -86,7 +86,7 @@ int main() {
     ppc[1] = 0;
     ppc[2] = 0;
 
-    Detector d(pos, pos, poe, ppc, S, 0.0014);
+    Detector d('z', pos, pos, ppc, S, 0.0014);
     for (int i = 0; i < phV.size(); i++) {
         d.getInPoint(phV[i]);
     }

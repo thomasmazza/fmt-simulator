@@ -1,7 +1,7 @@
 #include "bmpInfoHeader.hpp"
 
 
-BmpInfoHeader::BmpInfoHeader(const int _width, const int _height) {
+BmpInfoHeader::BmpInfoHeader(int _width, int _height) {
     sizeInfoHeader = sizeof(BmpInfoHeader);
     width = _width;
     height = _height;

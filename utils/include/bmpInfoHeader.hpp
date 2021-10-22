@@ -14,5 +14,5 @@ struct BmpInfoHeader
     int            yPixelsPerMeter;
     unsigned int   colorsUsed;
     unsigned int   importantColors;
-    BmpInfoHeader(const int, const int);
+    BmpInfoHeader(int, int);
 };
