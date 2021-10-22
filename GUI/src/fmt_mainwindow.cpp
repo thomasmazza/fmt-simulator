@@ -462,6 +462,12 @@ void fmt_mainWindow::startSimulation(int photonNumber){
 
     //Importiere Objekt
     Config::object simObj;
+    //Prüfen, ob Datei leer ist
+    /*
+    std::ifstream file;
+    file.open((ui->ProjPath->text() + "/" + ui->InFilePath->toPlainText()).toStdString());
+    if(file.peek() != std::ifstream::traits_type::eof()) Importer::importObject(simObj, (ui->ProjPath->text() + "/" + ui->InFilePath->toPlainText()).toStdString());
+    */
     ObjectGenerator::generateRainbow(simObj);
 
     //Konfiguriere Progress Bar
@@ -490,7 +496,9 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     ui->StpFileAuto->setStyleSheet("QPushButton {color: grey}");
 
     //Starte Simulation mit Parametern
-    simulation::startTracing(simObj, photonNumber, ui->CmpListBox->getComponentList(), ui->SimProgressBar);
+    List* _List = ui->CmpListBox->getComponentList();
+    static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1)).resetSensor();
+    simulation::startTracing(simObj, photonNumber, _List, ui->SimProgressBar);
 
     //Lese generiertes Image, speichere und lade es ins Fenster
     Detector _detect = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1));
@@ -500,9 +508,9 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     ui->GraphicalResult->setPixmap(*resultImage);
 
     //Debug-Werte aus Detector auslesen
-    int _brightness = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1)).getBrightness();
+    int _brightness = _detect.getBrightness();
     ui->Brightness->setText(QString::number(_brightness));
-    int _focus = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1)).getSharpness();
+    int _focus = _detect.getSharpness();
     ui->Focus->setText(QString::number(_focus));
 
     //Setze alle Widgets auf Aktiv

@@ -36,8 +36,12 @@ void Detector::getInPoint(Photon &photon) {
     //Berechnet den Schnittpunkt von Photon und Ebene
     double temp = (normal[0] * (position[0] - pV[0]) + normal[1] * (position[1] - pV[1]) +
                    normal[2] * (position[2] - pV[2])) / (normal[0] * dV[0] + normal[1] * dV[1] + normal[2] * dV[2]);
-    for (int i = 0; i < 3; i++) {
-        intersection[i] = dV[i] * temp + pV[i];
+    if(temp>0){
+        for (int i = 0; i < 3; i++) {
+          intersection[i] = dV[i] * temp + pV[i];
+        }
+    }else{
+        return;
     }
 
     std::vector<double> relativePosition = intersection - position; // Position vom Photon relativ zum Detektormittelpunkt
@@ -62,7 +66,6 @@ void Detector::getInPoint(Photon &photon) {
             Utils::coreTranslationInColor(wl, color.r, color.g, color.b);
             int i_index = floor(b / pixelSize);
             int j_index = floor(a / pixelSize);
-            std::cout<<"Hit"<<std::endl;
             if (temp >= 0) {
                 if (temp < M_PI_2) {
                     i_index = floor(size / 2 - i_index);
@@ -77,7 +80,6 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].addRGB(color);
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
-                std::cout << sensor[i_index][j_index].r << std::endl;
             } else {
                 if (temp > -M_PI_2) {
                     i_index = floor(size / 2 - i_index);
@@ -92,8 +94,6 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].addRGB(color);
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
-                std::cout << "r" << sensor[i_index][j_index].r << " g" << sensor[i_index][j_index].g << " b" << sensor[i_index][j_index].b << std::endl;
-                std::cout << sensor[i_index][j_index].intensity << std::endl;
             }
         }
     }
@@ -129,7 +129,7 @@ bmp_vector Detector::createImage() {
                 color.r = sensor[i][j].r / sensor[i][j].intensity;
                 color.g = sensor[i][j].g / sensor[i][j].intensity;
                 color.b = sensor[i][j].b / sensor[i][j].intensity;
-                color.intensity = sensor[i][j].intensity;
+                color.intensity = sensor[i][j].intensity / max;
             }
             image[j + i * size] = color;
         }
@@ -181,6 +181,10 @@ const double & Detector::getSharpness() {
     return sharpness;
 }
 
+void Detector::resetSensor(){
+    rgb_matrix emptySensor(size, std::vector<RGB>(size));
+    sensor = emptySensor;
+}
 
 Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_pointOnEdge, std::vector<double> &_posOfPrevComponent, unsigned int _size,
                    double _pixelSize) : Component(_pos, _normal, detector), pointOnEdge(_pointOnEdge),posOfPrevComponent(_posOfPrevComponent),size(_size),pixelSize(_pixelSize), length(_size * _pixelSize),sensor(_size, std::vector<RGB>(_size)) {

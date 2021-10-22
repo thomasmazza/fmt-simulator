@@ -26,7 +26,7 @@ bool MirrorSquare::getOutDir(Photon &p, std::vector<double> &_dirOA) {
     double t = rS / lS;
 
     //Existiert ein sinnvoller Schnittpunkt oder annähernd Parallel zw. Ebene und Gerade?
-    if (abs(lS) > 0.000001 && t>0) {
+    if (t>0) {
 
         std::vector<double> intersect(3);
         //Berechne den Schnittpunkt
@@ -76,11 +76,11 @@ bool MirrorSquare::getOutDir(Photon &p, std::vector<double> &_dirOA) {
             lS += intPos[i] * mWidth[i];
         }
 
-        double h = abs((rS / (pow(length, 2))));
-        double w = abs((lS / (pow(length, 2))));
+        double h = (rS / (pow(length, 2)));
+        double w = (lS / (pow(length, 2)));
 
         //Falls Werte kleiner 1 ist der Betrag entlang der Achsen kleiner als die Ausdehnung => in Grenzen
-        if (h <= 1 && w <= 1 && calcOut(p, intersect, normWidth)) {
+        if ((h<=1 || h>=-1) && (w<=1 || w>=-1) && calcOut(p, intersect, normWidth)) {
             isComponentHit = true;
         }
     }

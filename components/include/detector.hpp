@@ -49,4 +49,6 @@ public:
 
     const double & getSharpness();
 
+    void resetSensor();
+
 };

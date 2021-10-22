@@ -18,7 +18,7 @@ bool MirrorElliptical::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
     double t = rS / lS;
 
     //Existiert ein sinnvoller Schnittpunkt oder annähernd parallel zwischen Ebene und Gerade?
-    if (abs(lS) > 0.000001 && t>0) {
+    if (t>0) {
         std::vector<double> intersect(3);
 
         //Berechne den Schnittpunkt
@@ -69,14 +69,14 @@ bool MirrorElliptical::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
         }
 
         //lengthW und lengthH ist nicht deklariert
-        double yProz = abs((rS / pow(radiusH, 2)));
-        double xProz = abs((lS / pow(radiusW, 2)));
+        double yProz = (rS / pow(radiusH, 2));
+        double xProz = (lS / pow(radiusW, 2));
         xProz = xProz * radiusW;
         yProz = yProz * radiusH;
 
-        double z = abs(pow(xProz, 2) / radiusW + pow(yProz, 2) / radiusH);
+        double z = pow(xProz, 2) / radiusW + pow(yProz, 2) / radiusH;
 
-        if (z <= 1 && calcOut(photon, intersect, normWidth)) {
+        if ((z<=1 || z>=-1) && calcOut(photon, intersect, normWidth)) {
             isComponentHit = true;
         }
     }

@@ -8,31 +8,37 @@ namespace simulation {
         #pragma omp parallel for shared (lstComp)
         for(int i = 0; i < maxAnzPhot; i++){
             Photon p = photonGenerator.generatePhoton();
+            std::vector<double> origin(3);
+            origin[0]=128;
+            origin[1]=128;
+            origin[2]=0;
             std::vector<double> curDir = lstComp->elem(0)->getPosition();
+            curDir = curDir - origin;
             Utils::normalizeVector(curDir);
+            bool isActive = true;
             for(int j = 0; j < lstComp->getLength(); j++){
                 ComponentType className = lstComp->elem(j)->getType();
                 switch (className) {
                     case filter:
-                        static_cast<Filter &>(*lstComp->elem(j)).getOutDir(p);
+                        isActive = static_cast<Filter &>(*lstComp->elem(j)).getOutDir(p);
                         break;
                     case lensOneSided:
-                        static_cast<LensOneSided &>(*lstComp->elem(j)).getOutDir(p);
+                        isActive = static_cast<LensOneSided &>(*lstComp->elem(j)).getOutDir(p);
                         break;
                     case lensTwoSided:
-                        static_cast<LensTwoSided &>(*lstComp->elem(j)).getOutDir(p);
+                        isActive = static_cast<LensTwoSided &>(*lstComp->elem(j)).getOutDir(p);
                         break;
                     case mirrorElliptical:
-                        static_cast<MirrorElliptical &>(*lstComp->elem(j)).getOutDir(p, curDir);
+                        isActive = static_cast<MirrorElliptical &>(*lstComp->elem(j)).getOutDir(p, curDir);
                         break;
                     case mirrorCircle:
-                        static_cast<MirrorCircle &>(*lstComp->elem(j)).getOutDir(p, curDir);
+                        isActive = static_cast<MirrorCircle &>(*lstComp->elem(j)).getOutDir(p, curDir);
                         break;
                     case mirrorRectangle:
-                        static_cast<MirrorRectangle &>(*lstComp->elem(j)).getOutDir(p, curDir);
+                        isActive = static_cast<MirrorRectangle &>(*lstComp->elem(j)).getOutDir(p, curDir);
                         break;
                     case mirrorSquare:
-                        static_cast<MirrorSquare &>(*lstComp->elem(j)).getOutDir(p, curDir);
+                        isActive = static_cast<MirrorSquare &>(*lstComp->elem(j)).getOutDir(p, curDir);
                         break;
                     case detector:
                         static_cast<Detector &>(*lstComp->elem(j)).getInPoint(p);
@@ -44,6 +50,7 @@ namespace simulation {
                     curDir = lstComp->elem(j + 1)->getPosition() - lstComp->elem(j)->getPosition();
                     Utils::normalizeVector(curDir);
                 }
+                if(!isActive) break;
             }
             #pragma omp critical
             _prog->setValue(_prog->value() + 1);
@@ -51,7 +58,7 @@ namespace simulation {
     }
 
     void optTracing(List* lstComp, std::vector<Photon> &lstPhotonHit) {
-        static_cast<Detector &>(*lstComp->elem(lstComp->getLength()-1)).createImage();//TODO: Sensor leeren
+        static_cast<Detector &>(*lstComp->elem(lstComp->getLength()-1)).resetSensor();
         int maxAnzPhot = lstPhotonHit.size();
         for (int i = 0; i < maxAnzPhot; i++) {
             Photon p = lstPhotonHit[i];

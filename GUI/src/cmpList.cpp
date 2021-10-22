@@ -1,6 +1,8 @@
 #include "../include/cmpList.hpp"
 #include "../include/cmpEditWindow.hpp"
 
+#include "../../utils/include/utils.hpp"
+
 CmpList_element::CmpList_element(int _number, QString _type, List* _list){
     //Übergebe Listen-Referenz
     componentList = _list;
@@ -379,6 +381,7 @@ void CmpList_box::addCmpToList(QString _type, double _xPos, double _yPos, double
     //Füge Element in die Liste ein
     std::vector<double> _pos(3); _pos[0] = _xPos; _pos[1] = _yPos; _pos[2] = _zPos;
     std::vector<double> _norm(3); _norm[0] = _xNorm; _norm[1] = _yNorm; _norm[2] = _zNorm;
+    Utils::normalizeVector(_norm);
     //If-Verzweigung weil switch-cases nicht mit Strings kompatibel sind...
     if(_type == "Detector"){
         //TODO: Übergebene Werte beheben
