@@ -1,4 +1,4 @@
-QT       += core gui
+QT += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -23,6 +23,7 @@ INCLUDEPATH += \
 
 SOURCES += \
     GUI/src/utilsGUI.cpp \
+    components/src/aperture.cpp \
     components/src/component.cpp \
     components/src/componentType.cpp \
     components/src/detector.cpp \
@@ -63,6 +64,7 @@ SOURCES += \
 
 HEADERS += \
     GUI/include/utilsGUI.hpp \
+    components/include/aperture.hpp \
     components/include/component.hpp \
     components/include/componentType.hpp \
     components/include/detector.hpp \

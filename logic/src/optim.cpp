@@ -292,8 +292,8 @@ Optim::Optim(short& _bright, short& _focus, short& _doF, List* _lstComp, std::ve
     object = _object;
     lstComp = _lstComp;
     std::vector<double> _origin(3);
-    _origin[0]=0;
-    _origin[1]=0;
+    _origin[0]=128;
+    _origin[1]=128;
     _origin[2]=0;
     origin = _origin;
     weightB = _bright;

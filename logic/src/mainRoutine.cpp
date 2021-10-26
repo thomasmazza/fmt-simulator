@@ -55,6 +55,7 @@ namespace simulation {
             #pragma omp critical
             _prog->setValue(_prog->value() + 1);
         }
+
     }
 
     void optTracing(List* lstComp, std::vector<Photon> &lstPhotonHit) {

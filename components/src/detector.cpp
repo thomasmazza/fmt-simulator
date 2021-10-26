@@ -45,21 +45,41 @@ void Detector::getInPoint(Photon &photon) {
     }
 
     std::vector<double> relativePosition = intersection - position; // Position vom Photon relativ zum Detektormittelpunkt
-    std::vector<double> detectorNormal = posOfPrevComponent - position; // Normalvektor in der Mitte von Detektor
     std::vector<double> ref = pointOnEdge - position; // Position vom pointOnEdge relativ zum Detektormittelpunkt
-    Utils::normalizeVector(detectorNormal);
-    double dp = Utils::dot_product(ref, relativePosition);
-    std::vector<double> cp = Utils::cross_product_2(relativePosition, ref);
+    std::vector<double> wid = Utils::cross_product_2(ref, normal);
+    Utils::normalizeVector(wid);
+    wid = wid*(length/2);
 
-    // temp hier wiederverwenden zum Speicheroptimierung
-    temp = Utils::dot_product(cp, detectorNormal);
-    temp = atan2(temp, dp); //Berechnet Winkel in der Ebene zwischen ref und relativePosition in [-pi,+pi]
+    double xs,ys;
     double a, b, c;
+    std::vector<double> x(3);
+    std::vector<double> y(3);
+    ys = ( (Utils::dot_product(ref, relativePosition)) / pow((length/2), 2) );
+    xs = ( (Utils::dot_product(wid, relativePosition)) / pow((length/2), 2) );
+    x = xs*wid;
+    y = ys*ref;
+
+    if(xs>0){
+        xs = Utils::getAbs(x);
+    }else{
+        xs = Utils::getAbs(x);
+        xs = xs*(-1);
+    }
+
+    if(ys>0){
+        ys = Utils::getAbs(y);
+    }else{
+        ys = Utils::getAbs(y);
+        ys = ys*(-1);
+    }
+
+    temp = atan2(ys, xs); //Berechnet Winkel in der Ebene zwischen ref und relativePosition in [-pi,+pi]
+
     c = sqrt(pow(relativePosition[0], 2) + pow(relativePosition[1], 2) + pow(relativePosition[2], 2));
-    a = std::abs(c * sin(temp));
+    a = std::abs(ys);
 
     if (a < length / 2) {
-        b = sqrt(c * c - a * a);
+        b = std::abs(xs);
         if (b < length / 2) {
             RGB color;
             const int wl = photon.getWaveLength();
@@ -115,6 +135,7 @@ bmp_vector Detector::createImage() {
     }
     avg = avg / (size * size);
     brightness = (avg / max) * 100;
+    brightness = (100 - brightness);
 
 
     rgb_vector image(size * size);
@@ -152,6 +173,7 @@ bmp_vector Detector::createImage() {
     // Obwohl die Werte auf [0, 100] verteilt sind, bedeuten Werte wie 35 - 40 besonders hohe Schärfe;
     // Dies liegt daran, dass das Bild ganz spezifische Struktur haben muss um Schärfewerte im Bereich [60 - 100] zu erzeugen;
     sharpness = (sharpness / (max * 4)) * 100;
+    sharpness = (40 - sharpness)*(100/40);
 
     double adjustment;
     for (int i = 0; i < image.size(); i++) {

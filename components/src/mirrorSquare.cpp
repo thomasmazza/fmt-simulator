@@ -37,30 +37,16 @@ bool MirrorSquare::getOutDir(Photon &p, std::vector<double> &_dirOA) {
         //Überprüfen ob im Bereich, Erst Bereich definieren
         std::vector<double> mHigh(3);
         std::vector<double> mWidth(3);
-        Utils::cross_product(mHigh, normal, _dirOA);
-        Utils::cross_product(mWidth, mHigh, normal);
+        Utils::cross_product(mWidth, normal, _dirOA);
+        Utils::normalizeVector(mWidth);
+        Utils::cross_product(mHigh, mWidth, normal);
+        Utils::normalizeVector(mHigh);
 
-        //Betrag berechnen
-        //lS und rS wiederverwenden zur Speicheroptimierung
-        rS = 0;
-        lS = 0;
-        for (int i = 0; i < 3; i++) {
-            lS += pow(mHigh[i], 2);
-            rS += pow(mWidth[i], 2);
-        }
-        lS = sqrt(lS);
-        rS = sqrt(rS);
-
-        //normierte Vektoren berechnen
-        for (int i = 0; i < 3; i++) {
-            mHigh[i] = (mHigh[i] / lS);
-            mWidth[i] = (mWidth[i] / rS);
-        }
         std::vector<double> normWidth = mWidth;
 
         //Vektor auf Höhe Skalieren
-        mHigh = length * mHigh;
-        mWidth = length * mWidth;
+        mHigh = (length/2) * mHigh;
+        mWidth = (length/2) * mWidth;
 
 
         //Vektor von Mittelpunkt zum Intersect erstellen
@@ -76,11 +62,11 @@ bool MirrorSquare::getOutDir(Photon &p, std::vector<double> &_dirOA) {
             lS += intPos[i] * mWidth[i];
         }
 
-        double h = (rS / (pow(length, 2)));
-        double w = (lS / (pow(length, 2)));
+        double h = (rS / (pow((length/2), 2)));
+        double w = (lS / (pow((length/2), 2)));
 
         //Falls Werte kleiner 1 ist der Betrag entlang der Achsen kleiner als die Ausdehnung => in Grenzen
-        if ((h<=1 || h>=-1) && (w<=1 || w>=-1) && calcOut(p, intersect, normWidth)) {
+        if ((h<=1 && h>=-1) && (w<=1 && w>=-1) && calcOut(p, intersect, normWidth)) {
             isComponentHit = true;
         }
     }
@@ -99,19 +85,16 @@ bool MirrorSquare::calcOut(Photon &p, std::vector<double> &intersect, std::vecto
     //normierter Einfallsvektor berechnen
     for (int i = 0; i < 3; i++) {
         sumVE += pow(dV[i], 2);
-        sumVN += pow(normal[i], 2);
     }
     sumVE = sqrt(sumVE);
-    sumVN = sqrt(sumVN);
     for (int i = 0; i < 3; i++) {
         dV[i] /= sumVE;
-        normal[i] /= sumVN;
     }
 
     //Skalarprodukt aus Einfallsvektor & einer Achse (normiert)
     double coalpha = 0;
     for (int i = 0; i < 3; i++) {
-        coalpha += dV[i] * normWidth[i];
+        coalpha += dV[i] * normal[i];
     }
 
     //Überprüfen ob der Winkel über 90 Grad
@@ -120,7 +103,7 @@ bool MirrorSquare::calcOut(Photon &p, std::vector<double> &intersect, std::vecto
     }
 
     //In Formel einsetzen
-    out = dV + 2 * coalpha * (normal);
+    out = dV + (-2*(coalpha*(normal)));
 
     //An Photon übergeben
     p.setDirection(out);

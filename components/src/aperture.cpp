@@ -1,13 +1,13 @@
-#include "../include/mirrorCircle.hpp"
+#include "../include/aperture.hpp"
 
 #include "../../utils/include/utils.hpp"
 #include <cmath>
 
-std::string MirrorCircle::getType() {
-    return "MirrorCircle";
+std::string Aperture::getType() {
+    return "Aperture";
 }
 
-bool MirrorCircle::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
+bool Aperture::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
     double rS=0;
     double lS=0;
     std::vector<double> pV = photon.getPosition();
@@ -66,7 +66,7 @@ bool MirrorCircle::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
 
         double z = pow((xProz/radius), 2) + pow((yProz/radius), 2);
 
-        if ((z<=1 && z>=-1) && calcOut(photon, intersect, normWidth)) {
+        if ((z<=1 && z>=-1)) {
             isComponentHit = true;
         }
     }
@@ -74,56 +74,15 @@ bool MirrorCircle::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
     return isComponentHit;
 }
 
-bool MirrorCircle::calcOut(Photon& p, std::vector<double>& intersect, std::vector<double>& normWidth) {
-    //neuer Stützvektor wird der Schnittpunkt
-    p.setPosition(intersect);
 
-    std::vector<double> out(3);
-    std::vector<double> dV = p.getDirection();
-    double sumVE=0;
-    double sumVN=0;
-
-    //normierter Einfallsvektor berechnen
-    for(int i=0; i<3; i++){
-        sumVE += pow(dV[i], 2);
-        sumVN += pow(normal[i], 2);
-    }
-    sumVE = sqrt(sumVE);
-    sumVN = sqrt(sumVN);
-
-    for(int i=0; i<3; i++){
-        dV[i] /= sumVE;
-        normal[i] /= sumVN;
-    }
-
-    //Skalarprodukt aus Einfallsvektor & einer Achse (normiert)
-    double coalpha=0;
-    for(int i=0; i<3; i++){
-        coalpha += dV[i]*normal[i];
-    }
-
-    //Überprüfen ob der Winkel über 90 Grad
-    if(coalpha>(M_PI_2)){
-        coalpha = coalpha-(M_PI_2);
-    }
-
-    //In Formel einsetzen
-    out = dV + (-2*(coalpha*(normal)));
-
-    //An Photon übergeben
-    p.setDirection(out);
-
-    return true;
-}
-
-void MirrorCircle::setRadius(double _radius) {
+void Aperture::setRadius(double _radius) {
     radius = _radius;
 }
 
-double MirrorCircle::getRadius() {
+double Aperture::getRadius() {
     return radius;
 }
-MirrorCircle::MirrorCircle(std::vector<double>& _pos, std::vector<double>& _normal, double _radius):Component(_pos,  _normal, mirrorCircle), radius(_radius){
+Aperture::Aperture(std::vector<double>& _pos, std::vector<double>& _normal, double _radius):Component(_pos,  _normal, mirrorCircle), radius(_radius){
 }
 
-MirrorCircle::MirrorCircle(const MirrorCircle &mirrorCircle1): Component(mirrorCircle1), radius(mirrorCircle1.radius) {}
+Aperture::Aperture(const Aperture &aperture1): Component(aperture1), radius(aperture1.radius) {}
