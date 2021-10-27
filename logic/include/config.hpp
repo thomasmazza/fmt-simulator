@@ -22,6 +22,8 @@ namespace Config {
     const std::string MIRROR_SQUARE_CLOSING_TAG = "/MirrorSquare";
     const std::string DETECTOR_OPENING_TAG = "Detector";
     const std::string DETECTOR_CLOSING_TAG = "/Detector";
+    const std::string APERTURE_OPENING_TAG = "Aperture";
+    const std::string APERTURE_CLOSING_TAG = "Aperture";
     const std::string SETUP_OPENING_TAG = "Setup";
     const std::string SETUP_CLOSING_TAG = "/Setup";
     const std::string POSITION_OPENING_TAG = "Position";

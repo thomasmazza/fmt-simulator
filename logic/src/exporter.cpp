@@ -1,4 +1,3 @@
-#include <fstream>
 #include <iostream>
 
 
@@ -18,6 +17,7 @@ std::ostream& operator <<(std::ostream& os, ComponentType _type){
         case mirrorElliptical : os << "MirrorElliptical"; break;
         case mirrorCircle : os << "MirrorCircle"; break;
         case detector : os << "Detector"; break;
+        case aperture : os << "Aperture"; break;
         default : os.setstate(std::ios_base::failbit);
     }
     return os;
@@ -105,6 +105,9 @@ void Exporter::exportStp(List &_lst, std::string _filename) {
                 exportInBrackets(dataOut, POSITION_OF_PREVIOUS_COMPONENT_CLOSING_TAG);
                 exportParameter(dataOut, SIZE_OPENING_TAG, static_cast<Detector &>(*_lst.elem(i)).getSize());
                 exportParameter(dataOut, PIXEL_SIZE_OPENING_TAG, static_cast<Detector &>(*_lst.elem(i)).getPixelSize());
+                break;
+            case aperture:
+                exportParameter(dataOut, RADIUS_OPENING_TAG, static_cast<Aperture &>(*_lst.elem(i)).getRadius());
                 break;
             default:
                 break;

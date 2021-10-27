@@ -7,6 +7,7 @@
 #include "../../components/include/mirrorElliptical.hpp"
 #include "../../components/include/mirrorSquare.hpp"
 #include "../../components/include/mirrorRectangle.hpp"
+#include "../../components/include/aperture.hpp"
 #include "detector.hpp"
 
 using namespace Config;
@@ -288,7 +289,17 @@ void Importer::importStp(List &_lst, std::string _filename) {
                 _lst.append<Detector>(Detector(_position, _normal, _pointOnEdge, _posOfPreviousComponent, size, pixelSize));
                 getContentInBrackets(setupFile, buf, DETECTOR_CLOSING_TAG);
                 std::cout << DETECTOR_OPENING_TAG << " was imported!" << std::endl;
-            }else if (buf == SETUP_CLOSING_TAG) {
+            }else if(buf == APERTURE_OPENING_TAG){
+                double radius;
+                importPosition(setupFile, _position);
+                importNormal(setupFile, _normal);
+                importNumber(setupFile, RADIUS_OPENING_TAG, radius);
+
+                _lst.append<Aperture>(Aperture(_position, _normal, radius));
+                getContentInBrackets(setupFile, buf, APERTURE_CLOSING_TAG);
+                std::cout << APERTURE_OPENING_TAG << " was imported!" << std::endl;
+            }
+            else if (buf == SETUP_CLOSING_TAG) {
                 break;
             } else {
                 throw InvalidComponentException();
