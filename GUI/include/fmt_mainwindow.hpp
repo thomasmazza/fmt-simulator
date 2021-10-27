@@ -56,6 +56,7 @@ private:
     bool autoDetect(QString, QString);
     Ui::fmt_mainWindow *ui;
 
+    Config::object simObj;
     std::vector<Photon>* photonList;
     QPixmap* resultImage;
 };

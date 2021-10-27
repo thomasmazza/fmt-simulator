@@ -3,11 +3,13 @@
 
 namespace simulation {
 
-    void startTracing(Config::object &_object, int maxAnzPhot, List* lstComp, QProgressBar* _prog){
+    std::vector<Photon>* startTracing(Config::object &_object, int maxAnzPhot, List* lstComp, QProgressBar* _prog){
         PhotonGenerator photonGenerator(_object);
+        std::vector<Photon>* photonLst = new std::vector<Photon>();
         #pragma omp parallel for shared (lstComp)
         for(int i = 0; i < maxAnzPhot; i++){
             Photon p = photonGenerator.generatePhoton();
+            Photon pTemp = p;
             std::vector<double> origin(3);
             origin[0]=128;
             origin[1]=128;
@@ -42,6 +44,8 @@ namespace simulation {
                         break;
                     case detector:
                         static_cast<Detector &>(*lstComp->elem(j)).getInPoint(p);
+                        #pragma omp critical
+                        photonLst->push_back(pTemp);
                         break;
                     default:
                         break;
@@ -55,14 +59,14 @@ namespace simulation {
             #pragma omp critical
             _prog->setValue(_prog->value() + 1);
         }
-
+        return photonLst;
     }
 
-    void optTracing(List* lstComp, std::vector<Photon> &lstPhotonHit) {
+    void optTracing(List* lstComp, std::vector<Photon>* lstPhotonHit) {
         static_cast<Detector &>(*lstComp->elem(lstComp->getLength()-1)).resetSensor();
-        int maxAnzPhot = lstPhotonHit.size();
+        int maxAnzPhot = lstPhotonHit->size();
         for (int i = 0; i < maxAnzPhot; i++) {
-            Photon p = lstPhotonHit[i];
+            Photon p = lstPhotonHit->at(i);
             std::vector<double> curDir = lstComp->elem(0)->getPosition();
             Utils::normalizeVector(curDir);
             for (int i = 0; i < lstComp->getLength(); i++) {
@@ -103,7 +107,7 @@ namespace simulation {
         }
     }
 
-    void doStuff(short _bright,short _focus,short _doF, Config::object &_object, List* lstComp, std::vector<Photon> &lstPhotonHit) {
+    void doStuff(short _bright,short _focus,short _doF, Config::object &_object, List* lstComp, std::vector<Photon>* lstPhotonHit) {
         //aktuelle Summe berechnen, dann Optimierung starten
         double fLastLens = static_cast<LensTwoSided&>(*lstComp->elem(lstComp->getLength()-2)).getN(); //TODO: getF()
         std::vector<double> dif = lstComp->elem(lstComp->getLength()-2)->getPosition() - lstComp->elem(lstComp->getLength()-1)->getPosition();

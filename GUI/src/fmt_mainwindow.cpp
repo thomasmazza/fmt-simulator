@@ -395,7 +395,9 @@ void fmt_mainWindow::on_RunOptimization_clicked()
             return;
         }
 
-        //TODO: Optimierung starten
+        List* _List = ui->CmpListBox->getComponentList();
+        simulation::doStuff(100, 10, 1, simObj, _List, photonList);
+        //TODO: Pixmap reloaden, und Liste aktualisieren
     }
 }
 
@@ -461,12 +463,10 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     photonList = new std::vector<Photon>();
 
     //Importiere Objekt
-    Config::object simObj;
     //Prüfen, ob Datei leer ist
     std::ifstream file;
     file.open((ui->ProjPath->text() + "/" + ui->InFilePath->toPlainText()).toStdString());
     if(file.peek() != std::ifstream::traits_type::eof()) Importer::importObject(simObj, (ui->ProjPath->text() + "/" + ui->InFilePath->toPlainText()).toStdString());
-    //ObjectGenerator::generateRainbow(simObj);
 
     //Konfiguriere Progress Bar
     ui->SimProgressBar->setRange(0, photonNumber);
@@ -496,7 +496,7 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     //Starte Simulation mit Parametern
     List* _List = ui->CmpListBox->getComponentList();
     static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1)).resetSensor();
-    simulation::startTracing(simObj, photonNumber, _List, ui->SimProgressBar);
+    photonList = simulation::startTracing(simObj, photonNumber, _List, ui->SimProgressBar);
 
     //Lese generiertes Image, speichere und lade es ins Fenster
     Detector _detect = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1));

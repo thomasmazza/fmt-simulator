@@ -25,12 +25,12 @@
 class DetectorEditWindow : public QDialog{
     Q_OBJECT
 public:
-    explicit DetectorEditWindow(QWidget*, double, double, double, double, double, double);
+    explicit DetectorEditWindow(QWidget*, double, double, double, double, double, double, double, double);
 public slots:
     void closeEvent(QCloseEvent*);
     void closeOK();
 signals:
-    void editDetector(double, double, double, double, double, double);
+    void editDetector(double, double, double, double, double, double, double, double);
 private:
     QLineEdit* xPos;
     QLineEdit* yPos;
@@ -38,6 +38,8 @@ private:
     QLineEdit* xNorm;
     QLineEdit* yNorm;
     QLineEdit* zNorm;
+    QLineEdit* edgeLength;
+    QLineEdit* pixelCount;
 
     List* componentList;
 };
@@ -196,6 +198,27 @@ private:
     QLineEdit* yNorm;
     QLineEdit* zNorm;
     QLineEdit* length;
+
+    List* componentList;
+};
+
+class ApertureEditWindow : public QDialog{
+    Q_OBJECT
+public:
+    explicit ApertureEditWindow(QWidget*, double, double, double, double, double, double, double);
+public slots:
+    void closeEvent(QCloseEvent*);
+    void closeOK();
+signals:
+    void editAperture(double, double, double, double, double, double, double);
+private:
+    QLineEdit* xPos;
+    QLineEdit* yPos;
+    QLineEdit* zPos;
+    QLineEdit* xNorm;
+    QLineEdit* yNorm;
+    QLineEdit* zNorm;
+    QLineEdit* radius;
 
     List* componentList;
 };

@@ -52,7 +52,18 @@ void CmpAddWindow::changeCmpType(QString _type){
     _inputHolder->addRow(normLabel, normBox);
 
     //Auf If-Verzweigung zurückgreifen, da switch cases nicht mit QString funktionieren.....
-    if(_type == "Filter"){
+    if(_type == "Detector"){
+        QLabel* lowerLimLabel = new QLabel("Edge Length");
+        input1 = new QLineEdit();
+        input1->setValidator(inValidate);
+        _inputHolder->addRow(lowerLimLabel, input1);
+
+        QLabel* upperLimLabel = new QLabel("Pixel Count");
+        input2 = new QLineEdit();
+        input2->setValidator(inValidate);
+        _inputHolder->addRow(upperLimLabel, input2);
+    }
+    else if(_type == "Filter"){
         QLabel* lowerLimLabel = new QLabel("Lower Limit");
         input1 = new QLineEdit();
         input1->setValidator(inValidate);
@@ -150,6 +161,12 @@ void CmpAddWindow::changeCmpType(QString _type){
         input1->setValidator(inValidate);
         _inputHolder->addRow(lengthLabel, input1);
     }
+    else if(_type == "Aperture"){
+        QLabel* radiusLabel = new QLabel("Radius");
+        input1 = new QLineEdit();
+        input1->setValidator(inValidate);
+        _inputHolder->addRow(radiusLabel, input1);
+    }
 
     layout->insertLayout(1, _inputHolder);
     layout->update();
@@ -213,9 +230,24 @@ void CmpAddWindow::closeOK(){
         //Wieder if-Verzweigung weil QString nicht im Switch-Case unterstützt wird
         QString type = cmpSelection->currentText();
         if(type == "Detector"){
-            emit createNewCmp(type, _xPos, _yPos, _zPos, _xNorm, _yNorm, _zNorm, 0, 0, 0, 0, 0, false);
-            this->accept();
-            return;
+            if(!input1->text().isEmpty() && !input2->text().isEmpty()){
+                //Restliche inputs konvertieren und prüfen
+                if(input1->text().contains(',')){
+                    QMessageBox::critical(this, "Error", (input1->text() + " is no valid number\nPlease use '.' instead of ','"), QMessageBox::Ok);
+                    return;
+                }
+                double _in1 = input1->text().toDouble();
+
+                if(input2->text().contains(',')){
+                    QMessageBox::critical(this, "Error", (input2->text() + " is no valid number\nPlease use '.' instead of ','"), QMessageBox::Ok);
+                    return;
+                }
+                double _in2 = input2->text().toDouble();
+
+                emit createNewCmp(type, _xPos, _yPos, _zPos, _xNorm, _yNorm, _zNorm, _in1, _in2, 0, 0, 0, false);
+                this->accept();
+                return;
+            }
         }
         else if(type == "Filter" || type == "Elliptical Mirror" || type == "Rectangular Mirror"){
             if(!input1->text().isEmpty() && !input2->text().isEmpty()){
@@ -310,7 +342,7 @@ void CmpAddWindow::closeOK(){
                 return;
             }
         }
-        else if(type == "Circle Mirror" || cmpSelection->currentText() == "Square Mirror"){
+        else if(type == "Circle Mirror" || type == "Square Mirror" || type == "Aperture"){
             if(!input1->text().isEmpty()){
                 //Restliche inputs konvertieren und prüfen
                 if(input1->text().contains(',')){
@@ -337,6 +369,7 @@ CmpAddWindow::CmpAddWindow(QWidget* parent):QDialog(parent){
     layout->setSpacing(12);
 
     cmpSelection = new QComboBox();
+    cmpSelection->addItem("Aperture");
     cmpSelection->addItem("Detector");
     cmpSelection->addItem("Filter");
     cmpSelection->addItem("One Sided Lens");
@@ -370,7 +403,7 @@ CmpAddWindow::CmpAddWindow(QWidget* parent):QDialog(parent){
 
     this->setLayout(layout);
 
-    changeCmpType("Detector");
+    changeCmpType("Aperture");
 
     this->show();
 

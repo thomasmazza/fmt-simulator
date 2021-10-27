@@ -89,7 +89,10 @@ void CmpList_element::editElm(){
             componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[2],
             componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[0],
             componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[1],
-            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[2]);
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[2],
+            static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).getSize(),
+            static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).getSize());
+        //TODO: Fix Data Transfer
         connect(editWin, &DetectorEditWindow::editDetector, this, &CmpList_element::applyEditDetector);
     }
     else if(elmType->text() == "Filter"){
@@ -180,6 +183,17 @@ void CmpList_element::editElm(){
             static_cast<MirrorSquare &>(*componentList->elem(elmNumber->text().toInt() - 1)).getLength());
         connect(editWin, &MirrorSquareEditWindow::editMirrorSquare, this, &CmpList_element::applyEditMirrorSquare);
     }
+    else if(elmType->text() == "Aperture"){
+        ApertureEditWindow* editWin = new ApertureEditWindow(this,
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[2],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[2],
+            static_cast<Aperture &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadius());
+        connect(editWin, &ApertureEditWindow::editAperture, this, &CmpList_element::applyEditAperture);
+    }
 }
 
 //Übernehmen der Änderungen der einzelnen Komponententypen
@@ -189,6 +203,7 @@ void CmpList_element::applyEditDetector(double _xPos, double _yPos, double _zPos
     std::vector<double> _norm(3); _norm[0] = _xNorm; _norm[1] = _yNorm; _norm[2] = _zNorm;
     Utils::normalizeVector(_norm);
     componentList->elem(elmNumber->text().toInt() - 1)->setNormal(_norm);
+    //TODO: Apply changes
 }
 
 void CmpList_element::applyEditFilter(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _lowerLim, double _upperLim){
@@ -263,6 +278,15 @@ void CmpList_element::applyEditMirrorSquare(double _xPos, double _yPos, double _
     Utils::normalizeVector(_norm);
     componentList->elem(elmNumber->text().toInt() - 1)->setNormal(_norm);
     static_cast<MirrorSquare &>(*componentList->elem(elmNumber->text().toInt() - 1)).setLength(_length);
+}
+
+void CmpList_element::applyEditAperture(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _radius){
+    //In Liste übernehmen
+    componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
+    std::vector<double> _norm(3); _norm[0] = _xNorm; _norm[1] = _yNorm; _norm[2] = _zNorm;
+    Utils::normalizeVector(_norm);
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(_norm);
+    static_cast<Aperture &>(*componentList->elem(elmNumber->text().toInt() - 1)).setRadius(_radius);
 }
 
 void CmpList_element::deleteElm(){
@@ -358,6 +382,15 @@ void CmpList_box::rebuildFromList(){
             layout->addWidget(element);
             layout->addItem(bottomSpacer);
             break;
+        //case aperture: //TODO: Change to orignal Aperture case
+        default:
+            element = new CmpList_element(i + 1, "Aperture", componentList);
+
+            //Element einfügen
+            layout->removeItem(bottomSpacer);
+            layout->addWidget(element);
+            layout->addItem(bottomSpacer);
+            break;
         }
         //Deaktiviere Hoch/Runter-Buttons für erstes/letztes Element
         if(length == 1) element->changeButtonActivity(false, false);
@@ -401,7 +434,7 @@ void CmpList_box::addCmpToList(QString _type, double _xPos, double _yPos, double
     //If-Verzweigung weil switch-cases nicht mit Strings kompatibel sind...
     if(_type == "Detector"){
         //TODO: Übergebene Werte beheben
-        Detector* _new = new Detector(_pos, _norm, _norm, _norm, 3, 0.1);
+        Detector* _new = new Detector(_pos, _norm, _norm, _norm, _in1, _in2);
         componentList->append<Detector>(*_new);
     }
     else if(_type == "Filter"){
@@ -432,6 +465,12 @@ void CmpList_box::addCmpToList(QString _type, double _xPos, double _yPos, double
         MirrorSquare* _new = new MirrorSquare(_pos, _norm, _in1);
         componentList->append<MirrorSquare>(*_new);
     }
+    /*
+    else if(_type == "Aperture"){
+        Aperture* _new = new Aperture(_pos, _norm, _in1);
+        componentList->append<Aperture>(*_new);
+    }
+    */
 
     rebuildFromList();
 }
