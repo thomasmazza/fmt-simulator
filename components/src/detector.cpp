@@ -16,6 +16,10 @@ int Detector::getSize() {
     return size;
 }
 
+double Detector::getLength() {
+    return length;
+}
+
 double Detector::getPixelSize() {
     return pixelSize;
 }
@@ -33,7 +37,6 @@ void Detector::getInPoint(Photon &photon) {
     }
 
     std::vector<double> relativePosition = intersection - position; // Position vom Photon relativ zum Detektormittelpunkt
-    Utils::normalizeVector(detectorNormal);
     double dp = Utils::dot_product(ref, relativePosition);
     std::vector<double> cp = Utils::cross_product_2(relativePosition, ref);
 
@@ -44,9 +47,9 @@ void Detector::getInPoint(Photon &photon) {
     c = sqrt(pow(relativePosition[0], 2) + pow(relativePosition[1], 2) + pow(relativePosition[2], 2));
     a = std::abs(c * sin(temp));
 
-    if (a < length / 2) {
+    if (a <= length / 2) {
         b = sqrt(c * c - a * a);
-        if (b < length / 2) {
+        if (b <= length / 2) {
             RGB color;
             const int wl = photon.getWaveLength();
             Utils::coreTranslationInColor(wl, color.r, color.g, color.b);
@@ -173,8 +176,43 @@ const double & Detector::getSharpness() {
 
 
 Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_posOfPrevComponent, unsigned int _size,
-                   double _pixelSize) : Component(_pos, _normal, detector), posOfPrevComponent(_posOfPrevComponent),size(_size),pixelSize(_pixelSize), length(_size * _pixelSize),sensor(_size, std::vector<RGB>(_size)) {
-    std::vector<double> detectorNormal = posOfPrevComponent - position;
+                   double _edgeLength) : Component(_pos, _normal, detector), posOfPrevComponent(_posOfPrevComponent),size(_size),length(_edgeLength),pixelSize(length / (static_cast<double>(size))),sensor(_size, std::vector<RGB>(_size)) {
+
+    detectorNormal = posOfPrevComponent - position;
+    ref = { 0, 0, 0}; // ref zuerst nur als Nullvektor
+
+    // Berechnet ref abhängig davon, wie Detektor im Raum positioniert ist
+    if (normal[2] != 0) {
+        std::vector<double> temp = { 0, 0, 0};
+        // Falls der Normalvektor orthogonal zur XY Ebene ist, nehmen wir ref als den x-Einheitsvektor
+        if (normal[0] == 0 && normal[1] == 0) {
+            ref = { 1, 0, 0 };
+        }
+        // Falls nicht, berechnen wir ref als die Projektion von der Projektion von dem detectorNormal auf der XY Ebene
+        else {
+            temp = { 0, 0, 1};
+            double coef = Utils::dot_product(detectorNormal, temp);
+            temp[2] = coef;
+            std::vector<double> projection = detectorNormal - temp;
+
+            projection[0] = - projection[0];
+            projection[1] = - projection[1];
+            projection[2] = - projection[2];
+
+            coef = Utils::dot_product(projection, detectorNormal) / sqrt(pow(Utils::dot_product(detectorNormal, detectorNormal), 2));
+            temp[0] = detectorNormal[0]  * coef;
+            temp[1] = detectorNormal[1]  * coef;
+            temp[2] = detectorNormal[2]  * coef;
+            ref = projection - temp;
+        }
+    }
+    // In dem Fall dass die Z-Komponente von normal 0 ist, ist der Detektor vertikal im Raum und
+    // die Drehung um die Z-Achse spielt keine Role für ref, daher ist ref der z-Einheitsvektor
+    else {
+        ref = { 0, 0, 1};
+    }
+    Utils::normalizeVector(detectorNormal);
 }
 
-Detector::Detector(const Detector &detector1): Component(detector1), posOfPrevComponent(detector1.posOfPrevComponent), size(detector1.size), pixelSize(detector1.pixelSize), length(detector1.size * detector1.pixelSize), sensor(detector1.sensor) {}
+Detector::Detector(const Detector &detector1): Component(detector1), detectorNormal(detector1.detectorNormal), posOfPrevComponent(detector1.posOfPrevComponent), ref(detector1.ref),  size(detector1.size), pixelSize(detector1.pixelSize), length(detector1.length), sensor(detector1.sensor) {}
+
