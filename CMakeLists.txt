@@ -18,6 +18,7 @@ add_executable(test
         utils/src/utils.cpp photon/src/photon.cpp
         components/src/lensOneSided.cpp
         components/src/lensTwoSided.cpp
+        components/src/aperture.cpp
         photon/src/photonGenerator.cpp
         photon/src/photon.cpp
         logic/src/importer.cpp
@@ -25,13 +26,10 @@ add_executable(test
         logic/include/exporter.hpp
         logic/src/exporter.cpp
         logic/src/objectGenerator.cpp
-        logic/include/optim.hpp
-        logic/src/optim.cpp
         utils/include/operators.hpp
         utils/src/operators.cpp
         utils/src/bmpFileHeader.cpp
         utils/src/bmpInfoHeader.cpp
         utils/src/bmprgb.cpp
         components/src/detector.cpp
-        utils/src/rgb.cpp
-        logic/include/mainRoutine.hpp logic/src/mainRoutine.cpp logic/include/mainRoutine.hpp)
+        utils/src/rgb.cpp)
