@@ -15,8 +15,9 @@ typedef typename std::vector<BmpRGB> bmp_vector;
 
 class Detector : public Component {
 protected:
-    std::vector<double> pointOnEdge; // Punkt in der Mitte der obere Kannte des Detectors. Muss gegeben oder irgendwie bestimmt werden
+    std::vector<double> detectorNormal;
     std::vector<double> posOfPrevComponent; // vector position von dem vorkommenden Komponenten
+    std::vector<double> ref;
     unsigned int size; // Detector hat size * size Pixel
     double pixelSize; //Größe eines Pixels
     double length; // Dimensionen von dem Detektor
@@ -24,8 +25,6 @@ protected:
     double sharpness;
     rgb_matrix sensor;
 public:
-
-    const std::vector<double>& getPointOnEdge();
 
     const std::vector<double>& getPosOfPrevComponent();
 
@@ -35,9 +34,7 @@ public:
 
     void setPosOfPrevComponent(std::vector<double> &);
 
-    void setPointOnEdge(std::vector<double> &);
-
-    Detector(std::vector<double> &, std::vector<double> &, std::vector<double> &, std::vector<double> &, unsigned int, double);
+    Detector(std::vector<double> &, std::vector<double> &, std::vector<double> &, unsigned int, double);
 
     Detector(const Detector& detector1);
 

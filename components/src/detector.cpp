@@ -12,16 +12,8 @@ void Detector::setPosOfPrevComponent(std::vector<double> &_pos) {
     posOfPrevComponent = _pos;
 }
 
-const std::vector<double>& Detector::getPointOnEdge() {
-    return pointOnEdge;
-}
-
 int Detector::getSize() {
     return size;
-}
-
-void Detector::setPointOnEdge(std::vector<double> &_point) {
-    pointOnEdge = _point;
 }
 
 double Detector::getPixelSize() {
@@ -41,8 +33,6 @@ void Detector::getInPoint(Photon &photon) {
     }
 
     std::vector<double> relativePosition = intersection - position; // Position vom Photon relativ zum Detektormittelpunkt
-    std::vector<double> detectorNormal = posOfPrevComponent - position; // Normalvektor in der Mitte von Detektor
-    std::vector<double> ref = pointOnEdge - position; // Position vom pointOnEdge relativ zum Detektormittelpunkt
     Utils::normalizeVector(detectorNormal);
     double dp = Utils::dot_product(ref, relativePosition);
     std::vector<double> cp = Utils::cross_product_2(relativePosition, ref);
@@ -182,8 +172,9 @@ const double & Detector::getSharpness() {
 }
 
 
-Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_pointOnEdge, std::vector<double> &_posOfPrevComponent, unsigned int _size,
-                   double _pixelSize) : Component(_pos, _normal, detector), pointOnEdge(_pointOnEdge),posOfPrevComponent(_posOfPrevComponent),size(_size),pixelSize(_pixelSize), length(_size * _pixelSize),sensor(_size, std::vector<RGB>(_size)) {
+Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_posOfPrevComponent, unsigned int _size,
+                   double _pixelSize) : Component(_pos, _normal, detector), posOfPrevComponent(_posOfPrevComponent),size(_size),pixelSize(_pixelSize), length(_size * _pixelSize),sensor(_size, std::vector<RGB>(_size)) {
+    std::vector<double> detectorNormal = posOfPrevComponent - position;
 }
 
-Detector::Detector(const Detector &detector1): Component(detector1), pointOnEdge(detector1.pointOnEdge), posOfPrevComponent(detector1.posOfPrevComponent), size(detector1.size), pixelSize(detector1.pixelSize), length(detector1.size * detector1.pixelSize), sensor(detector1.sensor) {}
+Detector::Detector(const Detector &detector1): Component(detector1), posOfPrevComponent(detector1.posOfPrevComponent), size(detector1.size), pixelSize(detector1.pixelSize), length(detector1.size * detector1.pixelSize), sensor(detector1.sensor) {}
