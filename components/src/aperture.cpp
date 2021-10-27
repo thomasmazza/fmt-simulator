@@ -82,7 +82,7 @@ void Aperture::setRadius(double _radius) {
 double Aperture::getRadius() {
     return radius;
 }
-Aperture::Aperture(std::vector<double>& _pos, std::vector<double>& _normal, double _radius):Component(_pos,  _normal, mirrorCircle), radius(_radius), type(aperture){
+Aperture::Aperture(std::vector<double>& _pos, std::vector<double>& _normal, double _radius):Component(_pos,  _normal, aperture), radius(_radius){
 }
 
-Aperture::Aperture(const Aperture &aperture1): Component(aperture1), radius(aperture1.radius), type(aperture1.type) {}
+Aperture::Aperture(const Aperture &aperture1): Component(aperture1), radius(aperture1.radius) {}
