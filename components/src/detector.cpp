@@ -215,6 +215,10 @@ const double & Detector::getSharpness() {
     return sharpness;
 }
 
+void Detector::resetSensor(){
+    rgb_matrix emptySensor(size, std::vector<RGB>(size));
+    sensor = emptySensor;
+}
 
 Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_posOfPrevComponent, unsigned int _size,
                    double _edgeLength) : Component(_pos, _normal, detector), posOfPrevComponent(_posOfPrevComponent),size(_size),length(_edgeLength),pixelSize(length / (static_cast<double>(size))),sensor(_size, std::vector<RGB>(_size)) {
