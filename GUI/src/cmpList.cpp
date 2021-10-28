@@ -382,8 +382,7 @@ void CmpList_box::rebuildFromList(){
             layout->addWidget(element);
             layout->addItem(bottomSpacer);
             break;
-        //case aperture: //TODO: Change to orignal Aperture case
-        default:
+        case aperture:
             element = new CmpList_element(i + 1, "Aperture", componentList);
 
             //Element einfügen
@@ -465,12 +464,10 @@ void CmpList_box::addCmpToList(QString _type, double _xPos, double _yPos, double
         MirrorSquare* _new = new MirrorSquare(_pos, _norm, _in1);
         componentList->append<MirrorSquare>(*_new);
     }
-    /*
     else if(_type == "Aperture"){
         Aperture* _new = new Aperture(_pos, _norm, _in1);
         componentList->append<Aperture>(*_new);
     }
-    */
 
     rebuildFromList();
 }
