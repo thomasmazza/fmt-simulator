@@ -47,9 +47,9 @@ void Detector::getInPoint(Photon &photon) {
     c = sqrt(pow(relativePosition[0], 2) + pow(relativePosition[1], 2) + pow(relativePosition[2], 2));
     a = std::abs(c * sin(temp));
 
-    if (a <= length / 2) {
+    if (a < length / 2) {
         b = sqrt(c * c - a * a);
-        if (b <= length / 2) {
+        if (b < length / 2) {
             RGB color;
             const int wl = photon.getWaveLength();
             Utils::coreTranslationInColor(wl, color.r, color.g, color.b);
