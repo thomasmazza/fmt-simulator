@@ -42,18 +42,54 @@ void Detector::getInPoint(Photon &photon) {
     }
 
     std::vector<double> relativePosition = intersection - position; // Position vom Photon relativ zum Detektormittelpunkt
-    double dp = Utils::dot_product(ref, relativePosition);
-    std::vector<double> cp = Utils::cross_product_2(relativePosition, ref);
+    // OLD
+    //double dp = Utils::dot_product(ref, relativePosition);
+    //std::vector<double> cp = Utils::cross_product_2(relativePosition, ref);
+    // NEW
+    std::vector<double> wid = Utils::cross_product_2(ref, normal);
+    Utils::normalizeVector(wid);
+    wid = wid*(length/2);
 
-    // temp hier wiederverwenden zum Speicheroptimierung
+    //  OLD
+    /*
     temp = Utils::dot_product(cp, detectorNormal);
     temp = atan2(temp, dp); //Berechnet Winkel in der Ebene zwischen ref und relativePosition in [-pi,+pi]
     double a, b, c;
     c = sqrt(pow(relativePosition[0], 2) + pow(relativePosition[1], 2) + pow(relativePosition[2], 2));
     a = std::abs(c * sin(temp));
+     */
+    // NEW
+    double xs,ys;
+    double a, b, c;
+    std::vector<double> x(3);
+    std::vector<double> y(3);
+    ys = ( (Utils::dot_product(ref, relativePosition)) / pow((length/2), 2) );
+    xs = ( (Utils::dot_product(wid, relativePosition)) / pow((length/2), 2) );
+    x = xs*wid;
+    y = ys*ref;
+
+    if(xs>0){
+        xs = Utils::getAbs(x);
+    }else{
+        xs = Utils::getAbs(x);
+        xs = xs*(-1);
+    }
+
+    if(ys>0){
+        ys = Utils::getAbs(y);
+    }else{
+        ys = Utils::getAbs(y);
+        ys = ys*(-1);
+    }
+
+    temp = atan2(ys, xs); //Berechnet Winkel in der Ebene zwischen ref und relativePosition in [-pi,+pi]
+
+    c = sqrt(pow(relativePosition[0], 2) + pow(relativePosition[1], 2) + pow(relativePosition[2], 2));
+    a = std::abs(ys);
+
 
     if (a < length / 2) {
-        b = sqrt(c * c - a * a);
+        b = std::abs(xs); // NEW
         if (b < length / 2) {
             RGB color;
             const int wl = photon.getWaveLength();
