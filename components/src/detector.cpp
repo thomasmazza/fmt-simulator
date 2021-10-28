@@ -32,8 +32,13 @@ void Detector::getInPoint(Photon &photon) {
     //Berechnet den Schnittpunkt von Photon und Ebene
     double temp = (normal[0] * (position[0] - pV[0]) + normal[1] * (position[1] - pV[1]) +
                    normal[2] * (position[2] - pV[2])) / (normal[0] * dV[0] + normal[1] * dV[1] + normal[2] * dV[2]);
-    for (int i = 0; i < 3; i++) {
-        intersection[i] = dV[i] * temp + pV[i];
+
+    if(temp>0){
+        for (int i = 0; i < 3; i++) {
+            intersection[i] = dV[i] * temp + pV[i];
+        }
+    }else{
+        return;
     }
 
     std::vector<double> relativePosition = intersection - position; // Position vom Photon relativ zum Detektormittelpunkt
