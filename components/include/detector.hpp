@@ -34,7 +34,11 @@ public:
 
     int getSize();
 
+    void setSize(unsigned int);
+
     double getLength();
+
+    void setLength(double);
 
     double getPixelSize();
 
@@ -45,6 +49,8 @@ public:
     Detector(const Detector& detector1);
 
     void getInPoint(Photon &);
+
+    void recalculateInternals();
 
     bmp_vector createImage();
 

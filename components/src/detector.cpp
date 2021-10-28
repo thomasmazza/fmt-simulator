@@ -16,8 +16,16 @@ int Detector::getSize() {
     return size;
 }
 
+void Detector::setSize(unsigned int _size) {
+    size = _size;
+}
+
 double Detector::getLength() {
     return length;
+}
+
+void Detector::setLength(double _length) {
+    length = _length;
 }
 
 double Detector::getPixelSize() {
@@ -205,6 +213,45 @@ const double & Detector::getSharpness() {
 void Detector::resetSensor(){
     rgb_matrix emptySensor(size, std::vector<RGB>(size));
     sensor = emptySensor;
+}
+
+void Detector::recalculateInternals() {
+    detectorNormal = posOfPrevComponent - position;
+    ref = { 0, 0, 0}; // ref zuerst nur als Nullvektor
+
+    // Berechnet ref abhängig davon, wie Detektor im Raum positioniert ist
+    if (normal[2] != 0) {
+        std::vector<double> temp = { 0, 0, 0};
+        // Falls der Normalvektor orthogonal zur XY Ebene ist, nehmen wir ref als den x-Einheitsvektor
+        if (normal[0] == 0 && normal[1] == 0) {
+            ref = { 1, 0, 0 };
+        }
+        // Falls nicht, berechnen wir ref als die Projektion von der Projektion von dem detectorNormal auf der XY Ebene
+        else {
+            temp = { 0, 0, 1};
+            double coef = Utils::dot_product(detectorNormal, temp);
+            temp[2] = coef;
+            std::vector<double> projection = detectorNormal - temp;
+
+            projection[0] = - projection[0];
+            projection[1] = - projection[1];
+            projection[2] = - projection[2];
+
+            coef = Utils::dot_product(projection, detectorNormal) / sqrt(pow(Utils::dot_product(detectorNormal, detectorNormal), 2));
+            temp[0] = detectorNormal[0]  * coef;
+            temp[1] = detectorNormal[1]  * coef;
+            temp[2] = detectorNormal[2]  * coef;
+            ref = projection - temp;
+            Utils::normalizeVector(ref);
+        }
+    }
+    // In dem Fall dass die Z-Komponente von normal 0 ist, ist der Detektor vertikal im Raum und
+    // die Drehung um die Z-Achse spielt keine Role für ref, daher ist ref der z-Einheitsvektor
+    else {
+        ref = { 0, 0, 1};
+    }
+    ref = ref * (length / 2);
+    Utils::normalizeVector(detectorNormal);
 }
 
 Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_posOfPrevComponent, unsigned int _size,

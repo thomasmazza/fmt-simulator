@@ -90,9 +90,8 @@ void CmpList_element::editElm(){
             componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[0],
             componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[1],
             componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[2],
-            static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).getSize(),
+            static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).getLength(),
             static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).getSize());
-        //TODO: Fix Data Transfer
         connect(editWin, &DetectorEditWindow::editDetector, this, &CmpList_element::applyEditDetector);
     }
     else if(elmType->text() == "Filter"){
@@ -197,13 +196,16 @@ void CmpList_element::editElm(){
 }
 
 //Übernehmen der Änderungen der einzelnen Komponententypen
-void CmpList_element::applyEditDetector(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm){
+void CmpList_element::applyEditDetector(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _length, double _size){
     //In Liste übernehmen
     componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
     std::vector<double> _norm(3); _norm[0] = _xNorm; _norm[1] = _yNorm; _norm[2] = _zNorm;
     Utils::normalizeVector(_norm);
     componentList->elem(elmNumber->text().toInt() - 1)->setNormal(_norm);
-    //TODO: Apply changes
+    static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).setLength(_length);
+    static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).setSize((int)_size);
+    //Berechne interne Variablen des Detektors neu, Ausrichtung, PixelSize etc.
+    static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).recalculateInternals();
 }
 
 void CmpList_element::applyEditFilter(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _lowerLim, double _upperLim){
@@ -432,8 +434,8 @@ void CmpList_box::addCmpToList(QString _type, double _xPos, double _yPos, double
     Utils::normalizeVector(_norm);
     //If-Verzweigung weil switch-cases nicht mit Strings kompatibel sind...
     if(_type == "Detector"){
-        //TODO: Übergebene Werte beheben
-        Detector* _new = new Detector(_pos, _norm, _norm, _norm, _in1, _in2);
+        //TODO: PosOfPrevComponent beheben
+        Detector* _new = new Detector(_pos, _norm, _norm, (int)_in2, _in1);
         componentList->append<Detector>(*_new);
     }
     else if(_type == "Filter"){

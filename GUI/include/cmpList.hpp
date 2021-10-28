@@ -38,7 +38,7 @@ public slots:
     void moveUpElm();
     void moveDownElm();
 
-    void applyEditDetector(double, double, double, double, double, double);
+    void applyEditDetector(double, double, double, double, double, double, double, double);
     void applyEditFilter(double, double, double, double, double, double, double, double);
     void applyEditLensOneSided(double, double, double, double, double, double, double, double, double, double, bool);
     void applyEditLensTwoSided(double, double, double, double, double, double, double, double, double, double, double);
