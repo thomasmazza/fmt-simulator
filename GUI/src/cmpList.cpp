@@ -204,6 +204,15 @@ void CmpList_element::applyEditDetector(double _xPos, double _yPos, double _zPos
     componentList->elem(elmNumber->text().toInt() - 1)->setNormal(_norm);
     static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).setLength(_length);
     static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).setSize((int)_size);
+    //Berechne PosOfPrevComp neu
+    std::vector<double> _posOfPrevComp(3);
+    if(elmNumber->text().toInt() == 1){
+         _posOfPrevComp[0] = 0; _posOfPrevComp[1] = 0; _posOfPrevComp[2] = 0;
+    }
+    else{
+        _posOfPrevComp = componentList->elem(elmNumber->text().toInt() - 2)->getPosition();
+    }
+    static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).setPosOfPrevComponent(_posOfPrevComp);
     //Berechne interne Variablen des Detektors neu, Ausrichtung, PixelSize etc.
     static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).recalculateInternals();
 }
@@ -293,19 +302,65 @@ void CmpList_element::applyEditAperture(double _xPos, double _yPos, double _zPos
 
 void CmpList_element::deleteElm(){
     //Element löschen und Liste aktualisieren
+
+    //Berechne PosOfPrevComp neu, falls Element vor Detektor gelöscht wurde
+    if(componentList->getLength() > elmNumber->text().toInt()){
+        if(componentList->elem(elmNumber->text().toInt())->getType() == detector){
+            std::vector<double> _posOfPrevComp(3);
+            _posOfPrevComp = componentList->elem(elmNumber->text().toInt() - 1)->getPosition();
+            static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt())).setPosOfPrevComponent(_posOfPrevComp);
+        }
+    }
+
     componentList->del(elmNumber->text().toInt());
     emit triggerRebuildList();
 }
 
 void CmpList_element::moveUpElm(){
-    //TODO: Liste aktualisieren
+    //Element löschen und Liste aktualisieren
     componentList->swap(elmNumber->text().toInt() - 1, elmNumber->text().toInt() - 2);
+
+    //Berechne PosOfPrevComp neu, falls Detektor getauscht wurde
+    if(componentList->elem(elmNumber->text().toInt() - 1)->getType() == detector){
+        std::vector<double> _posOfPrevComp(3);
+        _posOfPrevComp = componentList->elem(elmNumber->text().toInt() - 2)->getPosition();
+        static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).setPosOfPrevComponent(_posOfPrevComp);
+    }
+    if(componentList->elem(elmNumber->text().toInt() - 2)->getType() == detector){
+        std::vector<double> _posOfPrevComp(3);
+        if(elmNumber->text().toInt() - 1 == 1){
+             _posOfPrevComp[0] = 0; _posOfPrevComp[1] = 0; _posOfPrevComp[2] = 0;
+        }
+        else{
+            _posOfPrevComp = componentList->elem(elmNumber->text().toInt() - 3)->getPosition();
+        }
+        static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 2)).setPosOfPrevComponent(_posOfPrevComp);
+    }
+
     emit triggerRebuildList();
 }
 
 void CmpList_element::moveDownElm(){
     //TODO: Liste aktualisieren
     componentList->swap(elmNumber->text().toInt() - 1, elmNumber->text().toInt());
+
+    //Berechne PosOfPrevComp neu, falls Detektor getauscht wurde
+    if(componentList->elem(elmNumber->text().toInt())->getType() == detector){
+        std::vector<double> _posOfPrevComp(3);
+        _posOfPrevComp = componentList->elem(elmNumber->text().toInt() - 1)->getPosition();
+        static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt())).setPosOfPrevComponent(_posOfPrevComp);
+    }
+    if(componentList->elem(elmNumber->text().toInt() - 1)->getType() == detector){
+        std::vector<double> _posOfPrevComp(3);
+        if(elmNumber->text().toInt() - 1 == 1){
+             _posOfPrevComp[0] = 0; _posOfPrevComp[1] = 0; _posOfPrevComp[2] = 0;
+        }
+        else{
+            _posOfPrevComp = componentList->elem(elmNumber->text().toInt() - 2)->getPosition();
+        }
+        static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).setPosOfPrevComponent(_posOfPrevComp);
+    }
+
     emit triggerRebuildList();
 }
 
@@ -434,8 +489,15 @@ void CmpList_box::addCmpToList(QString _type, double _xPos, double _yPos, double
     Utils::normalizeVector(_norm);
     //If-Verzweigung weil switch-cases nicht mit Strings kompatibel sind...
     if(_type == "Detector"){
-        //TODO: PosOfPrevComponent beheben
-        Detector* _new = new Detector(_pos, _norm, _norm, (int)_in2, _in1);
+        //Berechne PosOfPrevComp neu
+        std::vector<double> _posOfPrevComp(3);
+        if(elmNumber == 1){
+             _posOfPrevComp[0] = 0; _posOfPrevComp[1] = 0; _posOfPrevComp[2] = 0;
+        }
+        else{
+            _posOfPrevComp = componentList->elem(elmNumber - 2)->getPosition();
+        }
+        Detector* _new = new Detector(_pos, _norm, _posOfPrevComp, (int)_in2, _in1);
         componentList->append<Detector>(*_new);
     }
     else if(_type == "Filter"){
