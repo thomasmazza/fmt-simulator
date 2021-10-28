@@ -42,23 +42,10 @@ void Detector::getInPoint(Photon &photon) {
     }
 
     std::vector<double> relativePosition = intersection - position; // Position vom Photon relativ zum Detektormittelpunkt
-    // OLD
-    //double dp = Utils::dot_product(ref, relativePosition);
-    //std::vector<double> cp = Utils::cross_product_2(relativePosition, ref);
-    // NEW
     std::vector<double> wid = Utils::cross_product_2(ref, normal);
     Utils::normalizeVector(wid);
     wid = wid*(length/2);
 
-    //  OLD
-    /*
-    temp = Utils::dot_product(cp, detectorNormal);
-    temp = atan2(temp, dp); //Berechnet Winkel in der Ebene zwischen ref und relativePosition in [-pi,+pi]
-    double a, b, c;
-    c = sqrt(pow(relativePosition[0], 2) + pow(relativePosition[1], 2) + pow(relativePosition[2], 2));
-    a = std::abs(c * sin(temp));
-     */
-    // NEW
     double xs,ys;
     double a, b, c;
     std::vector<double> x(3);
@@ -89,7 +76,7 @@ void Detector::getInPoint(Photon &photon) {
 
 
     if (a < length / 2) {
-        b = std::abs(xs); // NEW
+        b = std::abs(xs);
         if (b < length / 2) {
             RGB color;
             const int wl = photon.getWaveLength();
