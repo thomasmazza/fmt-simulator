@@ -245,6 +245,7 @@ Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std:
             temp[1] = detectorNormal[1]  * coef;
             temp[2] = detectorNormal[2]  * coef;
             ref = projection - temp;
+            Utils::normalizeVector(ref);
         }
     }
     // In dem Fall dass die Z-Komponente von normal 0 ist, ist der Detektor vertikal im Raum und
@@ -252,6 +253,7 @@ Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std:
     else {
         ref = { 0, 0, 1};
     }
+    ref = ref * (length / 2);
     Utils::normalizeVector(detectorNormal);
 }
 
