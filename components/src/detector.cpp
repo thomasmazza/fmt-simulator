@@ -12,16 +12,12 @@ void Detector::setPosOfPrevComponent(std::vector<double> &_pos) {
     posOfPrevComponent = _pos;
 }
 
-const std::vector<double>& Detector::getPointOnEdge() {
-    return pointOnEdge;
-}
-
 int Detector::getSize() {
     return size;
 }
 
-void Detector::setPointOnEdge(std::vector<double> &_point) {
-    pointOnEdge = _point;
+double Detector::getLength() {
+    return length;
 }
 
 double Detector::getPixelSize() {
@@ -36,16 +32,16 @@ void Detector::getInPoint(Photon &photon) {
     //Berechnet den Schnittpunkt von Photon und Ebene
     double temp = (normal[0] * (position[0] - pV[0]) + normal[1] * (position[1] - pV[1]) +
                    normal[2] * (position[2] - pV[2])) / (normal[0] * dV[0] + normal[1] * dV[1] + normal[2] * dV[2]);
+
     if(temp>0){
         for (int i = 0; i < 3; i++) {
-          intersection[i] = dV[i] * temp + pV[i];
+            intersection[i] = dV[i] * temp + pV[i];
         }
     }else{
         return;
     }
 
     std::vector<double> relativePosition = intersection - position; // Position vom Photon relativ zum Detektormittelpunkt
-    std::vector<double> ref = pointOnEdge - position; // Position vom pointOnEdge relativ zum Detektormittelpunkt
     std::vector<double> wid = Utils::cross_product_2(ref, normal);
     Utils::normalizeVector(wid);
     wid = wid*(length/2);
@@ -78,6 +74,7 @@ void Detector::getInPoint(Photon &photon) {
     c = sqrt(pow(relativePosition[0], 2) + pow(relativePosition[1], 2) + pow(relativePosition[2], 2));
     a = std::abs(ys);
 
+
     if (a < length / 2) {
         b = std::abs(xs);
         if (b < length / 2) {
@@ -86,6 +83,7 @@ void Detector::getInPoint(Photon &photon) {
             Utils::coreTranslationInColor(wl, color.r, color.g, color.b);
             int i_index = floor(b / pixelSize);
             int j_index = floor(a / pixelSize);
+            std::cout<<"Hit"<<std::endl;
             if (temp >= 0) {
                 if (temp < M_PI_2) {
                     i_index = floor(size / 2 - i_index);
@@ -100,6 +98,7 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].addRGB(color);
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
+                std::cout << sensor[i_index][j_index].r << std::endl;
             } else {
                 if (temp > -M_PI_2) {
                     i_index = floor(size / 2 - i_index);
@@ -114,6 +113,8 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].addRGB(color);
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
+                std::cout << "r" << sensor[i_index][j_index].r << " g" << sensor[i_index][j_index].g << " b" << sensor[i_index][j_index].b << std::endl;
+                std::cout << sensor[i_index][j_index].intensity << std::endl;
             }
         }
     }
@@ -135,7 +136,6 @@ bmp_vector Detector::createImage() {
     }
     avg = avg / (size * size);
     brightness = (avg / max) * 100;
-    brightness = (100 - brightness);
 
 
     rgb_vector image(size * size);
@@ -150,7 +150,7 @@ bmp_vector Detector::createImage() {
                 color.r = sensor[i][j].r / sensor[i][j].intensity;
                 color.g = sensor[i][j].g / sensor[i][j].intensity;
                 color.b = sensor[i][j].b / sensor[i][j].intensity;
-                color.intensity = sensor[i][j].intensity / max;
+                color.intensity = sensor[i][j].intensity;
             }
             image[j + i * size] = color;
         }
@@ -173,7 +173,6 @@ bmp_vector Detector::createImage() {
     // Obwohl die Werte auf [0, 100] verteilt sind, bedeuten Werte wie 35 - 40 besonders hohe Schärfe;
     // Dies liegt daran, dass das Bild ganz spezifische Struktur haben muss um Schärfewerte im Bereich [60 - 100] zu erzeugen;
     sharpness = (sharpness / (max * 4)) * 100;
-    sharpness = (40 - sharpness)*(100/40);
 
     double adjustment;
     for (int i = 0; i < image.size(); i++) {
@@ -208,8 +207,46 @@ void Detector::resetSensor(){
     sensor = emptySensor;
 }
 
-Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_pointOnEdge, std::vector<double> &_posOfPrevComponent, unsigned int _size,
-                   double _pixelSize) : Component(_pos, _normal, detector), pointOnEdge(_pointOnEdge),posOfPrevComponent(_posOfPrevComponent),size(_size),pixelSize(_pixelSize), length(_size * _pixelSize),sensor(_size, std::vector<RGB>(_size)) {
+Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_posOfPrevComponent, unsigned int _size,
+                   double _edgeLength) : Component(_pos, _normal, detector), posOfPrevComponent(_posOfPrevComponent),size(_size),length(_edgeLength),pixelSize(length / (static_cast<double>(size))),sensor(_size, std::vector<RGB>(_size)) {
+
+    detectorNormal = posOfPrevComponent - position;
+    ref = { 0, 0, 0}; // ref zuerst nur als Nullvektor
+
+    // Berechnet ref abhängig davon, wie Detektor im Raum positioniert ist
+    if (normal[2] != 0) {
+        std::vector<double> temp = { 0, 0, 0};
+        // Falls der Normalvektor orthogonal zur XY Ebene ist, nehmen wir ref als den x-Einheitsvektor
+        if (normal[0] == 0 && normal[1] == 0) {
+            ref = { 1, 0, 0 };
+        }
+        // Falls nicht, berechnen wir ref als die Projektion von der Projektion von dem detectorNormal auf der XY Ebene
+        else {
+            temp = { 0, 0, 1};
+            double coef = Utils::dot_product(detectorNormal, temp);
+            temp[2] = coef;
+            std::vector<double> projection = detectorNormal - temp;
+
+            projection[0] = - projection[0];
+            projection[1] = - projection[1];
+            projection[2] = - projection[2];
+
+            coef = Utils::dot_product(projection, detectorNormal) / sqrt(pow(Utils::dot_product(detectorNormal, detectorNormal), 2));
+            temp[0] = detectorNormal[0]  * coef;
+            temp[1] = detectorNormal[1]  * coef;
+            temp[2] = detectorNormal[2]  * coef;
+            ref = projection - temp;
+            Utils::normalizeVector(ref);
+        }
+    }
+    // In dem Fall dass die Z-Komponente von normal 0 ist, ist der Detektor vertikal im Raum und
+    // die Drehung um die Z-Achse spielt keine Role für ref, daher ist ref der z-Einheitsvektor
+    else {
+        ref = { 0, 0, 1};
+    }
+    ref = ref * (length / 2);
+    Utils::normalizeVector(detectorNormal);
 }
 
-Detector::Detector(const Detector &detector1): Component(detector1), pointOnEdge(detector1.pointOnEdge), posOfPrevComponent(detector1.posOfPrevComponent), size(detector1.size), pixelSize(detector1.pixelSize), length(detector1.size * detector1.pixelSize), sensor(detector1.sensor) {}
+Detector::Detector(const Detector &detector1): Component(detector1), detectorNormal(detector1.detectorNormal), posOfPrevComponent(detector1.posOfPrevComponent), ref(detector1.ref),  size(detector1.size), pixelSize(detector1.pixelSize), length(detector1.length), sensor(detector1.sensor) {}
+

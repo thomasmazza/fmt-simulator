@@ -7,7 +7,7 @@
 #include "../../utils/include/bmprgb.hpp"
 
 
-typedef typename std::vector<RGB> rgb_dynamic_v;//Kann verändert sein, abhängig davon wie die Photon und wie die Wellenlängen zuerst gespeichert werden
+typedef typename std::vector<RGB> rgb_dynamic_v;
 typedef typename std::vector<RGB> rgb_vector;
 typedef typename std::vector<std::vector<RGB>> rgb_matrix;
 typedef typename std::vector<BmpRGB> bmp_vector;
@@ -15,29 +15,32 @@ typedef typename std::vector<BmpRGB> bmp_vector;
 
 class Detector : public Component {
 protected:
-    std::vector<double> pointOnEdge; // Punkt in der Mitte der obere Kannte des Detectors. Muss gegeben oder irgendwie bestimmt werden
+    std::vector<double> detectorNormal; // Vektor aus dem Detektormittelpunkt, orthogonal zur Detektorebene
     std::vector<double> posOfPrevComponent; // vector position von dem vorkommenden Komponenten
+    // ref ist Referenzvektor im Detektor zur Berechnung welchen Pixel ein Photon trifft.
+    // Im Koordinatensystem mit Nullpunkt die Mitte des Detektors ist ref immer orthogonal
+    // zu detectorNormal (also liegt in der Detektorebene)
+    // und parallel zu zwei Seiten des Detektors
+    std::vector<double> ref;
     unsigned int size; // Detector hat size * size Pixel
-    double pixelSize; //Größe eines Pixels
     double length; // Dimensionen von dem Detektor
+    double pixelSize; //Größe eines Pixels
     double brightness;
     double sharpness;
     rgb_matrix sensor;
 public:
 
-    const std::vector<double>& getPointOnEdge();
-
     const std::vector<double>& getPosOfPrevComponent();
 
     int getSize();
+
+    double getLength();
 
     double getPixelSize();
 
     void setPosOfPrevComponent(std::vector<double> &);
 
-    void setPointOnEdge(std::vector<double> &);
-
-    Detector(std::vector<double> &, std::vector<double> &, std::vector<double> &, std::vector<double> &, unsigned int, double);
+    Detector(std::vector<double> &, std::vector<double> &, std::vector<double> &, unsigned int, double);
 
     Detector(const Detector& detector1);
 
@@ -52,3 +55,4 @@ public:
     void resetSensor();
 
 };
+
