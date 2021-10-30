@@ -466,7 +466,9 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     //Prüfen, ob Datei leer ist
     std::ifstream file;
     file.open((ui->ProjPath->text() + "/" + ui->InFilePath->toPlainText()).toStdString());
-    if(file.peek() != std::ifstream::traits_type::eof()) Importer::importObject(simObj, (ui->ProjPath->text() + "/" + ui->InFilePath->toPlainText()).toStdString());
+    if(file.peek() != std::ifstream::traits_type::eof()){
+        Importer::importObject(simObj, (ui->ProjPath->text() + "/" + ui->InFilePath->toPlainText()).toStdString());
+    }
 
     //Konfiguriere Progress Bar
     ui->SimProgressBar->setRange(0, photonNumber);

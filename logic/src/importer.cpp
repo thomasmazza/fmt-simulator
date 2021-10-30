@@ -43,7 +43,6 @@ void Importer::importPosition(std::ifstream &_setupFile, std::vector<double> &_p
         getContentInBrackets(_setupFile, buf, POSITION_OPENING_TAG);
         importVector(_setupFile, _position);
         getContentInBrackets(_setupFile, buf, POSITION_CLOSING_TAG);
-        std::cout << "Position imported!" << std::endl;
     } catch (InvalidComponentException &e) {
         std::cerr << e.what() << std::endl << "Error occurred while creating Position Vector" << std::endl;
         throw InvalidComponentException();
@@ -60,7 +59,6 @@ void Importer::importNormal(std::ifstream &_setupFile, std::vector<double> &_nor
         getContentInBrackets(_setupFile, buf, NORMAL_OPENING_TAG);
         importVector(_setupFile, _normal);
         getContentInBrackets(_setupFile, buf, NORMAL_CLOSING_TAG);
-        std::cout << "Normal imported!" << std::endl;
     } catch (InvalidComponentException &e) {
         std::cerr << e.what() << std::endl << "Error occurred while creating Normal Vector" << std::endl;
         throw InvalidComponentException();
@@ -77,7 +75,6 @@ void Importer::importPointOnEdge(std::ifstream &_setupFile, std::vector<double> 
         getContentInBrackets(_setupFile, buf, POINT_ON_EDGE_OPENING_TAG);
         importVector(_setupFile, _pointOnEdge);
         getContentInBrackets(_setupFile, buf, POINT_ON_EDGE_CLOSING_TAG);
-        std::cout << "PointOnEdge imported!" << std::endl;
     } catch (InvalidComponentException &e) {
         std::cerr << e.what() << std::endl << "Error occurred while creating PointOnEdge Vector" << std::endl;
         throw InvalidComponentException();
@@ -94,7 +91,6 @@ void Importer::importPosOfPrevComponent(std::ifstream & _setupFile, std::vector<
         getContentInBrackets(_setupFile, buf, POSITION_OF_PREVIOUS_COMPONENT_OPENING_TAG);
         importVector(_setupFile, _posOfPrev);
         getContentInBrackets(_setupFile, buf, POSITION_OF_PREVIOUS_COMPONENT_CLOSING_TAG);
-        std::cout << "posOfPrevComponent imported!" << std::endl;
     } catch (InvalidComponentException &e) {
         std::cerr << e.what() << std::endl << "Error occurred while creating posOfPrevComponent Vector" << std::endl;
         throw InvalidComponentException();
@@ -128,7 +124,6 @@ void Importer::importNumber(std::ifstream &_setupFile, const std::string &number
         getContentInBrackets(_setupFile, buf, numberTag);
         _setupFile >> importNumber;
         getContentInBrackets(_setupFile, buf, "/" + numberTag);
-        std::cout << numberTag << " imported!" << std::endl;
     } catch (std::exception &e) {
         std::cerr << "Error while importing number" << std::endl << "Buffer: " + buf << std::endl;
         throw NotANumberException();
@@ -141,7 +136,6 @@ void Importer::importNumber(std::ifstream &_setupFile, const std::string &number
         getContentInBrackets(_setupFile, buf, numberTag);
         _setupFile >> importNumber;
         getContentInBrackets(_setupFile, buf, "/" + numberTag);
-        std::cout << numberTag << " imported!" << std::endl;
     } catch (std::exception &e) {
         std::cerr << "Error while importing number" << std::endl << "Buffer: " + buf << std::endl;
         throw NotANumberException();
@@ -154,7 +148,6 @@ void Importer::importBool(std::ifstream &_setupFile, const std::string &boolTag,
         getContentInBrackets(_setupFile, buf, boolTag);
         _setupFile >> importBool;
         getContentInBrackets(_setupFile, buf, "/" + boolTag);
-        std::cout << boolTag << " imported!" << std::endl;
     } catch (std::exception &e) {
         std::cerr << "Error while importing Bool" << std::endl << "Buffer: " + buf << std::endl;
         throw ImporterException();
@@ -193,7 +186,6 @@ void Importer::importStp(List &_lst, std::string _filename) {
                 importNumber(setupFile, UPPER_LIMIT_OPENING_TAG, _upperLim);
                 _lst.append<Filter>(Filter(_position, _normal, _lowerLim, _upperLim));
                 getContentInBrackets(setupFile, buf, FILTER_CLOSING_TAG);
-                std::cout << "Filter imported!" << std::endl;
             } else if (buf == LENS_ONE_SIDED_OPENING_TAG) {
                 double _refIndex;
                 double _radiusH;
@@ -210,7 +202,6 @@ void Importer::importStp(List &_lst, std::string _filename) {
                 importBool(setupFile, PLANE_IS_FRONT_OPENING_TAG, _planeIsFront);
                 _lst.append<LensOneSided>( LensOneSided(_position, _normal, _refIndex, _radiusH, _radiusW, _d, _planeIsFront));
                 getContentInBrackets(setupFile, buf, LENS_ONE_SIDED_CLOSING_TAG);
-                std::cout << LENS_ONE_SIDED_OPENING_TAG << " was imported!" << std::endl;
             } else if (buf == LENS_TWO_SIDED_OPENING_TAG) {
                 double _refIndex;
                 double _radiusH;
@@ -229,7 +220,6 @@ void Importer::importStp(List &_lst, std::string _filename) {
                 _lst.append<LensTwoSided>(
                         LensTwoSided(_position, _normal, _refIndex, _radiusH, _radiusI, _radiusO, _d));
                 getContentInBrackets(setupFile, buf, LENS_TWO_SIDED_CLOSING_TAG);
-                std::cout << LENS_TWO_SIDED_OPENING_TAG << " was imported!" << std::endl;
             } else if (buf == MIRROR_ELLIPTICAL_OPENING_TAG) {
                 double _radiusH;
                 double _radiusW;
@@ -241,7 +231,6 @@ void Importer::importStp(List &_lst, std::string _filename) {
 
                 _lst.append<MirrorElliptical>(MirrorElliptical(_position, _normal, _radiusH, _radiusW));
                 getContentInBrackets(setupFile, buf, MIRROR_ELLIPTICAL_CLOSING_TAG);
-                std::cout << MIRROR_ELLIPTICAL_OPENING_TAG << " was imported!" << std::endl;
             } else if (buf == MIRROR_CIRCLE_OPENING_TAG) {
                 double _radius;
                 //Daten aus Datei einlesen
@@ -251,7 +240,6 @@ void Importer::importStp(List &_lst, std::string _filename) {
 
                 _lst.append<MirrorCircle>(MirrorCircle(_position, _normal, _radius));
                 getContentInBrackets(setupFile, buf, MIRROR_CIRCLE_CLOSING_TAG);
-                std::cout << MIRROR_CIRCLE_OPENING_TAG << " was imported!" << std::endl;
             } else if (buf == MIRROR_RECTANGLE_OPENING_TAG) {
                 double _lengthH;
                 double _lengthW;
@@ -263,7 +251,6 @@ void Importer::importStp(List &_lst, std::string _filename) {
 
                 _lst.append<MirrorRectangle>(MirrorRectangle(_position, _normal, _lengthH, _lengthW));
                 getContentInBrackets(setupFile, buf, MIRROR_RECTANGLE_CLOSING_TAG);
-                std::cout << MIRROR_RECTANGLE_OPENING_TAG << " was imported!" << std::endl;
             } else if (buf == MIRROR_SQUARE_OPENING_TAG) {
                 double _length;
                 //Daten aus Datei einlesen
@@ -273,7 +260,6 @@ void Importer::importStp(List &_lst, std::string _filename) {
 
                 _lst.append<MirrorSquare>(MirrorSquare(_position, _normal, _length));
                 getContentInBrackets(setupFile, buf, MIRROR_SQUARE_CLOSING_TAG);
-                std::cout << MIRROR_SQUARE_OPENING_TAG << " was imported!" << std::endl;
             } else if(buf == DETECTOR_OPENING_TAG){
                 std::vector<double> _posOfPreviousComponent(3);
                 int size;
@@ -286,7 +272,6 @@ void Importer::importStp(List &_lst, std::string _filename) {
 
                 _lst.append<Detector>(Detector(_position, _normal, _posOfPreviousComponent, size, length));
                 getContentInBrackets(setupFile, buf, DETECTOR_CLOSING_TAG);
-                std::cout << DETECTOR_OPENING_TAG << " was imported!" << std::endl;
             }else if(buf == APERTURE_OPENING_TAG){
                 double radius;
                 importPosition(setupFile, _position);
@@ -295,7 +280,6 @@ void Importer::importStp(List &_lst, std::string _filename) {
 
                 _lst.append<Aperture>(Aperture(_position, _normal, radius));
                 getContentInBrackets(setupFile, buf, APERTURE_CLOSING_TAG);
-                std::cout << APERTURE_OPENING_TAG << " was imported!" << std::endl;
             }
             else if (buf == SETUP_CLOSING_TAG) {
                 break;
@@ -303,7 +287,6 @@ void Importer::importStp(List &_lst, std::string _filename) {
                 throw InvalidComponentException();
             }
         }
-        std::cout << "Setup imported!" << std::endl;
     } catch (ImporterException e) {
         std::cerr << e.what() << std::endl;
     }
@@ -330,7 +313,6 @@ void Importer::importObject(Config::object &_object, std::string filename) {
                     objectPoint point(position, wavelength);
                     rowBuffer.push_back(point);
                     getContentInBrackets(setupFile, buf, POINT_CLOSING_TAG);
-                    std::cout << ++i << std::endl;
                 }
             }
             _object.push_back(rowBuffer);

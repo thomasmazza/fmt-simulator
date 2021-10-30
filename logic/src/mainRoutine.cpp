@@ -43,6 +43,7 @@ namespace simulation {
                         isActive = static_cast<MirrorSquare &>(*lstComp->elem(j)).getOutDir(p, curDir);
                         break;
                     case detector:
+                        #pragma omp critical
                         static_cast<Detector &>(*lstComp->elem(j)).getInPoint(p);
                         #pragma omp critical
                         photonLst->push_back(pTemp);
