@@ -49,6 +49,12 @@ void Exporter::exportParameter(std::ofstream &os, std::string parameterTag,int n
     exportInClosingBrackets(os, parameterTag);
 }
 
+void Exporter::exportParameter(std::ofstream &os, std::string parameterTag,double number) {
+    exportInBrackets(os, parameterTag);
+    os << number << std::endl;
+    exportInClosingBrackets(os, parameterTag);
+}
+
 void Exporter::exportStp(List &_lst, std::string _filename) {
     std::ofstream dataOut(_filename, std::ios::out);
     exportInBrackets(dataOut, SETUP_OPENING_TAG);
