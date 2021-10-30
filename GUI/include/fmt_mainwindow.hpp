@@ -52,6 +52,8 @@ private slots:
 
     void startSimulation(int);
 
+    void on_actionFMT_Simulator_triggered();
+
 private:
     bool autoDetect(QString, QString);
     Ui::fmt_mainWindow *ui;

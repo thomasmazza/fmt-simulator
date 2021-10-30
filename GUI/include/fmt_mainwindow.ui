@@ -1243,6 +1243,7 @@
     <property name="title">
      <string>About</string>
     </property>
+    <addaction name="actionFMT_Simulator"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
@@ -1306,6 +1307,11 @@
   <action name="actionContact">
    <property name="text">
     <string>Contact</string>
+   </property>
+  </action>
+  <action name="actionFMT_Simulator">
+   <property name="text">
+    <string>FMT-Simulator</string>
    </property>
   </action>
  </widget>
