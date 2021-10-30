@@ -415,6 +415,12 @@ void LensOneSided::setRadiusW(double _radiusW) {
     radiusW = _radiusW;
 }
 
+const double &LensOneSided::getF() {
+    double r1 = abs(radiusW);
+    f = r1*((n)/(n-1));
+    return f;
+}
+
 LensOneSided::LensOneSided(std::vector<double> &_pos, std::vector<double> &_normal, double _n, double _radiusH, double _radiusW, double _d,
                            bool _planeIsFront) : Component(_pos, _normal, lensOneSided), n(_n), radiusH(_radiusH), radiusW(_radiusW), d(_d), planeIsFront(_planeIsFront) {
 }
