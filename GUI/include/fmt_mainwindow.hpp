@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QFileDialog>
+#include <QPixmap>
 
 #include "ui_fmt_mainwindow.h"
 
@@ -51,10 +52,14 @@ private slots:
 
     void startSimulation(int);
 
+    void on_actionFMT_Simulator_triggered();
+
 private:
     bool autoDetect(QString, QString);
     Ui::fmt_mainWindow *ui;
 
+    Config::object simObj;
     std::vector<Photon>* photonList;
+    QPixmap* resultImage;
 };
 #endif // FMT_MAINWINDOW_HPP

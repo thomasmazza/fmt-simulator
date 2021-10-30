@@ -18,7 +18,7 @@ bool MirrorElliptical::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
     double t = rS / lS;
 
     //Existiert ein sinnvoller Schnittpunkt oder annähernd parallel zwischen Ebene und Gerade?
-    if (abs(lS) > 0.000001 && t>0) {
+    if (t>0) {
         std::vector<double> intersect(3);
 
         //Berechne den Schnittpunkt
@@ -26,33 +26,19 @@ bool MirrorElliptical::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
             intersect[i] = pV[i] + t * dV[i];
         }
 
-        //Überprüfen, ob im Bereich, erst Bereich definieren
+        //Überprüfen ob im Bereich, Erst Bereich definieren
         std::vector<double> mHigh(3);
         std::vector<double> mWidth(3);
-        Utils::cross_product(mHigh, normal, _dirOA);
-        Utils::cross_product(mWidth, mHigh, normal);
+        Utils::cross_product(mWidth, normal, _dirOA);
+        Utils::normalizeVector(mWidth);
+        Utils::cross_product(mHigh, mWidth, normal);
+        Utils::normalizeVector(mHigh);
 
-        //Betrag berechnen
-        //lS und rS wiederverwenden zur Speicheroptimierung
-        rS = 0;
-        lS = 0;
-        for (int i = 0; i < 3; i++) {
-            lS += pow(mHigh[i], 2);
-            rS += pow(mWidth[i], 2);
-        }
-        lS = sqrt(lS);
-        rS = sqrt(rS);
-
-        //normierte Vektoren berechnen
-        for (int i = 0; i < 3; i++) {
-            mHigh[i] = (mHigh[i] / lS);
-            mWidth[i] = (mWidth[i] / rS);
-        }
         std::vector<double> normWidth = mWidth;
 
         //Vektor auf Höhe Skalieren
-        mHigh = radiusH * mHigh;
-        mWidth = radiusW * mWidth;
+        mHigh = (radiusH/2) * mHigh;
+        mWidth = (radiusW/2) * mWidth;
 
         //Vektor von Mittelpunkt zum Intersect erstellen
         std::vector<double> intPos = intersect - position;
@@ -69,14 +55,14 @@ bool MirrorElliptical::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
         }
 
         //lengthW und lengthH ist nicht deklariert
-        double yProz = abs((rS / pow(radiusH, 2)));
-        double xProz = abs((lS / pow(radiusW, 2)));
-        xProz = xProz * radiusW;
-        yProz = yProz * radiusH;
+        double yProz = (rS / pow((radiusH/2), 2));
+        double xProz = (lS / pow((radiusW/2), 2));
+        xProz = xProz * (radiusW/2);
+        yProz = yProz * (radiusH/2);
 
-        double z = abs(pow(xProz, 2) / radiusW + pow(yProz, 2) / radiusH);
+        double z = pow((xProz/radiusW), 2) + pow((yProz/radiusH), 2);
 
-        if (z <= 1 && calcOut(photon, intersect, normWidth)) {
+        if ((z<=1 && z>=-1) && calcOut(photon, intersect, normWidth)) {
             isComponentHit = true;
         }
     }
@@ -109,7 +95,7 @@ bool MirrorElliptical::calcOut(Photon& p, std::vector<double>& intersect, std::v
     //Skalarprodukt aus Einfallsvektor & einer Achse (normiert)
     double coalpha=0;
     for(int i=0; i<3; i++){
-        coalpha += dV[i]*normWidth[i];
+        coalpha += dV[i]*normal[i];
     }
 
     //Überprüfen ob der Winkel über 90 Grad
@@ -118,7 +104,7 @@ bool MirrorElliptical::calcOut(Photon& p, std::vector<double>& intersect, std::v
     }
 
     //In Formel einsetzen
-    out = dV +2*coalpha*(normal);
+    out = dV + (-2*(coalpha*(normal)));
 
     //An Photon übergeben
     p.setDirection(out);

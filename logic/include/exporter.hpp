@@ -13,6 +13,7 @@
 #include "mirrorRectangle.hpp"
 #include "mirrorElliptical.hpp"
 #include "detector.hpp"
+#include "aperture.hpp"
 
 #include "componentType.hpp"
 #include "config.hpp"

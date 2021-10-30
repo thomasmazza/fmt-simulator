@@ -283,19 +283,17 @@ double Optim::calcSum() {
 }
 */
 
-Optim::Optim(short& _bright, short& _focus, short& _doF, List* _lstComp, std::vector<Photon>& _photList, Config::object* _object) {
-    for(auto & i : _photList){
-        lstPhoton.push_back(i);
-    }
+Optim::Optim(short& _bright, short& _focus, short& _doF, List* _lstComp, std::vector<Photon>* _photList, Config::object* _object) {
+    lstPhoton = _photList;
     object = _object;
     lstComp = _lstComp;
     std::vector<double> _origin(3);
-    _origin[0]=0;
-    _origin[1]=0;
+    _origin[0]=128;
+    _origin[1]=128;
     _origin[2]=0;
     origin = _origin;
     weightB = _bright;
     weightF = _focus;
     weightDoF = _doF;
-    maxPhot = lstPhoton.size();
+    maxPhot = lstPhoton->size();
 }

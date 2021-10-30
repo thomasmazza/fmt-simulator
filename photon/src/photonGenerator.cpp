@@ -8,7 +8,7 @@ PhotonGenerator::PhotonGenerator(Config::object _raster):raster(_raster){
 
 
 Photon PhotonGenerator::generatePhoton() {
-    srand(time(NULL));
+    //srand(time(NULL));
     Config::objectRow selectedRow = raster[rand()%raster.size()];
     objectPoint selectedPoint = selectedRow[rand()%selectedRow.size()];
     std::vector<double> randomDirection(3);

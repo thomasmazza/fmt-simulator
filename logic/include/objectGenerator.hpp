@@ -4,5 +4,6 @@
 
 class ObjectGenerator{
 public:
-  const static void  generateObject(Config::object& object);
+  static void  generateObject(Config::object& object);
+  static void  generateRainbow(Config::object& object);
 };

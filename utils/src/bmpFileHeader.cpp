@@ -1,9 +1,9 @@
 #include "bmpFileHeader.hpp"
+#include "bmpInfoHeader.hpp"
 
-BmpFileHeader::BmpFileHeader(unsigned int _width, unsigned int _height) {
-    signature[0] = {'B'};
-    signature[1] = {'M'};
-    sizeOfFile = 54 + (_width * _height * 3);
-    reserved = 0;
-    offset = 54;
+BmpFileHeader::BmpFileHeader(int _width, int _height) {
+    reserved1 = 0;
+    reserved2 = 0;
+    sizeOfFile = 2 + sizeof(BmpFileHeader) + sizeof(BmpInfoHeader) + _width * _height * 3;
+    offsetBits = 0x36;
 }

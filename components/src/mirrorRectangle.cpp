@@ -18,7 +18,7 @@ bool MirrorRectangle::getOutDir(Photon &p, std::vector<double> &_dirOA) {
     double t = rS / lS;
 
     //Existiert ein sinnvoller Schnittpunkt oder annähernd Parallel zw. Ebene und Gerade?
-    if (abs(lS) > 0.000001 && t>0) {
+    if (t>0) {
 
         std::vector<double> intersect(3);
         //Berechne den Schnittpunkt
@@ -29,30 +29,16 @@ bool MirrorRectangle::getOutDir(Photon &p, std::vector<double> &_dirOA) {
         //Überprüfen ob im Bereich, Erst Bereich definieren
         std::vector<double> mHigh(3);
         std::vector<double> mWidth(3);
-        Utils::cross_product(mHigh, normal, _dirOA);
-        Utils::cross_product(mWidth, mHigh, normal);
+        Utils::cross_product(mWidth, normal, _dirOA);
+        Utils::normalizeVector(mWidth);
+        Utils::cross_product(mHigh, mWidth, normal);
+        Utils::normalizeVector(mHigh);
 
-        //Betrag berechnen
-        //lS und rS wiederverwenden zur Speicheroptimierung
-        rS = 0;
-        lS = 0;
-        for (int i = 0; i < 3; i++) {
-            lS += pow(mHigh[i], 2);
-            rS += pow(mWidth[i], 2);
-        }
-        lS = sqrt(lS);
-        rS = sqrt(rS);
-
-        //normierte Vektoren berechnen
-        for (int i = 0; i < 3; i++) {
-            mHigh[i] = (mHigh[i] / lS);
-            mWidth[i] = (mWidth[i] / rS);
-        }
         std::vector<double> normWidth = mWidth;
 
         //Vektor auf Höhe Skalieren
-        mHigh = lengthH * mHigh;
-        mWidth = lengthW * mWidth;
+        mHigh = (lengthH/2) * mHigh;
+        mWidth = (lengthW/2) * mWidth;
 
 
         //Vektor von Mittelpunkt zum Intersect erstellen
@@ -68,11 +54,11 @@ bool MirrorRectangle::getOutDir(Photon &p, std::vector<double> &_dirOA) {
             lS += intPos[i] * mWidth[i];
         }
 
-        double h = abs((rS / (pow(lengthH, 2))));
-        double w = abs((lS / (pow(lengthW, 2))));
+        double h = (rS / (pow((lengthH/2), 2)));
+        double w = (lS / (pow((lengthW/2), 2)));
 
         //Falls Werte kleiner 1 ist der Betrag entlang der Achsen kleiner als die Ausdehnung => in Grenzen
-        if (h <= 1 && w <= 1 && calcOut(p, intersect, normWidth)) {
+        if ((h<=1 && h>=-1) && (w<=1 && w>=-1) && calcOut(p, intersect, normWidth)) {
             isComponentHit = true;
         }
     }
@@ -86,24 +72,20 @@ bool MirrorRectangle::calcOut(Photon &p, std::vector<double> &intersect, std::ve
     std::vector<double> out(3);
     std::vector<double> dV = p.getDirection();
     double sumVE = 0;
-    double sumVN = 0;
 
     //normierter Einfallsvektor berechnen
     for (int i = 0; i < 3; i++) {
         sumVE += pow(dV[i], 2);
-        sumVN += pow(normal[i], 2);
     }
     sumVE = sqrt(sumVE);
-    sumVN = sqrt(sumVN);
     for (int i = 0; i < 3; i++) {
         dV[i] /= sumVE;
-        normal[i] /= sumVN;
     }
 
     //Skalarprodukt aus Einfallsvektor & einer Achse (normiert)
     double coalpha = 0;
     for (int i = 0; i < 3; i++) {
-        coalpha += dV[i] * normWidth[i];
+        coalpha += dV[i] * normal[i];
     }
 
     //Überprüfen ob der Winkel über 90 Grad
@@ -112,7 +94,11 @@ bool MirrorRectangle::calcOut(Photon &p, std::vector<double> &intersect, std::ve
     }
 
     //In Formel einsetzen
-    out = dV + 2 * coalpha * (normal);
+    out = dV + (-2*(coalpha*(normal)));
+
+    for (int i = 0; i < 3; i++) {
+        if(out[i]<0.001)out[i]=0;
+    }
 
     //An Photon übergeben
     p.setDirection(out);

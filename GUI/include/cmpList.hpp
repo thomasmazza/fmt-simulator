@@ -22,6 +22,7 @@
 #include "../../components/include/mirrorElliptical.hpp"
 #include "../../components/include/mirrorRectangle.hpp"
 #include "../../components/include/mirrorSquare.hpp"
+#include "../../components/include/aperture.hpp"
 
 class CmpList_element : public QFrame{
     Q_OBJECT
@@ -37,7 +38,7 @@ public slots:
     void moveUpElm();
     void moveDownElm();
 
-    void applyEditDetector(double, double, double, double, double, double);
+    void applyEditDetector(double, double, double, double, double, double, double, double);
     void applyEditFilter(double, double, double, double, double, double, double, double);
     void applyEditLensOneSided(double, double, double, double, double, double, double, double, double, double, bool);
     void applyEditLensTwoSided(double, double, double, double, double, double, double, double, double, double, double);
@@ -45,6 +46,7 @@ public slots:
     void applyEditMirrorElliptical(double, double, double, double, double, double, double, double);
     void applyEditMirrorRectangular(double, double, double, double, double, double, double, double);
     void applyEditMirrorSquare(double, double, double, double, double, double, double);
+    void applyEditAperture(double, double, double, double, double, double, double);
 private:
     QLabel* elmNumber;
     QLabel* elmType;

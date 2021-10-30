@@ -119,7 +119,7 @@ bool LensTwoSided::getOutDir(Photon& p){
             }
             coalphaS = sqrt(coalphaS);
 
-            if (coalphaS < 1.5) {
+            if (coalphaS < 1.4) {
 
 
                 std::vector<double> inLensDir(3);
@@ -237,7 +237,7 @@ bool LensTwoSided::getOutDir(Photon& p){
                         }
                         coalphaS = sqrt(coalphaS);
 
-                        if (coalphaS < 1.5) {
+                        if (coalphaS < 1.4) {
 
                             std::vector<double> outLensDir(3);
                             outLensDir = n * dV - normalA2 * (n * (skpr1) - sqrt(1 - pow(n, 2) * (1 - pow(skpr1, 2))));

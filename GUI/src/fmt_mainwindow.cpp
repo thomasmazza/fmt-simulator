@@ -395,7 +395,9 @@ void fmt_mainWindow::on_RunOptimization_clicked()
             return;
         }
 
-        //TODO: Optimierung starten
+        List* _List = ui->CmpListBox->getComponentList();
+        simulation::doStuff(100, 10, 1, simObj, _List, photonList);
+        //TODO: Pixmap reloaden, und Liste aktualisieren
     }
 }
 
@@ -461,8 +463,12 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     photonList = new std::vector<Photon>();
 
     //Importiere Objekt
-    Config::object simObj;
-    ObjectGenerator::generateObject(simObj);
+    //Prüfen, ob Datei leer ist
+    std::ifstream file;
+    file.open((ui->ProjPath->text() + "/" + ui->InFilePath->toPlainText()).toStdString());
+    if(file.peek() != std::ifstream::traits_type::eof()){
+        Importer::importObject(simObj, (ui->ProjPath->text() + "/" + ui->InFilePath->toPlainText()).toStdString());
+    }
 
     //Konfiguriere Progress Bar
     ui->SimProgressBar->setRange(0, photonNumber);
@@ -490,16 +496,22 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     ui->StpFileAuto->setStyleSheet("QPushButton {color: grey}");
 
     //Starte Simulation mit Parametern
-    simulation::startTracing(simObj, photonNumber, ui->CmpListBox->getComponentList(), *photonList, ui->SimProgressBar);
+    List* _List = ui->CmpListBox->getComponentList();
+    static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1)).resetSensor();
+    photonList = simulation::startTracing(simObj, photonNumber, _List, ui->SimProgressBar);
 
-    //Aus Detector auslesen
-    int _brightness = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1)).getBrightness();
-    ui->Brightness->setText(QString::number(_brightness));
-    int _focus = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1)).getSharpness();
-    ui->Focus->setText(QString::number(_focus));
-
+    //Lese generiertes Image, speichere und lade es ins Fenster
     Detector _detect = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1));
-    //std::vector<BmpRGB> _imgVector = _detect.createImage();
+    Exporter::exportBMPImage(_detect, (ui->ProjPath->text() + "/" + ui->ExpFileTextfield->text()).toStdString());
+
+    resultImage = new QPixmap((ui->ProjPath->text() + "/" + ui->ExpFileTextfield->text()));
+    ui->GraphicalResult->setPixmap(*resultImage);
+
+    //Debug-Werte aus Detector auslesen
+    int _brightness = _detect.getBrightness();
+    ui->Brightness->setText(QString::number(_brightness));
+    int _focus = _detect.getSharpness();
+    ui->Focus->setText(QString::number(_focus));
 
     //Setze alle Widgets auf Aktiv
     for(auto* widget : this->findChildren<QPushButton*>()){
@@ -524,3 +536,12 @@ void fmt_mainWindow::startSimulation(int photonNumber){
 
     ui->CmpListBox->rebuildFromList();
 }
+
+void fmt_mainWindow::on_actionFMT_Simulator_triggered()
+{
+    QString boxContent = "Version 0.99\n\nDeveloped by\nLasse Alsmeyer / lasse.alsmeyer@rwth-aachen.de\nNiklas Damhorst / niklas.damhorst@rwth-aachen.de";
+    boxContent.append("\nThomas Mazza / thomas.mazza@rwth-aachen.de\nNikolay Panov / nikolay.panov@rwth-aachen.de");
+    boxContent.append("\n\nUnder supervision of\nDr. rer. medic. Dipl.-Inf. Felix Gremse,\nProf. Dr. rer. nat. Uwe Naumann\n\n30.10.2021");
+    QMessageBox::about(this, "About FMT-Simulator", boxContent);
+}
+

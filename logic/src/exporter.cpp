@@ -1,4 +1,5 @@
-#include <fstream>
+#include <iostream>
+
 
 #include "../include/exporter.hpp"
 #include "importer.hpp"
@@ -16,6 +17,7 @@ std::ostream& operator <<(std::ostream& os, ComponentType _type){
         case mirrorElliptical : os << "MirrorElliptical"; break;
         case mirrorCircle : os << "MirrorCircle"; break;
         case detector : os << "Detector"; break;
+        case aperture : os << "Aperture"; break;
         default : os.setstate(std::ios_base::failbit);
     }
     return os;
@@ -95,14 +97,14 @@ void Exporter::exportStp(List &_lst, std::string _filename) {
                 exportParameter(dataOut, LENGTH_OPENING_TAG, static_cast<MirrorSquare &>(*_lst.elem(i)).getLength());
                 break;
             case detector:
-                exportInBrackets(dataOut, POINT_ON_EDGE_OPENING_TAG);
-                exportVector(dataOut,  static_cast<Detector &>(*_lst.elem(i)).getPointOnEdge());
-                exportInBrackets(dataOut, POINT_ON_EDGE_CLOSING_TAG);
                 exportInBrackets(dataOut, POSITION_OF_PREVIOUS_COMPONENT_OPENING_TAG);
                 exportVector(dataOut, static_cast<Detector &>(*_lst.elem(i)).getPosOfPrevComponent());
                 exportInBrackets(dataOut, POSITION_OF_PREVIOUS_COMPONENT_CLOSING_TAG);
                 exportParameter(dataOut, SIZE_OPENING_TAG, static_cast<Detector &>(*_lst.elem(i)).getSize());
-                exportParameter(dataOut, PIXEL_SIZE_OPENING_TAG, static_cast<Detector &>(*_lst.elem(i)).getPixelSize());
+                exportParameter(dataOut, LENGTH_OPENING_TAG, static_cast<Detector &>(*_lst.elem(i)).getLength());
+                break;
+            case aperture:
+                exportParameter(dataOut, RADIUS_OPENING_TAG, static_cast<Aperture &>(*_lst.elem(i)).getRadius());
                 break;
             default:
                 break;
@@ -133,13 +135,15 @@ void Exporter::exportObject(Config::object &object, std::string filename) {
     exportInBrackets(dataOut, OBJECT_CLOSING_TAG);
     dataOut.close();
 }
-
+/*
 void Exporter::exportBMPImage( Detector &_detector, std::string filename) {
     bmp_vector image = _detector.createImage();
 
     BmpFileHeader bfh(_detector.getSize(),_detector.getSize());
     BmpInfoHeader bih(_detector.getSize(),_detector.getSize());
-    std::ofstream fout(filename + ".bmp", std::ios::binary);
+    unsigned short bfType=0x4d42;
+    std::ofstream fout(filename, std::ios::binary);
+    fout.write((char *) &bfType, sizeof(bfType));
     fout.write((char *) &bfh, 14);
     fout.write((char *) &bih, 40);
     for (int i = 0; i < image.size(); i++) {
@@ -148,3 +152,33 @@ void Exporter::exportBMPImage( Detector &_detector, std::string filename) {
     fout.close();
 
 }
+*/
+
+
+void Exporter::exportBMPImage(Detector &_detector, std::string filename) {
+    bmp_vector image = _detector.createImage();
+    BmpFileHeader bfh(_detector.getSize(), _detector.getSize());
+    BmpInfoHeader bih(_detector.getSize(), _detector.getSize());
+    unsigned short bfType=0x4d42;
+
+    FILE *file = fopen(filename.c_str(), "wb");
+
+    fwrite(&bfType,1,sizeof(bfType),file);
+    fwrite(&bfh, 1, sizeof(bfh), file);
+    fwrite(&bih, 1, sizeof(bih), file);
+
+    for (int y = bih.height-1; y>=0; y--)
+    {
+        for (int x = 0; x < bih.width; x++)
+        {
+            unsigned char r = image[y * bih.height + x].r;
+            unsigned char g = image[y * bih.height + x].g;
+            unsigned char b = image[y * bih.height + x].b;
+            fwrite(&b, 1, 1, file);
+            fwrite(&g, 1, 1, file);
+            fwrite(&r, 1, 1, file);
+        }
+    }
+    fclose(file);
+}
+

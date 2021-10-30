@@ -20,7 +20,7 @@
 
 class Optim {
 private:
-    std::vector<Photon> lstPhoton;
+    std::vector<Photon>* lstPhoton;
     List* lstComp;
     std::vector<double> origin;
     short weightB;
@@ -29,7 +29,7 @@ private:
     int maxPhot;
     Config::object* object;
 public:
-    Optim(short&, short&, short&, List*, std::vector<Photon>&, Config::object*);//Gewichtung(Hell., Schärfe, Tiefensch.) ; akt. gew.Sum
+    Optim(short&, short&, short&, List*, std::vector<Photon>*, Config::object*);//Gewichtung(Hell., Schärfe, Tiefensch.) ; akt. gew.Sum
     void OAimprove();
     void optBright();
     void optFocus();

@@ -54,17 +54,30 @@ void DetectorEditWindow::closeOK(){
         }
         double _zNorm = zNorm->text().toDouble();
 
-        emit editDetector(_xPos, _yPos, _zPos, _xNorm, _yNorm, _zNorm);
+        if(edgeLength->text().contains(',')){
+            QMessageBox::critical(this, "Error", (edgeLength->text() + " is no valid number\nPlease use '.' instead of ','"), QMessageBox::Ok);
+            return;
+        }
+        double _edgeLength = edgeLength->text().toDouble();
+
+        if(pixelCount->text().contains(',')){
+            QMessageBox::critical(this, "Error", (pixelCount->text() + " is no valid number\nPlease use '.' instead of ','"), QMessageBox::Ok);
+            return;
+        }
+        double _pixelCount = pixelCount->text().toDouble();
+
+
+        emit editDetector(_xPos, _yPos, _zPos, _xNorm, _yNorm, _zNorm, _edgeLength, _pixelCount);
         this->accept();
         return;
     }
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
-DetectorEditWindow::DetectorEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm):QDialog(parent){
+DetectorEditWindow::DetectorEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _edgeLength, double _pixelCount):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Detector");
-    this->setFixedSize(400, 110);
+    this->setFixedSize(400, 180);
 
     QVBoxLayout* layout = new QVBoxLayout();
     layout->setSpacing(12);
@@ -122,6 +135,19 @@ DetectorEditWindow::DetectorEditWindow(QWidget* parent, double _xPos, double _yP
     //Einfügen der Zeilen
     inputHolder->addRow(posLabel, posBox);
     inputHolder->addRow(normLabel, normBox);
+
+    //Restliche Parameter
+    QLabel* edgeLengthLabel = new QLabel("Edge Length");
+    edgeLength = new QLineEdit();
+    edgeLength->setValidator(inValidate);
+    edgeLength->setText(QString::number(_edgeLength));
+    inputHolder->addRow(edgeLengthLabel, edgeLength);
+
+    QLabel* pixelCountLabel = new QLabel("Pixel Count");
+    pixelCount = new QLineEdit();
+    pixelCount->setValidator(inValidate);
+    pixelCount->setText(QString::number(_pixelCount));
+    inputHolder->addRow(pixelCountLabel, pixelCount);
 
     //Erstelle layout für Ok/Cancel Button
     QHBoxLayout* buttonHolder = new QHBoxLayout();
@@ -1375,6 +1401,165 @@ MirrorSquareEditWindow::MirrorSquareEditWindow(QWidget* parent, double _xPos, do
     length->setValidator(inValidate);
     length->setText(QString::number(_length));
     inputHolder->addRow(lengthLabel, length);
+
+    //Erstelle layout für Ok/Cancel Button
+    QHBoxLayout* buttonHolder = new QHBoxLayout();
+    buttonHolder->setSpacing(6);
+
+    QPushButton* okButton = new QPushButton("OK");
+    QPushButton* cancelButton = new QPushButton("Cancel");
+
+    buttonHolder->addWidget(okButton);
+    buttonHolder->addWidget(cancelButton);
+
+    //Füge zu Fensterlayout die Elemente hinzu
+    layout->addItem(inputHolder);
+    layout->addItem(buttonHolder);
+
+    this->setLayout(layout);
+
+    this->show();
+
+    connect(okButton, SIGNAL(clicked()), this, SLOT(closeOK()));
+    connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
+}
+
+//---------------
+//Aperture Window
+//---------------
+
+void ApertureEditWindow::closeEvent(QCloseEvent* event){
+    QMessageBox::StandardButton exitMessage = QMessageBox::critical(this, "Warning", "If you close the window now, no changes will be made.", QMessageBox::Ok|QMessageBox::Cancel);
+    if(exitMessage == QMessageBox::Ok) event->accept();
+    else event->ignore();
+}
+
+void ApertureEditWindow::closeOK(){
+    if(!xPos->text().isEmpty() &&
+            !yPos->text().isEmpty() &&
+            !zPos->text().isEmpty() &&
+            !xNorm->text().isEmpty() &&
+            !yNorm->text().isEmpty() &&
+            !zNorm->text().isEmpty() &&
+            !radius->text().isEmpty()){
+        //Eingaben auf double prüfen und konvertieren
+        if(xPos->text().contains(',')){
+            QMessageBox::critical(this, "Error", (xPos->text() + " is no valid number\nPlease use '.' instead of ','"), QMessageBox::Ok);
+            return;
+        }
+        double _xPos = xPos->text().toDouble();
+
+        if(yPos->text().contains(',')){
+            QMessageBox::critical(this, "Error", (yPos->text() + " is no valid number\nPlease use '.' instead of ','"), QMessageBox::Ok);
+            return;
+        }
+        double _yPos = yPos->text().toDouble();
+
+        if(zPos->text().contains(',')){
+            QMessageBox::critical(this, "Error", (zPos->text() + " is no valid number\nPlease use '.' instead of ','"), QMessageBox::Ok);
+            return;
+        }
+        double _zPos = zPos->text().toDouble();
+
+        if(xNorm->text().contains(',')){
+            QMessageBox::critical(this, "Error", (xNorm->text() + " is no valid number\nPlease use '.' instead of ','"), QMessageBox::Ok);
+            return;
+        }
+        double _xNorm = xNorm->text().toDouble();
+
+        if(yNorm->text().contains(',')){
+            QMessageBox::critical(this, "Error", (yNorm->text() + " is no valid number\nPlease use '.' instead of ','"), QMessageBox::Ok);
+            return;
+        }
+        double _yNorm = yNorm->text().toDouble();
+
+        if(zNorm->text().contains(',')){
+            QMessageBox::critical(this, "Error", (zNorm->text() + " is no valid number\nPlease use '.' instead of ','"), QMessageBox::Ok);
+            return;
+        }
+        double _zNorm = zNorm->text().toDouble();
+
+        if(radius->text().contains(',')){
+            QMessageBox::critical(this, "Error", (radius->text() + " is no valid number\nPlease use '.' instead of ','"), QMessageBox::Ok);
+            return;
+        }
+        double _radius = radius->text().toDouble();
+
+        emit editAperture(_xPos, _yPos, _zPos, _xNorm, _yNorm, _zNorm, _radius);
+        this->accept();
+        return;
+    }
+    QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
+}
+
+ApertureEditWindow::ApertureEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _radius):QDialog(parent){
+    this->setWindowModality(Qt::ApplicationModal);
+    this->setWindowTitle("Edit Aperture");
+    this->setFixedSize(400, 140);
+
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->setSpacing(12);
+
+    //Erstelle form layout für Eingabefelder
+    QFormLayout* inputHolder = new QFormLayout();
+    inputHolder->setSpacing(6);
+
+    //Double-Validator erstellen
+    QDoubleValidator* inValidate = new QDoubleValidator();
+    inValidate->setNotation(QDoubleValidator::ScientificNotation);
+
+    //Position-Eingabefelder
+    QLabel* posLabel = new QLabel("Position");
+    QHBoxLayout* posBox = new QHBoxLayout();
+    posBox->setContentsMargins(0, 0, 0, 0);
+    posBox->setSpacing(5);
+    xPos = new QLineEdit();
+    xPos->setValidator(inValidate);
+    xPos->setPlaceholderText("X");
+    xPos->setText(QString::number(_xPos));
+    yPos = new QLineEdit();
+    yPos->setValidator(inValidate);
+    yPos->setPlaceholderText("Y");
+    yPos->setText(QString::number(_yPos));
+    zPos = new QLineEdit();
+    zPos->setValidator(inValidate);
+    zPos->setPlaceholderText("Z");
+    zPos->setText(QString::number(_zPos));
+    posBox->addWidget(xPos);
+    posBox->addWidget(yPos);
+    posBox->addWidget(zPos);
+
+    //Richtungs-Eingabefelder
+    QLabel* normLabel = new QLabel("Direction");
+    QHBoxLayout* normBox = new QHBoxLayout();
+    posBox->setContentsMargins(0, 0, 0, 0);
+    posBox->setSpacing(5);
+    xNorm = new QLineEdit();
+    xNorm->setValidator(inValidate);
+    xNorm->setPlaceholderText("X");
+    xNorm->setText(QString::number(_xNorm));
+    yNorm = new QLineEdit();
+    yNorm->setValidator(inValidate);
+    yNorm->setPlaceholderText("Y");
+    yNorm->setText(QString::number(_yNorm));
+    zNorm = new QLineEdit();
+    zNorm->setValidator(inValidate);
+    zNorm->setPlaceholderText("Z");
+    zNorm->setText(QString::number(_zNorm));
+    normBox->addWidget(xNorm);
+    normBox->addWidget(yNorm);
+    normBox->addWidget(zNorm);
+
+    //Einfügen der Zeilen
+    inputHolder->addRow(posLabel, posBox);
+    inputHolder->addRow(normLabel, normBox);
+
+    //Restliche Parameter
+    QLabel* lengthLabel = new QLabel("Edge Length");
+    radius = new QLineEdit();
+    radius->setValidator(inValidate);
+    radius->setText(QString::number(_radius));
+    inputHolder->addRow(lengthLabel, radius);
 
     //Erstelle layout für Ok/Cancel Button
     QHBoxLayout* buttonHolder = new QHBoxLayout();

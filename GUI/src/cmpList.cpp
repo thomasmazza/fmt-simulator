@@ -1,6 +1,8 @@
 #include "../include/cmpList.hpp"
 #include "../include/cmpEditWindow.hpp"
 
+#include "../../utils/include/utils.hpp"
+
 CmpList_element::CmpList_element(int _number, QString _type, List* _list){
     //Übergebe Listen-Referenz
     componentList = _list;
@@ -87,7 +89,9 @@ void CmpList_element::editElm(){
             componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[2],
             componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[0],
             componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[1],
-            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[2]);
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[2],
+            static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).getLength(),
+            static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).getSize());
         connect(editWin, &DetectorEditWindow::editDetector, this, &CmpList_element::applyEditDetector);
     }
     else if(elmType->text() == "Filter"){
@@ -178,20 +182,47 @@ void CmpList_element::editElm(){
             static_cast<MirrorSquare &>(*componentList->elem(elmNumber->text().toInt() - 1)).getLength());
         connect(editWin, &MirrorSquareEditWindow::editMirrorSquare, this, &CmpList_element::applyEditMirrorSquare);
     }
+    else if(elmType->text() == "Aperture"){
+        ApertureEditWindow* editWin = new ApertureEditWindow(this,
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getPosition()[2],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[0],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[1],
+            componentList->elem(elmNumber->text().toInt() - 1)->getNormal()[2],
+            static_cast<Aperture &>(*componentList->elem(elmNumber->text().toInt() - 1)).getRadius());
+        connect(editWin, &ApertureEditWindow::editAperture, this, &CmpList_element::applyEditAperture);
+    }
 }
 
 //Übernehmen der Änderungen der einzelnen Komponententypen
-void CmpList_element::applyEditDetector(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm){
+void CmpList_element::applyEditDetector(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _length, double _size){
     //In Liste übernehmen
     componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
-    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
-    int _brightness = static_cast<Detector &>(*componentList->elem(componentList->getLength() - 1)).getBrightness();
+    std::vector<double> _norm(3); _norm[0] = _xNorm; _norm[1] = _yNorm; _norm[2] = _zNorm;
+    Utils::normalizeVector(_norm);
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(_norm);
+    static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).setLength(_length);
+    static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).setSize((int)_size);
+    //Berechne PosOfPrevComp neu
+    std::vector<double> _posOfPrevComp(3);
+    if(elmNumber->text().toInt() == 1){
+         _posOfPrevComp[0] = 0; _posOfPrevComp[1] = 0; _posOfPrevComp[2] = 0;
+    }
+    else{
+        _posOfPrevComp = componentList->elem(elmNumber->text().toInt() - 2)->getPosition();
+    }
+    static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).setPosOfPrevComponent(_posOfPrevComp);
+    //Berechne interne Variablen des Detektors neu, Ausrichtung, PixelSize etc.
+    static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).recalculateInternals();
 }
 
 void CmpList_element::applyEditFilter(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _lowerLim, double _upperLim){
     //In Liste übernehmen
     componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
-    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
+    std::vector<double> _norm(3); _norm[0] = _xNorm; _norm[1] = _yNorm; _norm[2] = _zNorm;
+    Utils::normalizeVector(_norm);
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(_norm);
     static_cast<Filter &>(*componentList->elem(elmNumber->text().toInt() - 1)).setLowerLimit(_lowerLim);
     static_cast<Filter &>(*componentList->elem(elmNumber->text().toInt() - 1)).setUpperLimit(_upperLim);
 }
@@ -199,7 +230,9 @@ void CmpList_element::applyEditFilter(double _xPos, double _yPos, double _zPos, 
 void CmpList_element::applyEditLensOneSided(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _refIndex, double _radiusH, double _radiusW, double _thickness, bool _planeIsFront){
     //In Liste übernehmen
     componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
-    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
+    std::vector<double> _norm(3); _norm[0] = _xNorm; _norm[1] = _yNorm; _norm[2] = _zNorm;
+    Utils::normalizeVector(_norm);
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(_norm);
     static_cast<LensOneSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).setN(_refIndex);
     static_cast<LensOneSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).setRadiusH(_radiusH);
     static_cast<LensOneSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).setRadiusW(_radiusW);
@@ -210,7 +243,9 @@ void CmpList_element::applyEditLensOneSided(double _xPos, double _yPos, double _
 void CmpList_element::applyEditLensTwoSided(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _refIndex, double _radiusH, double _radiusI, double _radiusO, double _thickness){
     //In Liste übernehmen
     componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
-    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
+    std::vector<double> _norm(3); _norm[0] = _xNorm; _norm[1] = _yNorm; _norm[2] = _zNorm;
+    Utils::normalizeVector(_norm);
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(_norm);
     static_cast<LensTwoSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).setN(_refIndex);
     static_cast<LensTwoSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).setRadiusH(_radiusH);
     static_cast<LensTwoSided &>(*componentList->elem(elmNumber->text().toInt() - 1)).setRadiusI(_radiusI);
@@ -221,14 +256,18 @@ void CmpList_element::applyEditLensTwoSided(double _xPos, double _yPos, double _
 void CmpList_element::applyEditMirrorCircle(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _radius){
     //In Liste übernehmen
     componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
-    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
+    std::vector<double> _norm(3); _norm[0] = _xNorm; _norm[1] = _yNorm; _norm[2] = _zNorm;
+    Utils::normalizeVector(_norm);
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(_norm);
     static_cast<MirrorCircle &>(*componentList->elem(elmNumber->text().toInt() - 1)).setRadius(_radius);
 }
 
 void CmpList_element::applyEditMirrorElliptical(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _radiusH, double _radiusW){
     //In Liste übernehmen
     componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
-    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
+    std::vector<double> _norm(3); _norm[0] = _xNorm; _norm[1] = _yNorm; _norm[2] = _zNorm;
+    Utils::normalizeVector(_norm);
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(_norm);
     static_cast<MirrorElliptical &>(*componentList->elem(elmNumber->text().toInt() - 1)).setRadiusH(_radiusH);
     static_cast<MirrorElliptical &>(*componentList->elem(elmNumber->text().toInt() - 1)).setRadiusW(_radiusW);
 }
@@ -236,7 +275,9 @@ void CmpList_element::applyEditMirrorElliptical(double _xPos, double _yPos, doub
 void CmpList_element::applyEditMirrorRectangular(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _height, double _width){
     //In Liste übernehmen
     componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
-    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
+    std::vector<double> _norm(3); _norm[0] = _xNorm; _norm[1] = _yNorm; _norm[2] = _zNorm;
+    Utils::normalizeVector(_norm);
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(_norm);
     static_cast<MirrorRectangle &>(*componentList->elem(elmNumber->text().toInt() - 1)).setLengthH(_height);
     static_cast<MirrorRectangle &>(*componentList->elem(elmNumber->text().toInt() - 1)).setLengthW(_width);
 }
@@ -244,25 +285,82 @@ void CmpList_element::applyEditMirrorRectangular(double _xPos, double _yPos, dou
 void CmpList_element::applyEditMirrorSquare(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _length){
     //In Liste übernehmen
     componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
-    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(std::vector<double>(3) = {_xNorm, _yNorm, _zNorm});
+    std::vector<double> _norm(3); _norm[0] = _xNorm; _norm[1] = _yNorm; _norm[2] = _zNorm;
+    Utils::normalizeVector(_norm);
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(_norm);
     static_cast<MirrorSquare &>(*componentList->elem(elmNumber->text().toInt() - 1)).setLength(_length);
+}
+
+void CmpList_element::applyEditAperture(double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _radius){
+    //In Liste übernehmen
+    componentList->elem(elmNumber->text().toInt() - 1)->setPosition(std::vector<double>(3) = {_xPos, _yPos, _zPos});
+    std::vector<double> _norm(3); _norm[0] = _xNorm; _norm[1] = _yNorm; _norm[2] = _zNorm;
+    Utils::normalizeVector(_norm);
+    componentList->elem(elmNumber->text().toInt() - 1)->setNormal(_norm);
+    static_cast<Aperture &>(*componentList->elem(elmNumber->text().toInt() - 1)).setRadius(_radius);
 }
 
 void CmpList_element::deleteElm(){
     //Element löschen und Liste aktualisieren
+
+    //Berechne PosOfPrevComp neu, falls Element vor Detektor gelöscht wurde
+    if(componentList->getLength() > elmNumber->text().toInt()){
+        if(componentList->elem(elmNumber->text().toInt())->getType() == detector){
+            std::vector<double> _posOfPrevComp(3);
+            _posOfPrevComp = componentList->elem(elmNumber->text().toInt() - 1)->getPosition();
+            static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt())).setPosOfPrevComponent(_posOfPrevComp);
+        }
+    }
+
     componentList->del(elmNumber->text().toInt());
     emit triggerRebuildList();
 }
 
 void CmpList_element::moveUpElm(){
-    //TODO: Liste aktualisieren
+    //Element löschen und Liste aktualisieren
     componentList->swap(elmNumber->text().toInt() - 1, elmNumber->text().toInt() - 2);
+
+    //Berechne PosOfPrevComp neu, falls Detektor getauscht wurde
+    if(componentList->elem(elmNumber->text().toInt() - 1)->getType() == detector){
+        std::vector<double> _posOfPrevComp(3);
+        _posOfPrevComp = componentList->elem(elmNumber->text().toInt() - 2)->getPosition();
+        static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).setPosOfPrevComponent(_posOfPrevComp);
+    }
+    if(componentList->elem(elmNumber->text().toInt() - 2)->getType() == detector){
+        std::vector<double> _posOfPrevComp(3);
+        if(elmNumber->text().toInt() - 1 == 1){
+             _posOfPrevComp[0] = 0; _posOfPrevComp[1] = 0; _posOfPrevComp[2] = 0;
+        }
+        else{
+            _posOfPrevComp = componentList->elem(elmNumber->text().toInt() - 3)->getPosition();
+        }
+        static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 2)).setPosOfPrevComponent(_posOfPrevComp);
+    }
+
     emit triggerRebuildList();
 }
 
 void CmpList_element::moveDownElm(){
     //TODO: Liste aktualisieren
     componentList->swap(elmNumber->text().toInt() - 1, elmNumber->text().toInt());
+
+    //Berechne PosOfPrevComp neu, falls Detektor getauscht wurde
+    if(componentList->elem(elmNumber->text().toInt())->getType() == detector){
+        std::vector<double> _posOfPrevComp(3);
+        _posOfPrevComp = componentList->elem(elmNumber->text().toInt() - 1)->getPosition();
+        static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt())).setPosOfPrevComponent(_posOfPrevComp);
+    }
+    if(componentList->elem(elmNumber->text().toInt() - 1)->getType() == detector){
+        std::vector<double> _posOfPrevComp(3);
+        if(elmNumber->text().toInt() - 1 == 1){
+             _posOfPrevComp[0] = 0; _posOfPrevComp[1] = 0; _posOfPrevComp[2] = 0;
+        }
+        else{
+            _posOfPrevComp = componentList->elem(elmNumber->text().toInt() - 2)->getPosition();
+        }
+        static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).setPosOfPrevComponent(_posOfPrevComp);
+    }
+
     emit triggerRebuildList();
 }
 
@@ -341,6 +439,14 @@ void CmpList_box::rebuildFromList(){
             layout->addWidget(element);
             layout->addItem(bottomSpacer);
             break;
+        case aperture:
+            element = new CmpList_element(i + 1, "Aperture", componentList);
+
+            //Element einfügen
+            layout->removeItem(bottomSpacer);
+            layout->addWidget(element);
+            layout->addItem(bottomSpacer);
+            break;
         }
         //Deaktiviere Hoch/Runter-Buttons für erstes/letztes Element
         if(length == 1) element->changeButtonActivity(false, false);
@@ -380,10 +486,18 @@ void CmpList_box::addCmpToList(QString _type, double _xPos, double _yPos, double
     //Füge Element in die Liste ein
     std::vector<double> _pos(3); _pos[0] = _xPos; _pos[1] = _yPos; _pos[2] = _zPos;
     std::vector<double> _norm(3); _norm[0] = _xNorm; _norm[1] = _yNorm; _norm[2] = _zNorm;
+    Utils::normalizeVector(_norm);
     //If-Verzweigung weil switch-cases nicht mit Strings kompatibel sind...
     if(_type == "Detector"){
-        //TODO: Übergebene Werte beheben
-        Detector* _new = new Detector(_pos, _norm, _norm, _norm, 3, 0.1);
+        //Berechne PosOfPrevComp neu
+        std::vector<double> _posOfPrevComp(3);
+        if(elmNumber == 1){
+             _posOfPrevComp[0] = 0; _posOfPrevComp[1] = 0; _posOfPrevComp[2] = 0;
+        }
+        else{
+            _posOfPrevComp = componentList->elem(elmNumber - 2)->getPosition();
+        }
+        Detector* _new = new Detector(_pos, _norm, _posOfPrevComp, (int)_in2, _in1);
         componentList->append<Detector>(*_new);
     }
     else if(_type == "Filter"){
@@ -413,6 +527,10 @@ void CmpList_box::addCmpToList(QString _type, double _xPos, double _yPos, double
     else if(_type == "Square Mirror"){
         MirrorSquare* _new = new MirrorSquare(_pos, _norm, _in1);
         componentList->append<MirrorSquare>(*_new);
+    }
+    else if(_type == "Aperture"){
+        Aperture* _new = new Aperture(_pos, _norm, _in1);
+        componentList->append<Aperture>(*_new);
     }
 
     rebuildFromList();

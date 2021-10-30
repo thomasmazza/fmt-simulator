@@ -1,8 +1,14 @@
-QT       += core gui
+QT += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++14
+
+TARGET = OpenMP
+
+QMAKE_CXXFLAGS += -fopenmp
+QMAKE_LFLAGS += -fopenmp
+LIBS += -fopenmp
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -17,8 +23,8 @@ INCLUDEPATH += \
 
 SOURCES += \
     GUI/src/utilsGUI.cpp \
+    components/src/aperture.cpp \
     components/src/component.cpp \
-    components/src/componentType.cpp \
     components/src/detector.cpp \
     components/src/filter.cpp \
     components/src/lensOneSided.cpp \
@@ -57,6 +63,7 @@ SOURCES += \
 
 HEADERS += \
     GUI/include/utilsGUI.hpp \
+    components/include/aperture.hpp \
     components/include/component.hpp \
     components/include/componentType.hpp \
     components/include/detector.hpp \
