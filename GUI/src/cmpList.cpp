@@ -204,6 +204,7 @@ void CmpList_element::applyEditDetector(double _xPos, double _yPos, double _zPos
     componentList->elem(elmNumber->text().toInt() - 1)->setNormal(_norm);
     static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).setLength(_length);
     static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).setSize((int)_size);
+    static_cast<Detector &>(*componentList->elem(elmNumber->text().toInt() - 1)).setPixelSize(_size, _length);
     //Berechne PosOfPrevComp neu
     std::vector<double> _posOfPrevComp(3);
     if(elmNumber->text().toInt() == 1){

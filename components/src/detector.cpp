@@ -16,7 +16,7 @@ int Detector::getSize() {
     return size;
 }
 
-void Detector::setSize(unsigned int _size) {
+void Detector::setSize(int _size) {
     size = _size;
 }
 
@@ -30,6 +30,10 @@ void Detector::setLength(double _length) {
 
 double Detector::getPixelSize() {
     return pixelSize;
+}
+
+void Detector::setPixelSize(double _size, double _length) {
+    pixelSize = _length / _size;
 }
 
 void Detector::getInPoint(Photon &photon) {
@@ -83,9 +87,9 @@ void Detector::getInPoint(Photon &photon) {
     a = std::abs(ys);
 
 
-    if (a < length / 2) {
+    if (a < length / 2.0) {
         b = std::abs(xs);
-        if (b < length / 2) {
+        if (b < length / 2.0) {
             RGB color;
             const int wl = photon.getWaveLength();
             Utils::coreTranslationInColor(wl, color.r, color.g, color.b);
@@ -106,7 +110,7 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].addRGB(color);
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
-                std::cout << sensor[i_index][j_index].r << std::endl;
+
             } else {
                 if (temp > -M_PI_2) {
                     i_index = floor(size / 2 - i_index);
@@ -164,7 +168,7 @@ bmp_vector Detector::createImage() {
         }
     }
 
-    unsigned const int sz = size - 1;
+    const int sz = size - 1;
     std::vector<double> bw (sz * sz);
     for (int i = 1; i < sz; i++) {
         for(int j = 1; j < sz; j++) {
@@ -250,11 +254,11 @@ void Detector::recalculateInternals() {
     else {
         ref = { 0, 0, 1};
     }
-    ref = ref * (length / 2);
+    ref = ref * (length / 2.0);
     Utils::normalizeVector(detectorNormal);
 }
 
-Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_posOfPrevComponent, unsigned int _size,
+Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_posOfPrevComponent, int _size,
                    double _edgeLength) : Component(_pos, _normal, detector), posOfPrevComponent(_posOfPrevComponent),size(_size),length(_edgeLength),pixelSize(length / (static_cast<double>(size))),sensor(_size, std::vector<RGB>(_size)) {
 
     detectorNormal = posOfPrevComponent - position;
@@ -291,7 +295,7 @@ Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std:
     else {
         ref = { 0, 0, 1};
     }
-    ref = ref * (length / 2);
+    ref = ref * (length / 2.0);
     Utils::normalizeVector(detectorNormal);
 }
 

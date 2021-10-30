@@ -22,7 +22,7 @@ protected:
     // zu detectorNormal (also liegt in der Detektorebene)
     // und parallel zu zwei Seiten des Detektors
     std::vector<double> ref;
-    unsigned int size; // Detector hat size * size Pixel
+    int size; // Detector hat size * size Pixel
     double length; // Dimensionen von dem Detektor
     double pixelSize; //Größe eines Pixels
     double brightness;
@@ -34,7 +34,7 @@ public:
 
     int getSize();
 
-    void setSize(unsigned int);
+    void setSize(int);
 
     double getLength();
 
@@ -42,9 +42,11 @@ public:
 
     double getPixelSize();
 
+    void setPixelSize(double, double);
+
     void setPosOfPrevComponent(std::vector<double> &);
 
-    Detector(std::vector<double> &, std::vector<double> &, std::vector<double> &, unsigned int, double);
+    Detector(std::vector<double> &, std::vector<double> &, std::vector<double> &, int, double);
 
     Detector(const Detector& detector1);
 
