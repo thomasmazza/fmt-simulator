@@ -97,14 +97,11 @@ void Exporter::exportStp(List &_lst, std::string _filename) {
                 exportParameter(dataOut, LENGTH_OPENING_TAG, static_cast<MirrorSquare &>(*_lst.elem(i)).getLength());
                 break;
             case detector:
-                exportInBrackets(dataOut, POINT_ON_EDGE_OPENING_TAG);
-                exportVector(dataOut,  static_cast<Detector &>(*_lst.elem(i)).getPointOnEdge());
-                exportInBrackets(dataOut, POINT_ON_EDGE_CLOSING_TAG);
                 exportInBrackets(dataOut, POSITION_OF_PREVIOUS_COMPONENT_OPENING_TAG);
                 exportVector(dataOut, static_cast<Detector &>(*_lst.elem(i)).getPosOfPrevComponent());
                 exportInBrackets(dataOut, POSITION_OF_PREVIOUS_COMPONENT_CLOSING_TAG);
                 exportParameter(dataOut, SIZE_OPENING_TAG, static_cast<Detector &>(*_lst.elem(i)).getSize());
-                exportParameter(dataOut, PIXEL_SIZE_OPENING_TAG, static_cast<Detector &>(*_lst.elem(i)).getPixelSize());
+                exportParameter(dataOut, LENGTH_OPENING_TAG, static_cast<Detector &>(*_lst.elem(i)).getLength());
                 break;
             case aperture:
                 exportParameter(dataOut, RADIUS_OPENING_TAG, static_cast<Aperture &>(*_lst.elem(i)).getRadius());

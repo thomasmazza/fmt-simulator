@@ -275,18 +275,16 @@ void Importer::importStp(List &_lst, std::string _filename) {
                 getContentInBrackets(setupFile, buf, MIRROR_SQUARE_CLOSING_TAG);
                 std::cout << MIRROR_SQUARE_OPENING_TAG << " was imported!" << std::endl;
             } else if(buf == DETECTOR_OPENING_TAG){
-                std::vector<double> _pointOnEdge(3);
                 std::vector<double> _posOfPreviousComponent(3);
                 int size;
-                double pixelSize;
+                double length;
                 importPosition(setupFile, _position);
                 importNormal(setupFile, _normal);
-                importPointOnEdge(setupFile, _pointOnEdge);
                 importPosOfPrevComponent(setupFile, _posOfPreviousComponent);
                 importNumber(setupFile, SIZE_OPENING_TAG,size);
-                importNumber(setupFile, PIXEL_SIZE_OPENING_TAG, pixelSize);
+                importNumber(setupFile, LENGTH_OPENING_TAG, length);
 
-                _lst.append<Detector>(Detector(_position, _normal, _pointOnEdge, _posOfPreviousComponent, size, pixelSize));
+                _lst.append<Detector>(Detector(_position, _normal, _posOfPreviousComponent, size, length));
                 getContentInBrackets(setupFile, buf, DETECTOR_CLOSING_TAG);
                 std::cout << DETECTOR_OPENING_TAG << " was imported!" << std::endl;
             }else if(buf == APERTURE_OPENING_TAG){

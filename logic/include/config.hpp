@@ -72,6 +72,4 @@ namespace Config {
     const std::string SIZE_CLOSING_TAG = "/Size";
     const std::string PIXEL_SIZE_OPENING_TAG = "PixelSize";
     const std::string PIXEL_SIZE_CLOSING_TAG = "/PixelSize";
-
-
 }
