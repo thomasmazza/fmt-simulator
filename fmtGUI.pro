@@ -6,6 +6,10 @@ CONFIG += c++14
 
 TARGET = OpenMP
 
+doc.depends = $(SOURCES)
+doc.commands = (cat Doxyfile; echo "INPUT = $?") | doxygen -
+QMAKE_EXTRA_TARGETS += doc
+
 QMAKE_CXXFLAGS += -fopenmp
 QMAKE_LFLAGS += -fopenmp
 LIBS += -fopenmp
