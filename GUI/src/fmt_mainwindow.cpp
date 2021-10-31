@@ -545,12 +545,13 @@ void fmt_mainWindow::on_RunOptimization_clicked()
         disableDoF();
 
         //Pixmap reloaden, und Liste aktualisieren
+        Detector _detect = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1));
+        Exporter::exportBMPImage(_detect, (ui->ProjPath->text() + "/" + ui->ExpFileTextfield->text()).toStdString());
         resultImage = new QPixmap((ui->ProjPath->text() + "/" + ui->ExpFileTextfield->text()));
         ui->GraphicalResult->setPixmap(*resultImage);
         ui->CmpListBox->rebuildFromList();
 
         //Debug-Werte aus Detector auslesen
-        Detector _detect = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1));
         int _brightness = _detect.getBrightness();
         ui->Brightness->setText(QString::number(_brightness));
         int _focus = _detect.getSharpness();
