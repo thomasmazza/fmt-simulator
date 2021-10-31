@@ -3,6 +3,11 @@
 #include "../../utils/include/utils.hpp"
 #include <cmath>
 
+/**
+ * @brief Main function of every component, calculates the position and direction after the photon passes
+ * @param photon, Photon who should be calculated
+ * @return true, if photon passes the lens
+ */
 bool LensTwoSided::getOutDir(Photon& p){
 
     std::vector<double> pV = p.getPosition();
@@ -267,46 +272,90 @@ bool LensTwoSided::getOutDir(Photon& p){
     return getsOut;
 }
 
+/**
+ * @brief Standard get-method for getting the current thickness of the lens
+ * @return thickness of the lens
+ */
 const double &LensTwoSided::getD() {
     return d;
 }
 
+/**
+ * @brief Standard get-method for getting the current refractive index of the material of the lens
+ * @return refractive index of the material of the lens
+ */
 const double &LensTwoSided::getN(){
     return n;
 }
 
+/**
+ * @brief Standard get-method for getting the current radius (height) of the lens
+ * @return current radius (height) of the lens
+ */
 const double &LensTwoSided::getRadiusH() {
     return radiusH;
 }
 
+/**
+ * @brief Standard set-method for setting a new refractive index of the material of the lens
+ * @param new refractive index of the material of the lens
+ */
 void LensTwoSided::setN(double _n) {
     n = _n;
 }
 
+/**
+ * @brief Standard set-method for setting a new thickness of the lens
+ * @param new thickness of the lens
+ */
 void LensTwoSided::setD(double _d) {
     d = _d;
 }
 
+/**
+ * @brief Standard set-method for setting a new radius (height) of the lens
+ * @param new radius (height) of the lens
+ */
 void LensTwoSided::setRadiusH(double _radiusH) {
     radiusH = _radiusH;
 }
 
+/**
+ * @brief Standard get-method for getting the current first radius (curvature) of the lens
+ * @return current first radius (curvature) of the lens
+ */
 const double &LensTwoSided::getRadiusI() {
     return radiusI;
 }
 
+/**
+ * @brief Standard get-method for getting the current second radius (curvature) of the lens
+ * @return current second radius (curvature) of the lens
+ */
 const double &LensTwoSided::getRadiusO() {
     return radiusO;
 }
 
+/**
+ * @brief Standard set-method for setting a new first radius (curvature) of the lens
+ * @param new first radius (curvature) of the lens
+ */
 void LensTwoSided::setRadiusI(double _radiusI) {
     radiusI = _radiusI;
 }
 
+/**
+ * @brief Standard set-method for setting a new second radius (curvature) of the lens
+ * @param new second radius (curvature) of the lens
+ */
 void LensTwoSided::setRadiusO(double _radiusO) {
     radiusO = _radiusO;
 }
 
+/**
+ * @brief Standard get-method for calculating the focal length of a lens
+ * @return focal length of a lens
+ */
 const double &LensTwoSided::getF() {
     double r1 = abs(radiusI);
     double r2 = abs(radiusO);
@@ -314,9 +363,24 @@ const double &LensTwoSided::getF() {
     return f;
 }
 
+/**
+ * @brief Constructs a lensTwoSided
+ * @param _position, sets the position of the new lensTwoSided
+ * @param _normal, sets the normal of the new lensTwoSided
+ * @param _n, sets the ref. index of the new lensTwoSided
+ * @param _d, sets the thickness of the new lensTwoSided
+ * @param _radiusH, sets the radius(height) of the new lensTwoSided
+ * @param _radiusI, sets the first radius(curvature) of the new lensTwoSided
+ * @param _radiusO, sets the second radius(curvature) of the new lensTwoSided
+ * @param _type, sets the type of the component ("lensTwoSided")
+ */
 LensTwoSided::LensTwoSided(std::vector<double>& _pos, std::vector<double>& _normal,double _n, double _radiusH, double _radiusI, double _radiusO, double _d)
 :Component(_pos, _normal, lensTwoSided), n(_n), radiusH(_radiusH), radiusI(_radiusI), radiusO(_radiusO), d(_d) {
 }
 
+/**
+ * @brief Copys a lensTwoSided
+ * @param lensTwoSided1, copy template for the new lensTwoSided
+ */
 LensTwoSided::LensTwoSided(const LensTwoSided &lensTwoSided1):
     Component(lensTwoSided1), n(lensTwoSided1.n), radiusH(lensTwoSided1.radiusH), radiusI(lensTwoSided1.radiusI), radiusO(lensTwoSided1.radiusO), d(lensTwoSided1.d) {}

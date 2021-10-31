@@ -3,6 +3,11 @@
 #include "../../utils/include/utils.hpp"
 #include <cmath>
 
+/**
+ * @brief Main function of every component, calculates the position and direction after the photon passes
+ * @param photon, Photon who should be calculated
+ * @return true, if photon passes the mirror
+ */
 bool MirrorRectangle::getOutDir(Photon &p, std::vector<double> &_dirOA) {
     double rS = 0;
     double lS = 0;
@@ -65,6 +70,13 @@ bool MirrorRectangle::getOutDir(Photon &p, std::vector<double> &_dirOA) {
     return isComponentHit;
 }
 
+/**
+ * @brief Outsources calculation for direction of photon
+ * @param p, photon who should be calculated
+ * @param intersect, intersection vector
+ * @param normWidth, normalized vector in direction of the Width
+ * @return true, if calculation is done
+ */
 bool MirrorRectangle::calcOut(Photon &p, std::vector<double> &intersect, std::vector<double> &normWidth) {
     //neuer Stützvektor wird der Schnittpunkt
     p.setPosition(intersect);
@@ -106,23 +118,51 @@ bool MirrorRectangle::calcOut(Photon &p, std::vector<double> &intersect, std::ve
     return true;
 }
 
+/**
+ * @brief Standard get-method for getting the current lengthH of the mirror
+ * @return current lengthH of the lens
+ */
 const double &MirrorRectangle::getLengthH() {
     return lengthH;
 }
 
+/**
+ * @brief Standard get-method for getting the current lengthW of the mirror
+ * @return current lengthW of the lens
+ */
 const double &MirrorRectangle::getLengthW() {
     return lengthW;
 }
 
+/**
+ * @brief Standard set-method for setting a new lengthH for the mirror
+ * @param new lengthH for the mirror
+ */
 void MirrorRectangle::setLengthH(double _lengthH) {
     lengthH = _lengthH;
 }
 
+/**
+ * @brief Standard set-method for setting a new lengthW for the mirror
+ * @param new lengthW for the mirror
+ */
 void MirrorRectangle::setLengthW(double _lengthW) {
     lengthW = _lengthW;
 }
 
+/**
+ * @brief Constructs a mirrorRectangle
+ * @param _position, sets the position of the new mirrorRectangle
+ * @param _normal, sets the normal of the new mirrorRectangle
+ * @param _lengthH, sets the lengthH of the new mirrorRectangle
+ * @param _lengthW, sets the lengthW of the new mirrorRectangle
+ * @param _type, sets the type of the component ("mirrorRectangle")
+ */
 MirrorRectangle::MirrorRectangle(std::vector<double> &_pos, std::vector<double> &_normal, double _lengthH, double _lengthW): Component(_pos,_normal, mirrorRectangle), lengthH(_lengthH), lengthW(_lengthW) {
 }
 
+/**
+ * @brief Copys a mirrorRectangle
+ * @param mirrorRectangle1, copy template for the new mirrorRectangle
+ */
 MirrorRectangle::MirrorRectangle(const MirrorRectangle &mirrorRectangle1): Component(mirrorRectangle1), lengthH(mirrorRectangle1.lengthH), lengthW(mirrorRectangle1.lengthW) {}

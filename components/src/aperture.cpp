@@ -3,10 +3,19 @@
 #include "../../utils/include/utils.hpp"
 #include <cmath>
 
+/**
+ * @brief Standard get-method for type of component
+ */
 std::string Aperture::getType() {
     return "Aperture";
 }
 
+/**
+ * @brief Main function of every component, calculates the position and direction after the photon passes
+ * @param photon, Photon who should be calculated
+ * @param _dirOA, Is a normalized vector from last to current component
+ * @return True, if photon will pass further through the tracing
+ */
 bool Aperture::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
     double rS=0;
     double lS=0;
@@ -34,6 +43,10 @@ bool Aperture::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
         std::vector<double> mHigh(3);
         std::vector<double> mWidth(3);
         Utils::cross_product(mWidth, normal, _dirOA);
+        if(Utils::getAbs(mWidth)==0){
+            _dirOA[0]=_dirOA[0]+0.1;
+            Utils::cross_product(mWidth, normal, _dirOA);
+        }
         Utils::normalizeVector(mWidth);
         Utils::cross_product(mHigh, mWidth, normal);
         Utils::normalizeVector(mHigh);
@@ -67,6 +80,7 @@ bool Aperture::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
         double z = pow((xProz/radius), 2) + pow((yProz/radius), 2);
 
         if ((z<=1 && z>=-1)) {
+            photon.setPosition(intersect);
             isComponentHit = true;
         }
     }
@@ -74,15 +88,33 @@ bool Aperture::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
     return isComponentHit;
 }
 
-
+/**
+ * @brief Standard set-method for setting the radius of the aperture
+ * @param _radius new size of the aperture
+ */
 void Aperture::setRadius(double _radius) {
     radius = _radius;
 }
 
+/**
+ * @brief Standard get-method for getting the current radius of the aperture
+ * @return radius of the aperture
+ */
 double Aperture::getRadius() {
     return radius;
 }
+
+/**
+ * @brief Constructs an aperture
+ * @param _pos, sets the position of the new aperture
+ * @param _normal, sets the normal of the new aperture
+ * @param _radius, sets the radius of the new aperture
+ */
 Aperture::Aperture(std::vector<double>& _pos, std::vector<double>& _normal, double _radius):Component(_pos,  _normal, aperture), radius(_radius){
 }
 
+/**
+ * @brief Copys an aperture
+ * @param aperture1, is the copy template
+ */
 Aperture::Aperture(const Aperture &aperture1): Component(aperture1), radius(aperture1.radius) {}

@@ -3,14 +3,27 @@
 #include "../../utils/include/utils.hpp"
 #include <cmath>
 
+/**
+ * @brief Standard get-method for getting the current type of the component
+ * @return type of the current component ("MirrorSquare")
+ */
 std::string MirrorSquare::getType() {
     return "MirrorSquare";
 }
 
+/**
+ * @brief Standard get-method for getting the current length of the mirror
+ * @return current length of the lens
+ */
 const double &MirrorSquare::getLength() {
     return length;
 }
 
+/**
+ * @brief Main function of every component, calculates the position and direction after the photon passes
+ * @param photon, Photon who should be calculated
+ * @return true, if photon passes the mirror
+ */
 bool MirrorSquare::getOutDir(Photon &p, std::vector<double> &_dirOA) {
     double rS = 0;
     double lS = 0;
@@ -73,6 +86,13 @@ bool MirrorSquare::getOutDir(Photon &p, std::vector<double> &_dirOA) {
     return isComponentHit;
 }
 
+/**
+ * @brief Outsources calculation for direction of photon
+ * @param p, photon who should be calculated
+ * @param intersect, intersection vector
+ * @param normWidth, normalized vector in direction of the Width
+ * @return true, if calculation is done
+ */
 bool MirrorSquare::calcOut(Photon &p, std::vector<double> &intersect, std::vector<double> &normWidth) {
     //neuer Stützvektor wird der Schnittpunkt
     p.setPosition(intersect);
@@ -111,11 +131,26 @@ bool MirrorSquare::calcOut(Photon &p, std::vector<double> &intersect, std::vecto
     return true;
 }
 
+/**
+ * @brief Standard set-method for setting a new length for the mirror
+ * @param new length for the mirror
+ */
 void MirrorSquare::setLength(double _length) {
     length = _length;
 }
 
+/**
+ * @brief Constructs a mirrorSquare
+ * @param _position, sets the position of the new mirrorSquare
+ * @param _normal, sets the normal of the new mirrorSquare
+ * @param _length, sets the length of the new mirrorSquare
+ * @param _type, sets the type of the component ("mirrorSquare")
+ */
 MirrorSquare::MirrorSquare(std::vector<double>& _pos, std::vector<double>& _normal, double _length):Component(_pos, _normal, mirrorSquare), length(_length){
 }
 
+/**
+ * @brief Copys a mirrorSquare
+ * @param mirrorSquare1, copy template for the new mirrorSquare
+ */
 MirrorSquare::MirrorSquare(const MirrorSquare &mirrorSquare1): Component(mirrorSquare1), length(mirrorSquare1.length) {}
