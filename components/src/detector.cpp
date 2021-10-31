@@ -126,7 +126,7 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
                 std::cout << "r" << sensor[i_index][j_index].r << " g" << sensor[i_index][j_index].g << " b" << sensor[i_index][j_index].b << std::endl;
-                std::cout << sensor[i_index][j_index].intensity << std::endl;
+                std::cout << "i " << sensor[i_index][j_index].intensity << std::endl;
             }
         }
     }
@@ -136,18 +136,25 @@ bmp_vector Detector::createImage() {
     double max = sensor[0][0].intensity;
     double min = max;
     double avg = 0.0;
+    double hit = 0.0;
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            if (sensor[i][j].intensity > max) {
-                max = sensor[i][j].intensity;
-            } else if (sensor[i][j].intensity < min) {
-                min = sensor[i][j].intensity;
+            if (sensor[i][j].intensity > 0) {
+                hit += 1.0;
+                if (sensor[i][j].intensity > max) {
+                    max = sensor[i][j].intensity;
+                }
+                else if (sensor[i][j].intensity < min) {
+                    min = sensor[i][j].intensity;
+                }
             }
             avg += sensor[i][j].intensity;
         }
     }
-    avg = avg / (size * size);
+    // avg = avg / ((double)size * (double)size);
+    avg = avg / hit;
     brightness = (avg / max) * 100;
+
 
 
     rgb_vector image(size * size);
