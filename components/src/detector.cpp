@@ -16,7 +16,7 @@ int Detector::getSize() {
     return size;
 }
 
-void Detector::setSize(unsigned int _size) {
+void Detector::setSize(int _size) {
     size = _size;
 }
 
@@ -30,6 +30,10 @@ void Detector::setLength(double _length) {
 
 double Detector::getPixelSize() {
     return pixelSize;
+}
+
+void Detector::setPixelSize(double _size, double _length) {
+    pixelSize = _length / _size;
 }
 
 void Detector::getInPoint(Photon &photon) {
@@ -83,15 +87,14 @@ void Detector::getInPoint(Photon &photon) {
     a = std::abs(ys);
 
 
-    if (a < length / 2) {
+    if (a < length / 2.0) {
         b = std::abs(xs);
-        if (b < length / 2) {
+        if (b < length / 2.0) {
             RGB color;
             const int wl = photon.getWaveLength();
             Utils::coreTranslationInColor(wl, color.r, color.g, color.b);
             int i_index = floor(b / pixelSize);
             int j_index = floor(a / pixelSize);
-            std::cout<<"Hit"<<std::endl;
             if (temp >= 0) {
                 if (temp < M_PI_2) {
                     i_index = floor(size / 2 - i_index);
@@ -106,7 +109,7 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].addRGB(color);
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
-                std::cout << sensor[i_index][j_index].r << std::endl;
+
             } else {
                 if (temp > -M_PI_2) {
                     i_index = floor(size / 2 - i_index);
@@ -121,8 +124,8 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].addRGB(color);
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
-                std::cout << "r" << sensor[i_index][j_index].r << " g" << sensor[i_index][j_index].g << " b" << sensor[i_index][j_index].b << std::endl;
-                std::cout << sensor[i_index][j_index].intensity << std::endl;
+                //std::cout << "r" << sensor[i_index][j_index].r << " g" << sensor[i_index][j_index].g << " b" << sensor[i_index][j_index].b << std::endl;
+                //std::cout << "i " << sensor[i_index][j_index].intensity << std::endl;
             }
         }
     }
@@ -132,18 +135,26 @@ bmp_vector Detector::createImage() {
     double max = sensor[0][0].intensity;
     double min = max;
     double avg = 0.0;
+    double hit = 0.0;
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            if (sensor[i][j].intensity > max) {
-                max = sensor[i][j].intensity;
-            } else if (sensor[i][j].intensity < min) {
-                min = sensor[i][j].intensity;
+            if (sensor[i][j].intensity > 0) {
+                hit += 1.0;
+                if (sensor[i][j].intensity > max) {
+                    max = sensor[i][j].intensity;
+                }
+                else if (sensor[i][j].intensity < min) {
+                    min = sensor[i][j].intensity;
+                }
             }
             avg += sensor[i][j].intensity;
         }
     }
-    avg = avg / (size * size);
+    // avg = avg / ((double)size * (double)size);
+    avg = avg / hit;
     brightness = (avg / max) * 100;
+    brightness = (100 - brightness);
+
 
 
     rgb_vector image(size * size);
@@ -158,13 +169,13 @@ bmp_vector Detector::createImage() {
                 color.r = sensor[i][j].r / sensor[i][j].intensity;
                 color.g = sensor[i][j].g / sensor[i][j].intensity;
                 color.b = sensor[i][j].b / sensor[i][j].intensity;
-                color.intensity = sensor[i][j].intensity;
+                color.intensity = sensor[i][j].intensity / max;
             }
             image[j + i * size] = color;
         }
     }
 
-    unsigned const int sz = size - 1;
+    const int sz = size - 1;
     std::vector<double> bw (sz * sz);
     for (int i = 1; i < sz; i++) {
         for(int j = 1; j < sz; j++) {
@@ -181,6 +192,7 @@ bmp_vector Detector::createImage() {
     // Obwohl die Werte auf [0, 100] verteilt sind, bedeuten Werte wie 35 - 40 besonders hohe Schärfe;
     // Dies liegt daran, dass das Bild ganz spezifische Struktur haben muss um Schärfewerte im Bereich [60 - 100] zu erzeugen;
     sharpness = (sharpness / (max * 4)) * 100;
+    sharpness = (4/49)*pow(sharpness, 2) - (40/7)*sharpness +100;
 
     double adjustment;
     for (int i = 0; i < image.size(); i++) {
@@ -250,11 +262,11 @@ void Detector::recalculateInternals() {
     else {
         ref = { 0, 0, 1};
     }
-    ref = ref * (length / 2);
+    ref = ref * (length / 2.0);
     Utils::normalizeVector(detectorNormal);
 }
 
-Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_posOfPrevComponent, unsigned int _size,
+Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_posOfPrevComponent, int _size,
                    double _edgeLength) : Component(_pos, _normal, detector), posOfPrevComponent(_posOfPrevComponent),size(_size),length(_edgeLength),pixelSize(length / (static_cast<double>(size))),sensor(_size, std::vector<RGB>(_size)) {
 
     detectorNormal = posOfPrevComponent - position;
@@ -291,7 +303,7 @@ Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std:
     else {
         ref = { 0, 0, 1};
     }
-    ref = ref * (length / 2);
+    ref = ref * (length / 2.0);
     Utils::normalizeVector(detectorNormal);
 }
 

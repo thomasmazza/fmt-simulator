@@ -13,6 +13,7 @@
 #include "mirrorElliptical.hpp"
 #include "mirrorSquare.hpp"
 #include "detector.hpp"
+#include "aperture.hpp"
 #include "config.hpp"
 #include "componentType.hpp"
 #include "mainRoutine.hpp"
@@ -24,17 +25,16 @@ private:
     List* lstComp;
     std::vector<double> origin;
     short weightB;
-    short weightDoF;
     short weightF;
     int maxPhot;
+    double fLastLens;
+    double curMin;
     Config::object* object;
 public:
-    Optim(short&, short&, short&, List*, std::vector<Photon>*, Config::object*);//Gewichtung(Hell., Schärfe, Tiefensch.) ; akt. gew.Sum
+    Optim(short&, short&, short&, List*, std::vector<Photon>*, Config::object*, double);//Gewichtung(Hell., Schärfe, Tiefensch.) ; akt. gew.Sum
     void OAimprove();
     void optBright();
     void optFocus();
-    void optDoF();
-    void startOptim();
-    //double calcSum();
+    double startOptim();
+    double calcSum();
 };
-
