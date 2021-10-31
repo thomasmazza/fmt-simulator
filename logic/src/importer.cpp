@@ -341,7 +341,7 @@ void Importer::importStp(List &_lst, std::string _filename) {
 /**
  * @brief Imports an Object
  * @param _object Object in which the object gets imported
- * @param filename Filename
+ * @param filename filename
  */
 void Importer::importObject(Config::object &_object, std::string filename) {
     std::ifstream setupFile;
