@@ -7,6 +7,7 @@
 #include "bmpInfoHeader.hpp"
 
 using namespace Config;
+
 std::ostream& operator <<(std::ostream& os, ComponentType _type){
     switch(_type){
         case filter : os << "Filter"; break;
@@ -22,39 +23,73 @@ std::ostream& operator <<(std::ostream& os, ComponentType _type){
     }
     return os;
 }
-
+/**
+ * @brief Exports a string in <> Brackets
+ * @param os OutputFileStream in which the string will be exported
+ * @param content String that will be exported
+ */
 void Exporter::exportInBrackets(std::ofstream &os, const std::string &content) {
     os << "<" << content << ">" << std::endl;
 }
-
+/**
+* @brief Exports a ComponentType in <> Brackets
+* @param os OutputFileStream in which the string will be exported
+* @param type ComponentType that will be exported
+*/
 void Exporter::exportInBrackets(std::ofstream &os, const ComponentType type) {
     os << "<" << type << ">" << std::endl;
 }
-
+/**
+ * @brief Exports a string in </> Brackets
+ * @param os OutputFileStream in which the string will be exported
+ * @param content String that will be exported
+ */
 void Exporter::exportInClosingBrackets(std::ofstream &os, const std::string &content) {
     os << "</" << content << ">" << std::endl;
 }
-
+/**
+* @brief Exports a ComponentType in </> Brackets
+* @param os OutputFileStream in which the string will be exported
+* @param type ComponentType that will be exported
+*/
 void Exporter::exportInClosingBrackets(std::ofstream &os, const ComponentType type) {
     os << "</" << type << ">" << std::endl;
 }
-
+/**
+* @brief Exports a Vector
+* @param os OutputFileStream in which the string will be exported
+* @param type ComponentType that will be exported
+*/
 void Exporter::exportVector(std::ofstream &os, const std::vector<double> &_vector) {
     os << _vector[0] << " " << _vector[1] << " " << _vector[2] << std::endl;
 }
-
+/**
+* @brief Exports a Number with a specific XML Tag
+* @param os OutputFileStream in which the string will be exported
+* @param parameterTag Specific Parameter XML Parameter
+ * @param number Number that will be exported
+*/
 void Exporter::exportParameter(std::ofstream &os, std::string parameterTag,int number) {
     exportInBrackets(os, parameterTag);
     os << number << std::endl;
     exportInClosingBrackets(os, parameterTag);
 }
-
+/**
+* @brief Exports a Number with a specific XML Tag
+* @param os OutputFileStream in which the string will be exported
+* @param parameterTag Specific Parameter XML Parameter
+* @param number Number that will be exported
+*/
 void Exporter::exportParameter(std::ofstream &os, std::string parameterTag,double number) {
     exportInBrackets(os, parameterTag);
     os << number << std::endl;
     exportInClosingBrackets(os, parameterTag);
 }
-
+/**
+ * @brief Exports a SetupList
+ * @param _lst List that will be exported
+ * @param _filename Fileanme
+ */
 void Exporter::exportStp(List &_lst, std::string _filename) {
     std::ofstream dataOut(_filename, std::ios::out);
     exportInBrackets(dataOut, SETUP_OPENING_TAG);
@@ -120,7 +155,11 @@ void Exporter::exportStp(List &_lst, std::string _filename) {
     exportInBrackets(dataOut, SETUP_CLOSING_TAG);
     dataOut.close();
 }
-
+/**
+ * @brief Export Object from object file
+ * @param object Object that will be exported
+ * @param filename Filename
+ */
 void Exporter::exportObject(Config::object &object, std::string filename) {
     std::ofstream dataOut(filename, std::ios::out);
     exportInBrackets(dataOut, OBJECT_OPENING_TAG);
@@ -141,26 +180,11 @@ void Exporter::exportObject(Config::object &object, std::string filename) {
     exportInBrackets(dataOut, OBJECT_CLOSING_TAG);
     dataOut.close();
 }
-/*
-void Exporter::exportBMPImage( Detector &_detector, std::string filename) {
-    bmp_vector image = _detector.createImage();
-
-    BmpFileHeader bfh(_detector.getSize(),_detector.getSize());
-    BmpInfoHeader bih(_detector.getSize(),_detector.getSize());
-    unsigned short bfType=0x4d42;
-    std::ofstream fout(filename, std::ios::binary);
-    fout.write((char *) &bfType, sizeof(bfType));
-    fout.write((char *) &bfh, 14);
-    fout.write((char *) &bih, 40);
-    for (int i = 0; i < image.size(); i++) {
-        fout.write((char *) &image[i], 3);
-    }
-    fout.close();
-
-}
-*/
-
-
+/**
+ * @brief Export a BMP Image from a detector
+ * @param _detector
+ * @param filename
+ */
 void Exporter::exportBMPImage(Detector &_detector, std::string filename) {
     bmp_vector image = _detector.createImage();
     BmpFileHeader bfh(_detector.getSize(), _detector.getSize());
