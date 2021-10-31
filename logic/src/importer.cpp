@@ -186,10 +186,10 @@ void Importer::importBool(std::ifstream &_setupFile, const std::string &boolTag,
     }
 }
 /**
- * @brief Get
- * @param file
- * @param buf
- * @param expectedString
+ * @brief Get Content in <>-Brackets and checks if the Content the expected Content
+ * @param file ImportFileStream
+ * @param buf buffer for content
+ * @param expectedString expected string to check buffer
  */
 void Importer::getContentInBrackets(std::ifstream &file, std::string &buf, const std::string expectedString) {
     getContentInBrackets(file, buf);
@@ -197,12 +197,20 @@ void Importer::getContentInBrackets(std::ifstream &file, std::string &buf, const
         throw WrongTagException();
     }
 }
-
+/**
+ * @brief Get Content in <>-Brackets
+ * @param file ImportFileStream
+ * @param buf buffer for content
+ */
 void Importer::getContentInBrackets(std::ifstream &file, std::string &buf) {
     std::getline(file, buf, '<');
     std::getline(file, buf, '>');
 }
-
+/**
+ * @brief Imports SetupFile
+ * @param _lst List in which the setup gets imported
+ * @param _filename Filename
+ */
 void Importer::importStp(List &_lst, std::string _filename) {
     setlocale(LC_ALL, "C");
     std::ifstream setupFile;
@@ -330,7 +338,11 @@ void Importer::importStp(List &_lst, std::string _filename) {
     }
     setupFile.close();
 }
-
+/**
+ * @brief Imports an Object
+ * @param _object Object in which the object gets imported
+ * @param filename Filename
+ */
 void Importer::importObject(Config::object &_object, std::string filename) {
     std::ifstream setupFile;
     setupFile.open(filename);
