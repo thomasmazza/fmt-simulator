@@ -12,31 +12,47 @@
 
 using namespace Config;
 
+/**
+ * @brief Standard Exception for SetupImporter
+ */
 struct ImporterException : public std::exception {
     const char *what() const throw() {
         return "Error while import Setup";
     }
 };
 
+/**
+ * @brief Exception for wrong Syntax in Components
+ */
 struct InvalidComponentException : public ImporterException {
     const char *what() const throw() {
         return "Invalid Component in Setup File";
     }
 };
 
+/**
+ * @brief Exception if expected tag differs from received tag
+ */
 struct WrongTagException : public ImporterException {
     const char *what() const throw() {
         return "Wrong Parameter in Component";
     }
 };
 
+/**
+ * @brief Exception if received content from Setupfile is not a number
+ */
 struct NotANumberException : public ImporterException {
     const char *what() const throw() {
         return "Not a valid Number";
     }
 };
 
-
+/**
+ * @brief Imports position vector from XML file
+ * @param _setupFile ImportFilestream
+ * @param _position Reference for position vector
+ */
 void Importer::importPosition(std::ifstream &_setupFile, std::vector<double> &_position) {
     std::string buf;
     try {
@@ -53,6 +69,11 @@ void Importer::importPosition(std::ifstream &_setupFile, std::vector<double> &_p
     }
 }
 
+/**
+ * @brief Imports normal vector from XML file
+ * @param _setupFile ImportFileStream
+ * @param _normal Reference for normal vector
+ */
 void Importer::importNormal(std::ifstream &_setupFile, std::vector<double> &_normal) {
     std::string buf;
     try {
@@ -69,23 +90,12 @@ void Importer::importNormal(std::ifstream &_setupFile, std::vector<double> &_nor
     }
 }
 
-void Importer::importPointOnEdge(std::ifstream &_setupFile, std::vector<double> &_pointOnEdge) {
-    std::string buf;
-    try {
-        getContentInBrackets(_setupFile, buf, POINT_ON_EDGE_OPENING_TAG);
-        importVector(_setupFile, _pointOnEdge);
-        getContentInBrackets(_setupFile, buf, POINT_ON_EDGE_CLOSING_TAG);
-    } catch (InvalidComponentException &e) {
-        std::cerr << e.what() << std::endl << "Error occurred while creating PointOnEdge Vector" << std::endl;
-        throw InvalidComponentException();
-    } catch (WrongTagException &e) {
-        std::cerr << e.what() << std::endl << "Expected Parameter: " << POINT_ON_EDGE_OPENING_TAG << std::endl
-                  << "Retrieved Parameter: " << buf << std::endl;
-        throw WrongTagException();
-    }
-}
-
-void Importer::importPosOfPrevComponent(std::ifstream & _setupFile, std::vector<double> & _posOfPrev) {
+/**
+ * @brief Imports position of previous component vector from XML file
+ * @param _setupFile ImportFileStream
+ * @param _normal Reference for normal vector
+ */
+void Importer::importPosOfPrevComponent(std::ifstream &_setupFile, std::vector<double> &_posOfPrev) {
     std::string buf;
     try {
         getContentInBrackets(_setupFile, buf, POSITION_OF_PREVIOUS_COMPONENT_OPENING_TAG);
@@ -95,13 +105,18 @@ void Importer::importPosOfPrevComponent(std::ifstream & _setupFile, std::vector<
         std::cerr << e.what() << std::endl << "Error occurred while creating posOfPrevComponent Vector" << std::endl;
         throw InvalidComponentException();
     } catch (WrongTagException &e) {
-        std::cerr << e.what() << std::endl << "Expected Parameter: " << POSITION_OF_PREVIOUS_COMPONENT_OPENING_TAG << std::endl
+        std::cerr << e.what() << std::endl << "Expected Parameter: " << POSITION_OF_PREVIOUS_COMPONENT_OPENING_TAG
+                  << std::endl
                   << "Retrieved Parameter: " << buf << std::endl;
         throw WrongTagException();
     }
 }
 
-
+/**
+ * @brief Import vector from XML file
+ * @param _setupFile ImportFileStream
+ * @param _vector Reference for vector
+ */
 void Importer::importVector(std::ifstream &_setupFile, std::vector<double> &_vector) {
     std::string buf;
     try {
@@ -118,6 +133,12 @@ void Importer::importVector(std::ifstream &_setupFile, std::vector<double> &_vec
     }
 }
 
+/**
+ * @brief Import number from XML file
+ * @param _setupFile ImportFileStream
+ * @param numberTag Expected ParameterTag
+ * @param importNumber Reference for number
+ */
 void Importer::importNumber(std::ifstream &_setupFile, const std::string &numberTag, int &importNumber) {
     std::string buf;
     try {
@@ -130,6 +151,12 @@ void Importer::importNumber(std::ifstream &_setupFile, const std::string &number
     }
 }
 
+/**
+ * @brief Import number from XML file
+ * @param _setupFile ImportFileStream
+ * @param numberTag Expected ParameterTag
+ * @param importNumber Reference for number
+ */
 void Importer::importNumber(std::ifstream &_setupFile, const std::string &numberTag, double &importNumber) {
     std::string buf;
     try {
@@ -141,7 +168,12 @@ void Importer::importNumber(std::ifstream &_setupFile, const std::string &number
         throw NotANumberException();
     }
 }
-
+/**
+ * @brief Import Bool from XML file
+ * @param _setupFile ImportFileStream
+ * @param boolTag Expected ParameterTag
+ * @param importBool Reference for bool
+ */
 void Importer::importBool(std::ifstream &_setupFile, const std::string &boolTag, bool &importBool) {
     std::string buf;
     try {
@@ -153,7 +185,12 @@ void Importer::importBool(std::ifstream &_setupFile, const std::string &boolTag,
         throw ImporterException();
     }
 }
-
+/**
+ * @brief Get
+ * @param file
+ * @param buf
+ * @param expectedString
+ */
 void Importer::getContentInBrackets(std::ifstream &file, std::string &buf, const std::string expectedString) {
     getContentInBrackets(file, buf);
     if (buf != expectedString) {
@@ -201,7 +238,8 @@ void Importer::importStp(List &_lst, std::string _filename) {
                 importNumber(setupFile, RADIUS_W_OPENING_TAG, _radiusW);
                 importNumber(setupFile, D_OPENING_TAG, _d);
                 importBool(setupFile, PLANE_IS_FRONT_OPENING_TAG, _planeIsFront);
-                _lst.append<LensOneSided>( LensOneSided(_position, _normal, _refIndex, _radiusH, _radiusW, _d, _planeIsFront));
+                _lst.append<LensOneSided>(
+                        LensOneSided(_position, _normal, _refIndex, _radiusH, _radiusW, _d, _planeIsFront));
                 getContentInBrackets(setupFile, buf, LENS_ONE_SIDED_CLOSING_TAG);
             } else if (buf == LENS_TWO_SIDED_OPENING_TAG) {
                 double _refIndex;
@@ -261,19 +299,19 @@ void Importer::importStp(List &_lst, std::string _filename) {
 
                 _lst.append<MirrorSquare>(MirrorSquare(_position, _normal, _length));
                 getContentInBrackets(setupFile, buf, MIRROR_SQUARE_CLOSING_TAG);
-            } else if(buf == DETECTOR_OPENING_TAG){
+            } else if (buf == DETECTOR_OPENING_TAG) {
                 std::vector<double> _posOfPreviousComponent(3);
                 int size;
                 double length;
                 importPosition(setupFile, _position);
                 importNormal(setupFile, _normal);
                 importPosOfPrevComponent(setupFile, _posOfPreviousComponent);
-                importNumber(setupFile, SIZE_OPENING_TAG,size);
+                importNumber(setupFile, SIZE_OPENING_TAG, size);
                 importNumber(setupFile, LENGTH_OPENING_TAG, length);
 
                 _lst.append<Detector>(Detector(_position, _normal, _posOfPreviousComponent, size, length));
                 getContentInBrackets(setupFile, buf, DETECTOR_CLOSING_TAG);
-            }else if(buf == APERTURE_OPENING_TAG){
+            } else if (buf == APERTURE_OPENING_TAG) {
                 double radius;
                 importPosition(setupFile, _position);
                 importNormal(setupFile, _normal);
@@ -281,8 +319,7 @@ void Importer::importStp(List &_lst, std::string _filename) {
 
                 _lst.append<Aperture>(Aperture(_position, _normal, radius));
                 getContentInBrackets(setupFile, buf, APERTURE_CLOSING_TAG);
-            }
-            else if (buf == SETUP_CLOSING_TAG) {
+            } else if (buf == SETUP_CLOSING_TAG) {
                 break;
             } else {
                 throw InvalidComponentException();
