@@ -4,11 +4,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++14
 
-TARGET = OpenMP
-
-doc.depends = $(SOURCES)
-doc.commands = (cat Doxyfile; echo "INPUT = $?") | doxygen -
-QMAKE_EXTRA_TARGETS += doc
+TARGET = FMT-Simulator.exe
 
 QMAKE_CXXFLAGS += -fopenmp
 QMAKE_LFLAGS += -fopenmp
@@ -108,6 +104,13 @@ HEADERS += \
 
 FORMS += \
     GUI/include/fmt_mainwindow.ui
+
+doc.depends += \
+    $(HEADERS) \
+    $(SOURCES)
+
+doc.commands = (cat Doxyfile) | doxygen -
+QMAKE_EXTRA_TARGETS += doc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

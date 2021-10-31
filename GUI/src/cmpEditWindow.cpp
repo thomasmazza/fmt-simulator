@@ -4,12 +4,19 @@
 //Detector Window
 //---------------
 
+/**
+ * @brief Adds a warning dialog, if the user tries to close the window
+ * @param event Default Close event
+ */
 void DetectorEditWindow::closeEvent(QCloseEvent* event){
     QMessageBox::StandardButton exitMessage = QMessageBox::critical(this, "Warning", "If you close the window now, no changes will be made.", QMessageBox::Ok|QMessageBox::Cancel);
     if(exitMessage == QMessageBox::Ok) event->accept();
     else event->ignore();
 }
 
+/**
+ * @brief Closes the window, triggering the data transfer and checking for valid inputs
+ */
 void DetectorEditWindow::closeOK(){
     if(!xPos->text().isEmpty() &&
             !yPos->text().isEmpty() &&
@@ -74,6 +81,18 @@ void DetectorEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
+/**
+ * @brief Creating a new edit window and inserting the current parameter values
+ * @param parent Sets parent window, affected by modality
+ * @param _xPos X-Position of Detector
+ * @param _yPos Y-Position of Detector
+ * @param _zPos Z-Position of Detector
+ * @param _xNorm X-Normal of Detector
+ * @param _yNorm Y-Normal of Detector
+ * @param _zNorm Z-Normal of Detector
+ * @param _edgeLength Edge Length of Detector
+ * @param _pixelCount Pixel Count on Edge of Detector
+ */
 DetectorEditWindow::DetectorEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _edgeLength, double _pixelCount):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Detector");
@@ -175,12 +194,19 @@ DetectorEditWindow::DetectorEditWindow(QWidget* parent, double _xPos, double _yP
 //Filter Window
 //---------------
 
+/**
+ * @brief Adds a warning dialog, if the user tries to close the window
+ * @param event Default Close event
+ */
 void FilterEditWindow::closeEvent(QCloseEvent* event){
     QMessageBox::StandardButton exitMessage = QMessageBox::critical(this, "Warning", "If you close the window now, no changes will be made.", QMessageBox::Ok|QMessageBox::Cancel);
     if(exitMessage == QMessageBox::Ok) event->accept();
     else event->ignore();
 }
 
+/**
+ * @brief Closes the window, triggering the data transfer and checking for valid inputs
+ */
 void FilterEditWindow::closeOK(){
     if(!xPos->text().isEmpty() &&
             !yPos->text().isEmpty() &&
@@ -246,6 +272,18 @@ void FilterEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
+/**
+ * @brief Creating a new edit window and inserting the current parameter values
+ * @param parent Sets parent window, affected by modality
+ * @param _xPos X-Position of Filter
+ * @param _yPos Y-Position of Filter
+ * @param _zPos Z-Position of Filter
+ * @param _xNorm X-Normal of Filter
+ * @param _yNorm Y-Normal of Filter
+ * @param _zNorm Z-Normal of Filter
+ * @param _lowerLim Lower pass limit of Filter
+ * @param _upperLim Upper pass limit of Filter
+ */
 FilterEditWindow::FilterEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _lowerLim, double _upperLim):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Filter");
@@ -347,12 +385,19 @@ FilterEditWindow::FilterEditWindow(QWidget* parent, double _xPos, double _yPos, 
 //One Sided Lens Window
 //---------------
 
+/**
+ * @brief Adds a warning dialog, if the user tries to close the window
+ * @param event Default Close event
+ */
 void LensOneSidedEditWindow::closeEvent(QCloseEvent* event){
     QMessageBox::StandardButton exitMessage = QMessageBox::critical(this, "Warning", "If you close the window now, no changes will be made.", QMessageBox::Ok|QMessageBox::Cancel);
     if(exitMessage == QMessageBox::Ok) event->accept();
     else event->ignore();
 }
 
+/**
+ * @brief Closes the window, triggering the data transfer and checking for valid inputs
+ */
 void LensOneSidedEditWindow::closeOK(){
     if(!xPos->text().isEmpty() &&
             !yPos->text().isEmpty() &&
@@ -435,6 +480,21 @@ void LensOneSidedEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
+/**
+ * @brief Creating a new edit window and inserting the current parameter values
+ * @param parent Sets parent window, affected by modality
+ * @param _xPos X-Position of One Sided Lens
+ * @param _yPos Y-Position of One Sided Lens
+ * @param _zPos Z-Position of One Sided Lens
+ * @param _xNorm X-Normal of One Sided Lens
+ * @param _yNorm Y-Normal of One Sided Lens
+ * @param _zNorm Z-Normal of One Sided Lens
+ * @param _refIndex Refractive Index of One Sided Lens
+ * @param _radiusH Radius of One Sided Lens
+ * @param _radiusW Radis of curvature of One Sided Lens
+ * @param _thickness Tickness of One Sided Lens
+ * @param _planeIsFront True, if plane surface of One Sided Lens is its Front
+ */
 LensOneSidedEditWindow::LensOneSidedEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _refIndex, double _radiusH, double _radiusW, double _thickness, bool _planeIsFront):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit One Sided Lens");
@@ -555,12 +615,19 @@ LensOneSidedEditWindow::LensOneSidedEditWindow(QWidget* parent, double _xPos, do
 //Two Sided Lens Window
 //---------------
 
+/**
+ * @brief Adds a warning dialog, if the user tries to close the window
+ * @param event Default Close event
+ */
 void LensTwoSidedEditWindow::closeEvent(QCloseEvent* event){
     QMessageBox::StandardButton exitMessage = QMessageBox::critical(this, "Warning", "If you close the window now, no changes will be made.", QMessageBox::Ok|QMessageBox::Cancel);
     if(exitMessage == QMessageBox::Ok) event->accept();
     else event->ignore();
 }
 
+/**
+ * @brief Closes the window, triggering the data transfer and checking for valid inputs
+ */
 void LensTwoSidedEditWindow::closeOK(){
     if(!xPos->text().isEmpty() &&
             !yPos->text().isEmpty() &&
@@ -647,6 +714,21 @@ void LensTwoSidedEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
+/**
+ * @brief Creating a new edit window and inserting the current parameter values
+ * @param parent Sets parent window, affected by modality
+ * @param _xPos X-Position of Two Sided Lens
+ * @param _yPos Y-Position of Two Sided Lens
+ * @param _zPos Z-Position of Two Sided Lens
+ * @param _xNorm X-Normal of Two Sided Lens
+ * @param _yNorm Y-Normal of Two Sided Lens
+ * @param _zNorm Z-Normal of Two Sided Lens
+ * @param _refIndex Refractive Index of Two Sided Lens
+ * @param _radiusH Radius of Two Sided Lens
+ * @param _radiusI Radius of front side curvature of Two Sided Lens
+ * @param _radiusO Radius of back side curvature of Two Sided Lens
+ * @param _thickness Thickness of Two Sided Lens
+ */
 LensTwoSidedEditWindow::LensTwoSidedEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _refIndex, double _radiusH, double _radiusI, double _radiusO, double _thickness):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Two Sided Lens");
@@ -766,12 +848,19 @@ LensTwoSidedEditWindow::LensTwoSidedEditWindow(QWidget* parent, double _xPos, do
 //Circle Mirror Window
 //---------------
 
+/**
+ * @brief Adds a warning dialog, if the user tries to close the window
+ * @param event Default Close event
+ */
 void MirrorCircleEditWindow::closeEvent(QCloseEvent* event){
     QMessageBox::StandardButton exitMessage = QMessageBox::critical(this, "Warning", "If you close the window now, no changes will be made.", QMessageBox::Ok|QMessageBox::Cancel);
     if(exitMessage == QMessageBox::Ok) event->accept();
     else event->ignore();
 }
 
+/**
+ * @brief Closes the window, triggering the data transfer and checking for valid inputs
+ */
 void MirrorCircleEditWindow::closeOK(){
     if(!xPos->text().isEmpty() &&
             !yPos->text().isEmpty() &&
@@ -830,6 +919,17 @@ void MirrorCircleEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
+/**
+ * @brief Creating a new edit window and inserting the current parameter values
+ * @param parent Sets parent window, affected by modality
+ * @param _xPos X-Position of Circle Mirror
+ * @param _yPos Y-Position of Circle Mirror
+ * @param _zPos Z-Position of Circle Mirror
+ * @param _xNorm X-Normal of Circle Mirror
+ * @param _yNorm Y-Normal of Circle Mirror
+ * @param _zNorm Z-Normal of Circle Mirror
+ * @param _radius Radius of Circle Mirror
+ */
 MirrorCircleEditWindow::MirrorCircleEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _radius):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Circle Mirror");
@@ -925,12 +1025,19 @@ MirrorCircleEditWindow::MirrorCircleEditWindow(QWidget* parent, double _xPos, do
 //Elliptical Mirror Window
 //---------------
 
+/**
+ * @brief Adds a warning dialog, if the user tries to close the window
+ * @param event Default Close event
+ */
 void MirrorEllipticalEditWindow::closeEvent(QCloseEvent* event){
     QMessageBox::StandardButton exitMessage = QMessageBox::critical(this, "Warning", "If you close the window now, no changes will be made.", QMessageBox::Ok|QMessageBox::Cancel);
     if(exitMessage == QMessageBox::Ok) event->accept();
     else event->ignore();
 }
 
+/**
+ * @brief Closes the window, triggering the data transfer and checking for valid inputs
+ */
 void MirrorEllipticalEditWindow::closeOK(){
     if(!xPos->text().isEmpty() &&
             !yPos->text().isEmpty() &&
@@ -996,6 +1103,18 @@ void MirrorEllipticalEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
+/**
+ * @brief Creating a new edit window and inserting the current parameter values
+ * @param parent Sets parent window, affected by modality
+ * @param _xPos X-Position of Elliptical Mirror
+ * @param _yPos Y-Position of Elliptical Mirror
+ * @param _zPos Z-Position of Elliptical Mirror
+ * @param _xNorm X-Normal of Elliptical Mirror
+ * @param _yNorm Y-Normal of Elliptical Mirror
+ * @param _zNorm Z-Normal of Elliptical Mirror
+ * @param _radiusH Radius in height of Elliptical Mirror
+ * @param _radiusW Radius in width of Elliptical Mirror
+ */
 MirrorEllipticalEditWindow::MirrorEllipticalEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _radiusH, double _radiusW):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Elliptical Mirror");
@@ -1097,12 +1216,19 @@ MirrorEllipticalEditWindow::MirrorEllipticalEditWindow(QWidget* parent, double _
 //Rectangular Mirror Window
 //---------------
 
+/**
+ * @brief Adds a warning dialog, if the user tries to close the window
+ * @param event Default Close event
+ */
 void MirrorRectangularEditWindow::closeEvent(QCloseEvent* event){
     QMessageBox::StandardButton exitMessage = QMessageBox::critical(this, "Warning", "If you close the window now, no changes will be made.", QMessageBox::Ok|QMessageBox::Cancel);
     if(exitMessage == QMessageBox::Ok) event->accept();
     else event->ignore();
 }
 
+/**
+ * @brief Closes the window, triggering the data transfer and checking for valid inputs
+ */
 void MirrorRectangularEditWindow::closeOK(){
     if(!xPos->text().isEmpty() &&
             !yPos->text().isEmpty() &&
@@ -1168,6 +1294,18 @@ void MirrorRectangularEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
+/**
+ * @brief Creating a new edit window and inserting the current parameter values
+ * @param parent Sets parent window, affected by modality
+ * @param _xPos X-Position of Rectangle Mirror
+ * @param _yPos Y-Position of Rectangle Mirror
+ * @param _zPos Z-Position of Rectangle Mirror
+ * @param _xNorm X-Normal of Rectangle Mirror
+ * @param _yNorm Y-Normal of Rectangle Mirror
+ * @param _zNorm Z-Normal of Rectangle Mirror
+ * @param _lengthH Height of Rectangle Mirror
+ * @param _lengthW Width of Rectangle Mirror
+ */
 MirrorRectangularEditWindow::MirrorRectangularEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _lengthH, double _lengthW):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Rectangular Mirror");
@@ -1269,12 +1407,19 @@ MirrorRectangularEditWindow::MirrorRectangularEditWindow(QWidget* parent, double
 //Square Mirror Window
 //---------------
 
+/**
+ * @brief Adds a warning dialog, if the user tries to close the window
+ * @param event Default Close event
+ */
 void MirrorSquareEditWindow::closeEvent(QCloseEvent* event){
     QMessageBox::StandardButton exitMessage = QMessageBox::critical(this, "Warning", "If you close the window now, no changes will be made.", QMessageBox::Ok|QMessageBox::Cancel);
     if(exitMessage == QMessageBox::Ok) event->accept();
     else event->ignore();
 }
 
+/**
+ * @brief Closes the window, triggering the data transfer and checking for valid inputs
+ */
 void MirrorSquareEditWindow::closeOK(){
     if(!xPos->text().isEmpty() &&
             !yPos->text().isEmpty() &&
@@ -1333,6 +1478,17 @@ void MirrorSquareEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
+/**
+ * @brief Creating a new edit window and inserting the current parameter values
+ * @param parent Sets parent window, affected by modality
+ * @param _xPos X-Position of Square Mirror
+ * @param _yPos Y-Position of Square Mirror
+ * @param _zPos Z-Position of Square Mirror
+ * @param _xNorm X-Normal of Square Mirror
+ * @param _yNorm Y-Normal of Square Mirror
+ * @param _zNorm Z-Normal of Square Mirror
+ * @param _length Edge length of Square Mirror
+ */
 MirrorSquareEditWindow::MirrorSquareEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _length):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Square Mirror");
@@ -1428,12 +1584,19 @@ MirrorSquareEditWindow::MirrorSquareEditWindow(QWidget* parent, double _xPos, do
 //Aperture Window
 //---------------
 
+/**
+ * @brief Adds a warning dialog, if the user tries to close the window
+ * @param event Default Close event
+ */
 void ApertureEditWindow::closeEvent(QCloseEvent* event){
     QMessageBox::StandardButton exitMessage = QMessageBox::critical(this, "Warning", "If you close the window now, no changes will be made.", QMessageBox::Ok|QMessageBox::Cancel);
     if(exitMessage == QMessageBox::Ok) event->accept();
     else event->ignore();
 }
 
+/**
+ * @brief Closes the window, triggering the data transfer and checking for valid inputs
+ */
 void ApertureEditWindow::closeOK(){
     if(!xPos->text().isEmpty() &&
             !yPos->text().isEmpty() &&
@@ -1492,6 +1655,17 @@ void ApertureEditWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
+/**
+ * @brief Creating a new edit window and inserting the current parameter values
+ * @param parent Sets parent window, affected by modality
+ * @param _xPos X-Position of Aperture
+ * @param _yPos Y-Position of Aperture
+ * @param _zPos Z-Position of Aperture
+ * @param _xNorm X-Normal of Aperture
+ * @param _yNorm Y-Normal of Aperture
+ * @param _zNorm Z-Normal of Aperture
+ * @param _radius Radius of Aperture
+ */
 ApertureEditWindow::ApertureEditWindow(QWidget* parent, double _xPos, double _yPos, double _zPos, double _xNorm, double _yNorm, double _zNorm, double _radius):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Edit Aperture");

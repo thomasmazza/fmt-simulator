@@ -24,6 +24,9 @@
 #include "../../components/include/mirrorSquare.hpp"
 #include "../../components/include/aperture.hpp"
 
+/**
+ * @brief Small representation widget for components in the list
+ */
 class CmpList_element : public QFrame{
     Q_OBJECT
 public:
