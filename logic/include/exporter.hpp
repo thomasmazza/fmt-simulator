@@ -26,6 +26,7 @@ private:
     static void exportInClosingBrackets(std::ofstream& os, const ComponentType type);
     static void exportVector(std::ofstream& os, const std::vector<double> &_vector);
     static void exportParameter(std::ofstream& os, std::string parameterTag, int number);
+    static void exportParameter(std::ofstream& os, std::string parameterTag, double number);
 public:
     static void exportStp(List &, std::string);
     static void exportObject(Config::object & object, std::string filename);
