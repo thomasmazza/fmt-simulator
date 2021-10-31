@@ -64,6 +64,7 @@ private:
     bool autoDetect(QString, QString);
     void setMainWindowInactive(QString&, QString&);
     void setMainWindowActive(QString&, QString&);
+    void disableDoF();
     Ui::fmt_mainWindow *ui;
 
     Config::object simObj;
