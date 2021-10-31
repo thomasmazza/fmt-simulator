@@ -22,6 +22,9 @@ fmt_mainWindow::fmt_mainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //DoF vorrübergehend ausblenden
+    disableDoF();
+
     connect(ui->CmpAddButton, &QPushButton::clicked, this, &fmt_mainWindow::checkOnCmpAdd);
     connect(this, &fmt_mainWindow::triggerCmpAdd, ui->CmpListBox, &CmpList_box::addCmpButtonPressed);
 }
@@ -54,6 +57,70 @@ bool fmt_mainWindow::autoDetect(QString _name, QString _filetype){
         return true;
     }
     return false;
+}
+
+/**
+ * @brief Disables all Widgets except ProgressBar
+ * @param inStyle Reference to Style Settings of AutoInput Button, is set to Style before deactivation
+ * @param stpStyle Reference to Style Settings of AutoSetup Button, is set to Style before deactivation
+ */
+void fmt_mainWindow::setMainWindowInactive(QString& inStyle, QString& stpStyle){
+    for(auto* widget : this->findChildren<QPushButton*>()){
+        widget->setEnabled(false);
+    }
+    for(auto* widget : this->findChildren<QLabel*>()){
+        widget->setEnabled(false);
+    }
+    for(auto* widget : this->findChildren<QLineEdit*>()){
+        widget->setEnabled(false);
+    }
+    for(auto* widget : this->findChildren<QTextBrowser*>()){
+        widget->setEnabled(false);
+    }
+    ui->Priority1_Box->setEnabled(false);
+    ui->Priority2_Box->setEnabled(false);
+    ui->Priority3_Box->setEnabled(false);
+    inStyle = ui->InFileAuto->styleSheet();
+    stpStyle = ui->StpFileAuto->styleSheet();
+    ui->InFileAuto->setStyleSheet("QPushButton {color: grey}");
+    ui->StpFileAuto->setStyleSheet("QPushButton {color: grey}");
+}
+
+/**
+ * @brief Enables all Widgets, counterpart to setMainWindowInactive
+ * @param inStyle Style of AutoInput button, is reassigned to Button
+ * @param stpStyle Style of AutoSetup button, is reassigned to Button
+ */
+void fmt_mainWindow::setMainWindowActive(QString& inStyle, QString& stpStyle){
+    for(auto* widget : this->findChildren<QPushButton*>()){
+        widget->setEnabled(true);
+    }
+    for(auto* widget : this->findChildren<QLabel*>()){
+        widget->setEnabled(true);
+    }
+    for(auto* widget : this->findChildren<QLineEdit*>()){
+        widget->setEnabled(true);
+    }
+    for(auto* widget : this->findChildren<QTextBrowser*>()){
+        widget->setEnabled(true);
+    }
+    ui->Priority1_Box->setEnabled(true);
+    ui->Priority2_Box->setEnabled(true);
+    ui->Priority3_Box->setEnabled(true);
+    ui->InFileAuto->setStyleSheet(inStyle);
+    ui->StpFileAuto->setStyleSheet(stpStyle);
+}
+
+/**
+ * @brief Disables all Buttons related to DoF
+ *
+ * Since DoF is not working as expected at this moment, it will be disabled for the user
+ */
+void fmt_mainWindow::disableDoF(){
+    ui->Prio1_DoF->setEnabled(false);
+    ui->Prio2_DoF->setEnabled(false);
+    ui->Prio3_DoF->setEnabled(false);
+    ui->Priority3_Box->setEnabled(false);
 }
 
 /**
@@ -435,36 +502,62 @@ void fmt_mainWindow::on_RunOptimization_clicked()
             return;
         }
         //Abfangen, falls pro Parameter mehrere Prioritäten ausgewählt wurden
-        int checkedCounter = 0;
-        if(ui->Prio1_bright->isChecked()) checkedCounter++;
-        if(ui->Prio2_bright->isChecked() && ui->Priority2_Box->isChecked()) checkedCounter++;
-        if(ui->Prio3_bright->isChecked() && ui->Priority3_Box->isChecked()) checkedCounter++;
+        short prioBright = 0;
+        short prioFocus = 0;
+        short prioDoF = 0;
+
+        short checkedCounter = 0;
+        if(ui->Prio1_bright->isChecked()){prioBright = 10; checkedCounter++;}
+        if(ui->Prio2_bright->isChecked() && ui->Priority2_Box->isChecked()){prioBright = 5; checkedCounter++;}
+        if(ui->Prio3_bright->isChecked() && ui->Priority3_Box->isChecked()){prioBright = 0; checkedCounter++;}
         if(checkedCounter > 1){
             QMessageBox::critical(this, "Error", "Each Parameter requires a distinct Optimization Priority.", QMessageBox::Ok);
             return;
         }
 
         checkedCounter = 0;
-        if(ui->Prio1_focus->isChecked()) checkedCounter++;
-        if(ui->Prio2_focus->isChecked() && ui->Priority2_Box->isChecked()) checkedCounter++;
-        if(ui->Prio3_focus->isChecked() && ui->Priority3_Box->isChecked()) checkedCounter++;
+        if(ui->Prio1_focus->isChecked()){prioFocus = 10; checkedCounter++;}
+        if(ui->Prio2_focus->isChecked() && ui->Priority2_Box->isChecked()){prioFocus = 5; checkedCounter++;}
+        if(ui->Prio3_focus->isChecked() && ui->Priority3_Box->isChecked()){prioFocus = 0; checkedCounter++;}
         if(checkedCounter > 1){
             QMessageBox::critical(this, "Error", "Each Parameter requires a distinct Optimization Priority.", QMessageBox::Ok);
             return;
         }
 
         checkedCounter = 0;
-        if(ui->Prio1_DoF->isChecked()) checkedCounter++;
-        if(ui->Prio2_DoF->isChecked() && ui->Priority2_Box->isChecked()) checkedCounter++;
-        if(ui->Prio3_DoF->isChecked() && ui->Priority3_Box->isChecked()) checkedCounter++;
+        if(ui->Prio1_DoF->isChecked()){prioDoF = 10; checkedCounter++;}
+        if(ui->Prio2_DoF->isChecked() && ui->Priority2_Box->isChecked()){prioDoF = 5; checkedCounter++;}
+        if(ui->Prio3_DoF->isChecked() && ui->Priority3_Box->isChecked()){prioDoF = 0; checkedCounter++;}
         if(checkedCounter > 1){
             QMessageBox::critical(this, "Error", "Each Parameter requires a distinct Optimization Priority.", QMessageBox::Ok);
             return;
         }
+
+        //Oberfläche ausblenden
+        QString inStyle; QString stpStyle;
+        setMainWindowInactive(inStyle, stpStyle);
 
         List* _List = ui->CmpListBox->getComponentList();
-        simulation::doStuff(100, 10, 1, simObj, _List, photonList);
-        //TODO: Pixmap reloaden, und Liste aktualisieren
+        simulation::doStuff(prioBright, prioFocus, prioDoF, simObj, _List, photonList);
+
+        //Oberfläche einblenden
+        setMainWindowActive(inStyle, stpStyle);
+        disableDoF();
+
+        //Pixmap reloaden, und Liste aktualisieren
+        Detector _detect = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1));
+        Exporter::exportBMPImage(_detect, (ui->ProjPath->text() + "/" + ui->ExpFileTextfield->text()).toStdString());
+        resultImage = new QPixmap((ui->ProjPath->text() + "/" + ui->ExpFileTextfield->text()));
+        ui->GraphicalResult->setPixmap(*resultImage);
+        ui->CmpListBox->rebuildFromList();
+
+        //Debug-Werte aus Detector auslesen
+        int _brightness = _detect.getBrightness();
+        ui->Brightness->setText(QString::number(_brightness));
+        int _focus = _detect.getSharpness();
+        ui->Focus->setText(QString::number(_focus));
+        int _DoF = simulation::getDof(_List);
+        ui->DepthOfField->setText(QString::number(_DoF));
         return;
     }
     QMessageBox::critical(this, "Error", "A simulation has to be completed before an optimization can be started.", QMessageBox::Ok);
@@ -555,25 +648,8 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     ui->SimProgressBar->setValue(0);
 
     //Setze alle Widgets auf Inaktiv, bis auf Progress Bar
-    for(auto* widget : this->findChildren<QPushButton*>()){
-        widget->setEnabled(false);
-    }
-    for(auto* widget : this->findChildren<QLabel*>()){
-        widget->setEnabled(false);
-    }
-    for(auto* widget : this->findChildren<QLineEdit*>()){
-        widget->setEnabled(false);
-    }
-    for(auto* widget : this->findChildren<QTextBrowser*>()){
-        widget->setEnabled(false);
-    }
-    ui->Priority1_Box->setEnabled(false);
-    ui->Priority2_Box->setEnabled(false);
-    ui->Priority3_Box->setEnabled(false);
-    auto inStyle = ui->InFileAuto->styleSheet();
-    auto stpStyle = ui->StpFileAuto->styleSheet();
-    ui->InFileAuto->setStyleSheet("QPushButton {color: grey}");
-    ui->StpFileAuto->setStyleSheet("QPushButton {color: grey}");
+    QString inStyle; QString stpStyle;
+    setMainWindowInactive(inStyle, stpStyle);
 
     //Starte Simulation mit Parametern
     List* _List = ui->CmpListBox->getComponentList();
@@ -592,25 +668,12 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     ui->Brightness->setText(QString::number(_brightness));
     int _focus = _detect.getSharpness();
     ui->Focus->setText(QString::number(_focus));
+    int _DoF = simulation::getDof(_List);
+    ui->DepthOfField->setText(QString::number(_DoF));
 
     //Setze alle Widgets auf Aktiv
-    for(auto* widget : this->findChildren<QPushButton*>()){
-        widget->setEnabled(true);
-    }
-    for(auto* widget : this->findChildren<QLabel*>()){
-        widget->setEnabled(true);
-    }
-    for(auto* widget : this->findChildren<QLineEdit*>()){
-        widget->setEnabled(true);
-    }
-    for(auto* widget : this->findChildren<QTextBrowser*>()){
-        widget->setEnabled(true);
-    }
-    ui->Priority1_Box->setEnabled(true);
-    ui->Priority2_Box->setEnabled(true);
-    ui->Priority3_Box->setEnabled(true);
-    ui->InFileAuto->setStyleSheet(inStyle);
-    ui->StpFileAuto->setStyleSheet(stpStyle);
+    setMainWindowActive(inStyle, stpStyle);
+    disableDoF();
 
     ui->SimProgressBar->setValue(photonNumber);
 
@@ -622,7 +685,7 @@ void fmt_mainWindow::startSimulation(int photonNumber){
  */
 void fmt_mainWindow::on_actionFMT_Simulator_triggered()
 {
-    QString boxContent = "Version 0.99\n\nDeveloped by\nLasse Alsmeyer / lasse.alsmeyer@rwth-aachen.de\nNiklas Damhorst / niklas.damhorst@rwth-aachen.de";
+    QString boxContent = "Version 1.00\n\nDeveloped by\nLasse Alsmeyer / lasse.alsmeyer@rwth-aachen.de\nNiklas Damhorst / niklas.damhorst@rwth-aachen.de";
     boxContent.append("\nThomas Mazza / thomas.mazza@rwth-aachen.de\nNikolay Panov / nikolay.panov@rwth-aachen.de");
     boxContent.append("\n\nUnder supervision of\nDr. rer. medic. Dipl.-Inf. Felix Gremse,\nProf. Dr. rer. nat. Uwe Naumann\n\n31.10.2021");
     QMessageBox::about(this, "About FMT-Simulator", boxContent);
