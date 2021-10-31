@@ -532,6 +532,15 @@ void fmt_mainWindow::on_RunOptimization_clicked()
         resultImage = new QPixmap((ui->ProjPath->text() + "/" + ui->ExpFileTextfield->text()));
         ui->GraphicalResult->setPixmap(*resultImage);
         ui->CmpListBox->rebuildFromList();
+
+        //Debug-Werte aus Detector auslesen
+        Detector _detect = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1));
+        int _brightness = _detect.getBrightness();
+        ui->Brightness->setText(QString::number(_brightness));
+        int _focus = _detect.getSharpness();
+        ui->Focus->setText(QString::number(_focus));
+        int _DoF = simulation::getDof(_List);
+        ui->DepthOfField->setText(QString::number(_DoF));
         return;
     }
     QMessageBox::critical(this, "Error", "A simulation has to be completed before an optimization can be started.", QMessageBox::Ok);
@@ -642,6 +651,8 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     ui->Brightness->setText(QString::number(_brightness));
     int _focus = _detect.getSharpness();
     ui->Focus->setText(QString::number(_focus));
+    int _DoF = simulation::getDof(_List);
+    ui->DepthOfField->setText(QString::number(_DoF));
 
     //Setze alle Widgets auf Aktiv
     setMainWindowActive(inStyle, stpStyle);
