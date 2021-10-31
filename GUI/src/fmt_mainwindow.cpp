@@ -636,6 +636,7 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     photonList = new std::vector<Photon>();
 
     //Importiere Objekt
+    simObj.clear();
     //Prüfen, ob Datei leer ist
     std::ifstream file;
     file.open((ui->ProjPath->text() + "/" + ui->InFilePath->toPlainText()).toStdString());
