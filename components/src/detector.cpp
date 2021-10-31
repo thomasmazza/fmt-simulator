@@ -267,8 +267,12 @@ const double & Detector::getSharpness() {
  * @brief Resets all color values in the detector
  */
 void Detector::resetSensor(){
-    rgb_matrix emptySensor(size, std::vector<RGB>(size));
-    sensor = emptySensor;
+    RGB color;
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            sensor[i][j] = color;
+        }
+    }
 }
 
 /**
