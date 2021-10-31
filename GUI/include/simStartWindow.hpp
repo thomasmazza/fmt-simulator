@@ -11,6 +11,11 @@
 #include <QFormLayout>
 #include <QPushButton>
 
+/**
+ * @brief SimStartWindow provides a Dialog, asking the user to enter the amount of simulated photons
+ *
+ * 3 Default Numbers are provided by buttons
+ */
 class SimStartWindow : public QDialog{
     Q_OBJECT
 public:

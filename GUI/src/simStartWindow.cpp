@@ -1,31 +1,51 @@
 #include "../include/simStartWindow.hpp"
 
+/**
+ * @brief Adds a warning dialog, if the user tries to close the window
+ * @param event Default Close event
+ */
 void SimStartWindow::closeEvent(QCloseEvent* event){
     QMessageBox::StandardButton exitMessage = QMessageBox::warning(this, "Warning", "If you close the window now, the Simulation will be cancelled.", QMessageBox::Ok|QMessageBox::Cancel);
     if(exitMessage == QMessageBox::Ok) event->accept();
     else event->ignore();
 }
 
+/**
+ * @brief Checks, if a name is entered, and if so, triggers its transfer to the parent window
+ */
 void SimStartWindow::closeOK(){
     this->accept();
     emit simStart(input->value());
 }
 
+/**
+ * @brief Sets the value of the spin box to Quick amount / 100,000
+ */
 void SimStartWindow::setQuickTest(){
     //Setze Quick-Test Anzahl
     input->setValue(100000);
 }
 
+/**
+ * @brief Sets the value of the spin box to Recommended amount / 1,000,000
+ */
 void SimStartWindow::setRecommended(){
     //Setze empfohlene Anzahl
     input->setValue(1000000);
 }
 
+/**
+ * @brief Sets the value of the spin box to Maximum amount / Integer max value
+ */
 void SimStartWindow::setMax(){
     //Setze maximale Anzahl
     input->setValue(std::numeric_limits<int>::max());
 }
 
+/**
+ * @brief Creates the SimStartWindow, providing the SpinBox and Default Amount Buttons
+ * @param parent Parent window, wich is affected by modality
+ */
 SimStartWindow::SimStartWindow(QWidget* parent):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Simulation Settings");

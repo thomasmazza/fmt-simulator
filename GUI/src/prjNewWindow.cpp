@@ -1,11 +1,18 @@
 #include "../include/prjNewWindow.hpp"
 
+/**
+ * @brief Adds a warning dialog, if the user tries to close the window
+ * @param event Default Close event
+ */
 void PrjNewWindow::closeEvent(QCloseEvent* event){
     QMessageBox::StandardButton exitMessage = QMessageBox::critical(this, "Warning", "If you close the window now, no new project will be created.", QMessageBox::Yes|QMessageBox::No);
     if(exitMessage == QMessageBox::Yes) event->accept();
     else event->ignore();
 }
 
+/**
+ * @brief Checks, if a name is entered, and if so, triggers its transfer to the parent window
+ */
 void PrjNewWindow::closeOK(){
     if(input->text().isEmpty()){
         QMessageBox::critical(this, "Error", "Please enter a Project Name.", QMessageBox::Ok);
@@ -15,6 +22,11 @@ void PrjNewWindow::closeOK(){
     this->accept();
 }
 
+/**
+ * @brief Creates a new window for entering a project name, containing the input text field and OK/Cancel-Buttons
+ * @param parent Parent window, wich is affected by modality
+ * @param _path Previously selected path to project
+ */
 PrjNewWindow::PrjNewWindow(QWidget* parent, QString _path):QDialog(parent){
     path = _path;
 

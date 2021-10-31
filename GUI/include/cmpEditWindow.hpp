@@ -22,6 +22,9 @@
 #include "../../components/include/mirrorRectangle.hpp"
 #include "../../components/include/mirrorSquare.hpp"
 
+/**
+ * @brief DetectorEditWindow provides a Input Form to edit the internal parameters of the detector
+ */
 class DetectorEditWindow : public QDialog{
     Q_OBJECT
 public:
@@ -44,6 +47,9 @@ private:
     List* componentList;
 };
 
+/**
+ * @brief FilterEditWindow provides a Input Form to edit the internal parameters of the filter
+ */
 class FilterEditWindow : public QDialog{
     Q_OBJECT
 public:
@@ -66,6 +72,9 @@ private:
     List* componentList;
 };
 
+/**
+ * @brief LensOneSidedEditWindow provides a Input Form to edit the internal parameters of the one sided lens
+ */
 class LensOneSidedEditWindow : public QDialog{
     Q_OBJECT
 public:
@@ -91,6 +100,9 @@ private:
     List* componentList;
 };
 
+/**
+ * @brief LensTwoSidedEditWindow provides a Input Form to edit the internal parameters of the two sided lens
+ */
 class LensTwoSidedEditWindow : public QDialog{
     Q_OBJECT
 public:
@@ -116,6 +128,9 @@ private:
     List* componentList;
 };
 
+/**
+ * @brief MirrorCircleEditWIndow provides a Input Form to edit the internal parameters of the circle mirror
+ */
 class MirrorCircleEditWindow : public QDialog{
     Q_OBJECT
 public:
@@ -137,6 +152,9 @@ private:
     List* componentList;
 };
 
+/**
+ * @brief MirrorEllipticalEditWindow provides a Input Form to edit the internal parameters of the elliptical mirror
+ */
 class MirrorEllipticalEditWindow : public QDialog{
     Q_OBJECT
 public:
@@ -159,6 +177,9 @@ private:
     List* componentList;
 };
 
+/**
+ * @brief MirrorRectangularEditWindow provides a Input Form to edit the internal parameters of the rectangle mirror
+ */
 class MirrorRectangularEditWindow : public QDialog{
     Q_OBJECT
 public:
@@ -181,6 +202,9 @@ private:
     List* componentList;
 };
 
+/**
+ * @brief MirrorSquareEditWindow provides a Input Form to edit the internal parameters of the square mirror
+ */
 class MirrorSquareEditWindow : public QDialog{
     Q_OBJECT
 public:
@@ -202,6 +226,9 @@ private:
     List* componentList;
 };
 
+/**
+ * @brief ApertureEditWindow provides a Input Form to edit the internal parameters of the aperture
+ */
 class ApertureEditWindow : public QDialog{
     Q_OBJECT
 public:
