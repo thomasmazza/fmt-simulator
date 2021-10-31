@@ -1,5 +1,15 @@
 #include "../include/cmpAddWindow.hpp"
 
+/**
+ * @brief Changes input form of the Window corresponding to the given Type
+ * @param _type Currently selected Type, wich is selected in the Drop Down Menu.
+ *
+ * This function is called, if the user changes the Component Type in the Drop Down Menu.
+ *
+ * According to the given Type, the Window is adjusted. All Layout-Elements are taken out
+ * of the Form Layout, and will be re-created right away, to match the Form of the selected
+ * Type in the Drop Down Menu.
+ */
 void CmpAddWindow::changeCmpType(QString _type){
     auto del = layout->takeAt(1)->layout();
     utilsGUI::removeItems(del);
