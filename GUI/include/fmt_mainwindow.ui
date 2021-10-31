@@ -1232,13 +1232,6 @@
     <addaction name="actionSave_Project"/>
     <addaction name="actionSave_Setup_as"/>
    </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-    <addaction name="actionRead_Documentation"/>
-    <addaction name="actionContact"/>
-   </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
      <string>About</string>
@@ -1246,7 +1239,6 @@
     <addaction name="actionFMT_Simulator"/>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuHelp"/>
    <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
