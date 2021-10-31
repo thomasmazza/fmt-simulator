@@ -95,7 +95,6 @@ void Detector::getInPoint(Photon &photon) {
             Utils::coreTranslationInColor(wl, color.r, color.g, color.b);
             int i_index = floor(b / pixelSize);
             int j_index = floor(a / pixelSize);
-            std::cout<<"Hit"<<std::endl;
             if (temp >= 0) {
                 if (temp < M_PI_2) {
                     i_index = floor(size / 2 - i_index);
@@ -125,8 +124,8 @@ void Detector::getInPoint(Photon &photon) {
                     sensor[i_index][j_index].addRGB(color);
                     sensor[i_index][j_index].intensity = sensor[i_index][j_index].intensity + 1;
                 }
-                std::cout << "r" << sensor[i_index][j_index].r << " g" << sensor[i_index][j_index].g << " b" << sensor[i_index][j_index].b << std::endl;
-                std::cout << "i " << sensor[i_index][j_index].intensity << std::endl;
+                //std::cout << "r" << sensor[i_index][j_index].r << " g" << sensor[i_index][j_index].g << " b" << sensor[i_index][j_index].b << std::endl;
+                //std::cout << "i " << sensor[i_index][j_index].intensity << std::endl;
             }
         }
     }
@@ -154,6 +153,7 @@ bmp_vector Detector::createImage() {
     // avg = avg / ((double)size * (double)size);
     avg = avg / hit;
     brightness = (avg / max) * 100;
+    brightness = (100 - brightness);
 
 
 
@@ -169,7 +169,7 @@ bmp_vector Detector::createImage() {
                 color.r = sensor[i][j].r / sensor[i][j].intensity;
                 color.g = sensor[i][j].g / sensor[i][j].intensity;
                 color.b = sensor[i][j].b / sensor[i][j].intensity;
-                color.intensity = sensor[i][j].intensity;
+                color.intensity = sensor[i][j].intensity / max;
             }
             image[j + i * size] = color;
         }
@@ -192,6 +192,7 @@ bmp_vector Detector::createImage() {
     // Obwohl die Werte auf [0, 100] verteilt sind, bedeuten Werte wie 35 - 40 besonders hohe Schärfe;
     // Dies liegt daran, dass das Bild ganz spezifische Struktur haben muss um Schärfewerte im Bereich [60 - 100] zu erzeugen;
     sharpness = (sharpness / (max * 4)) * 100;
+    sharpness = (4/49)*pow(sharpness, 2) - (40/7)*sharpness +100;
 
     double adjustment;
     for (int i = 0; i < image.size(); i++) {
