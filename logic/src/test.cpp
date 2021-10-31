@@ -22,7 +22,8 @@ int main() {
     Importer::importStp(*testList1, "/home/thomas/CLionProjects/fmt-simulator/logic/src/testExport.xml");
     Exporter::exportStp(*testList1, "/home/thomas/CLionProjects/fmt-simulator/logic/src/testExport1.xml");
 */
-//    Config::object _object;
+    Config::object _object;
+    _object.clear():
 //    ObjectGenerator::generateObject(_object);
 //    Exporter::exportObject(_object, "/home/thomas/CLionProjects/fmt-simulator/logic/src/object.xml");
 //    PhotonGenerator photonGenerator(_object);
