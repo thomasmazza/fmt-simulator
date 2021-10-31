@@ -3,6 +3,9 @@
 #include <vector>
 #include <string>
 
+/**
+ * @brief Provides different functions for vector calculations and optics
+ */
 class Utils {
 public:
 /*

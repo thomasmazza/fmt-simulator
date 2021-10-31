@@ -2,11 +2,24 @@
 #include <cmath>
 #include <iomanip>
 
+/**
+ * @brief Calculates the cross product of 2 vectors
+ * @param result The resulting vector
+ * @param a First vector
+ * @param b Second vector
+ */
 void Utils::cross_product(std::vector<double> &result, std::vector<double> &a, std::vector<double> &b) {
     result[0] = a[1] * b[2] - a[2] * b[1];
     result[1] = a[2] * b[0] - a[0] * b[2];
     result[2] = a[0] * b[1] - a[1] * b[0];
 }
+
+/**
+ * @brief Calculates the cross product of 2 vectors, but returns the result
+ * @param a First vector
+ * @param b Second vector
+ * @return The resulting vector
+ */
 std::vector<double> Utils::cross_product_2(std::vector<double>& a, std::vector<double>& b) {
     std::vector<double> result(3);
     result[0]=a[1]*b[2]-a[2]*b[2];
@@ -14,6 +27,8 @@ std::vector<double> Utils::cross_product_2(std::vector<double>& a, std::vector<d
     result[2]=a[0]*b[1]-a[1]*b[0];
     return result;
 }
+
+
 std::string Utils::wavelengthToRGB(const int &wavelength) {
     double r = 0;
     double g = 0;
@@ -45,6 +60,13 @@ std::string Utils::wavelengthToRGB(const int &wavelength) {
 }
 
 //Hauptumrechnung in Farbe
+/**
+ * @brief Calculates the RGB value for a given wavelength
+ * @param wavelength Wavelength
+ * @param r Red channel
+ * @param g Green channel
+ * @param b Blue channel
+ */
 void Utils::coreTranslationInColor(const int &wavelength, double &r, double &g, double &b) {
     const double dWavelength = static_cast<double>(wavelength);
     if (dWavelength >= 380 && dWavelength <= 440) {
@@ -87,6 +109,10 @@ void Utils::coreTranslationInColor(const int &wavelength, double &r, double &g, 
 
 }
 
+/**
+ * @brief Scales the vector to a length of 1
+ * @param _vec Vector to scale
+ */
 void Utils::normalizeVector(std::vector<double> &_vec) {
     double vecAbs = 0;
     //Laenge des Vektors bestimmen
@@ -96,14 +122,35 @@ void Utils::normalizeVector(std::vector<double> &_vec) {
     //Normierten Vektor berechnen
     for (int i = 0; i < 3; i++) _vec[i] = (_vec[i] / vecAbs);
 }
+
+/**
+ * @brief Returns the maximum of two double values
+ * @param a First value
+ * @param b Second value
+ * @return The bigger of a and b. If they are equal, a is returned
+ */
 double Utils::max(double a, double b) {
     if (a < b) { return b; }
     else return a;
 }
+
+/**
+ * @brief Returns the minimum of two double values
+ * @param a First value
+ * @param b Second value
+ * @return The smaller of a and b. If they are equal, a is returned
+ */
 double Utils::min(double a, double b) {
     if (a > b) { return b; }
     else return a;
 }
+
+/**
+ * @brief Calculates the dot product of two vectors
+ * @param a First vector
+ * @param b Second vector
+ * @return The dot product of a and b
+ */
 double Utils::dot_product(std::vector<double>& a, std::vector<double>& b) {
     return (a[0] * b[0]) + (a[1] * b[1]) + (a[2] * b[2]);
 }
@@ -114,10 +161,20 @@ double Utils::dot_product(std::vector<double>& a, std::vector<double>& b) {
 // _f / 1720 approximiert das CoC (Circle of Confusion); Wir können auch anderes Modell für CoC nehmen, zB Detektordiagonal/1442;
 // Wir können auch uns einfach überlegen was wir als akzeptables CoC nehmen;
 // Ich bin nicht sicher wie wir depthOfField sinnvoll auf [0,100] normieren können, denn depthOfField kann technisch von 0 bis unendlich groß sein;
+/**
+ * @brief Approximates the depth of field given distance to object and focal length
+ * @param _f
+ * @param _d
+ * @return Depth of field
+ */
 double Utils::depthOfField(double & _f, double & _d) {
     return 2 * (_f / 1720) * pow((_d / _f), 2);
 }
 
+/** the Euclidean norm vector
+ * @param _vec Vector
+ * @return The Euclidean norm of vector
+ */
 double Utils::getAbs(std::vector<double> &_vec) {
     double vecAbs = 0;
     //Laenge des Vektors bestimmen
