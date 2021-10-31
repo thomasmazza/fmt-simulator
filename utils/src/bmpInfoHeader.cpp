@@ -1,5 +1,10 @@
 #include "bmpInfoHeader.hpp"
 
+/**
+ * @brief Constructor for the information header
+ * @param _width Width of image in pixels
+ * @param _height Height of image in pixels
+ */
 BmpInfoHeader::BmpInfoHeader(int _width, int _height) {
     sizeInfoHeader = sizeof(BmpInfoHeader);
     width = _width;

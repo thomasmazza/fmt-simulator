@@ -1,5 +1,9 @@
 #include <cstdint>
 
+
+/**
+ * @brief Creates file header for .bmp format
+ */
 struct BmpFileHeader {
     unsigned int sizeOfFile;
     unsigned short reserved1;

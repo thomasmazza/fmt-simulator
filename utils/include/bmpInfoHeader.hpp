@@ -2,6 +2,9 @@
 
 #include "cstdint"
 
+/**
+ * @brief Creates information header for .bmp format
+ */
 struct BmpInfoHeader
 {
     unsigned int sizeInfoHeader;

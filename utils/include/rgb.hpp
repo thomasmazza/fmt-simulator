@@ -1,5 +1,9 @@
 #pragma once
 
+
+/**
+ * @brief Provides functions for handling RGB colors
+ */
 class RGB {
 public:
     double r;

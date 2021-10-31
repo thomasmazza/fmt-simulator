@@ -12,7 +12,9 @@ typedef typename std::vector<RGB> rgb_vector;
 typedef typename std::vector<std::vector<RGB>> rgb_matrix;
 typedef typename std::vector<BmpRGB> bmp_vector;
 
-
+/**
+ * @brief Optical component, provides functions for processing of objects from class Photon
+ */
 class Detector : public Component {
 protected:
     std::vector<double> detectorNormal; // Vektor aus dem Detektormittelpunkt, orthogonal zur Detektorebene

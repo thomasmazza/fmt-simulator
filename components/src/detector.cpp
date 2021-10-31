@@ -2,40 +2,71 @@
 #include "../../utils/include/utils.hpp"
 #include <cmath>
 
-
-
+/**
+ * @return Position of the previous component in the list
+ */
 const std::vector<double>& Detector::getPosOfPrevComponent() {
     return posOfPrevComponent;
 }
 
+/**
+ * @brief Sets the position of the previous component
+ * @param _pos Vector with length 3
+ */
 void Detector::setPosOfPrevComponent(std::vector<double> &_pos) {
     posOfPrevComponent = _pos;
 }
 
+/**
+ * @return Number of pixels per row (detector is square)
+ */
 int Detector::getSize() {
     return size;
 }
 
+/**
+ * @brief Sets the number of pixels per row
+ * @param _size Number of pixels
+ */
 void Detector::setSize(int _size) {
     size = _size;
 }
 
+/**
+ * @return Length of detector edge in units of the coordinate system
+ */
 double Detector::getLength() {
     return length;
 }
 
+/**
+ * @brief Sets the length of detector
+ * @param _length Length of detector
+ */
 void Detector::setLength(double _length) {
     length = _length;
 }
 
+/**
+ * @return Size of a single pixel in units of the coordinate system
+ */
 double Detector::getPixelSize() {
     return pixelSize;
 }
 
+/**
+ * @brief Sets the size of a single pixel. Used only internally
+ * @param _size Number of pixels per row in the detector
+ * @param _length Length of detector in coordinate system units
+ */
 void Detector::setPixelSize(double _size, double _length) {
     pixelSize = _length / _size;
 }
 
+/**
+ * @brief Calculates which pixel the photon enters and the color information for the pixel
+ * @param photon Object from class Photon
+ */
 void Detector::getInPoint(Photon &photon) {
     std::vector<double> pV = photon.getPosition();
     std::vector<double> dV = photon.getDirection();
@@ -131,6 +162,10 @@ void Detector::getInPoint(Photon &photon) {
     }
 }
 
+/**
+ * @brief Creates a vector with .bmp-ready values from the data in the detector and calculates brightness and sharpness of the image
+ * @return Vector with .bmp-ready RGB values
+ */
 bmp_vector Detector::createImage() {
     double max = sensor[0][0].intensity;
     double min = max;
@@ -214,19 +249,31 @@ bmp_vector Detector::createImage() {
     return bitmap;
 }
 
+/**
+ * @return Brightness of the image
+ */
 const double & Detector::getBrightness() {
     return brightness;
 }
 
+/**
+ * @return Sharpness of the image
+ */
 const double & Detector::getSharpness() {
     return sharpness;
 }
 
+/**
+ * @brief Resets all color values in the detector
+ */
 void Detector::resetSensor(){
     rgb_matrix emptySensor(size, std::vector<RGB>(size));
     sensor = emptySensor;
 }
 
+/**
+ * @brief Recalculates detectorNormal and ref attributes of the detector
+ */
 void Detector::recalculateInternals() {
     detectorNormal = posOfPrevComponent - position;
     ref = { 0, 0, 0}; // ref zuerst nur als Nullvektor
@@ -266,6 +313,14 @@ void Detector::recalculateInternals() {
     Utils::normalizeVector(detectorNormal);
 }
 
+/**
+ * @brief Constructor
+ * @param _pos Position vector
+ * @param _normal Vector normal to detector plane
+ * @param _posOfPrevComponent Position vector of the previous component
+ * @param _size Number of pixels per row (detector is square)
+ * @param _edgeLength Length of detector in coordinate system units
+ */
 Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std::vector<double> &_posOfPrevComponent, int _size,
                    double _edgeLength) : Component(_pos, _normal, detector), posOfPrevComponent(_posOfPrevComponent),size(_size),length(_edgeLength),pixelSize(length / (static_cast<double>(size))),sensor(_size, std::vector<RGB>(_size)) {
 
@@ -307,5 +362,9 @@ Detector::Detector(std::vector<double> &_pos, std::vector<double> &_normal, std:
     Utils::normalizeVector(detectorNormal);
 }
 
+/**
+ * @brief Copy constructor
+ * @param detector1 Another detector object
+ */
 Detector::Detector(const Detector &detector1): Component(detector1), detectorNormal(detector1.detectorNormal), posOfPrevComponent(detector1.posOfPrevComponent), ref(detector1.ref),  size(detector1.size), pixelSize(detector1.pixelSize), length(detector1.length), sensor(detector1.sensor) {}
 
