@@ -28,7 +28,11 @@ std::vector<double> Utils::cross_product_2(std::vector<double>& a, std::vector<d
     return result;
 }
 
-
+/**
+ * @brief Calculates RGB as hex strings
+ * @param wavelength
+ * @return RGB value as hex
+ */
 std::string Utils::wavelengthToRGB(const int &wavelength) {
     double r = 0;
     double g = 0;
