@@ -167,6 +167,7 @@ void Importer::getContentInBrackets(std::ifstream &file, std::string &buf) {
 }
 
 void Importer::importStp(List &_lst, std::string _filename) {
+    setlocale(LC_ALL, "C");
     std::ifstream setupFile;
     setupFile.open(_filename);
     std::string buf;
