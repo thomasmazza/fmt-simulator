@@ -685,7 +685,7 @@ void fmt_mainWindow::startSimulation(int photonNumber){
  */
 void fmt_mainWindow::on_actionFMT_Simulator_triggered()
 {
-    QString boxContent = "Version 0.99\n\nDeveloped by\nLasse Alsmeyer / lasse.alsmeyer@rwth-aachen.de\nNiklas Damhorst / niklas.damhorst@rwth-aachen.de";
+    QString boxContent = "Version 1.00\n\nDeveloped by\nLasse Alsmeyer / lasse.alsmeyer@rwth-aachen.de\nNiklas Damhorst / niklas.damhorst@rwth-aachen.de";
     boxContent.append("\nThomas Mazza / thomas.mazza@rwth-aachen.de\nNikolay Panov / nikolay.panov@rwth-aachen.de");
     boxContent.append("\n\nUnder supervision of\nDr. rer. medic. Dipl.-Inf. Felix Gremse,\nProf. Dr. rer. nat. Uwe Naumann\n\n31.10.2021");
     QMessageBox::about(this, "About FMT-Simulator", boxContent);
