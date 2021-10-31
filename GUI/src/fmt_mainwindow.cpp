@@ -545,12 +545,13 @@ void fmt_mainWindow::on_RunOptimization_clicked()
         disableDoF();
 
         //Pixmap reloaden, und Liste aktualisieren
+        Detector _detect = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1));
+        Exporter::exportBMPImage(_detect, (ui->ProjPath->text() + "/" + ui->ExpFileTextfield->text()).toStdString());
         resultImage = new QPixmap((ui->ProjPath->text() + "/" + ui->ExpFileTextfield->text()));
         ui->GraphicalResult->setPixmap(*resultImage);
         ui->CmpListBox->rebuildFromList();
 
         //Debug-Werte aus Detector auslesen
-        Detector _detect = static_cast<Detector &>(*ui->CmpListBox->getComponentList()->elem(ui->CmpListBox->getComponentList()->getLength() - 1));
         int _brightness = _detect.getBrightness();
         ui->Brightness->setText(QString::number(_brightness));
         int _focus = _detect.getSharpness();
@@ -684,7 +685,7 @@ void fmt_mainWindow::startSimulation(int photonNumber){
  */
 void fmt_mainWindow::on_actionFMT_Simulator_triggered()
 {
-    QString boxContent = "Version 0.99\n\nDeveloped by\nLasse Alsmeyer / lasse.alsmeyer@rwth-aachen.de\nNiklas Damhorst / niklas.damhorst@rwth-aachen.de";
+    QString boxContent = "Version 1.00\n\nDeveloped by\nLasse Alsmeyer / lasse.alsmeyer@rwth-aachen.de\nNiklas Damhorst / niklas.damhorst@rwth-aachen.de";
     boxContent.append("\nThomas Mazza / thomas.mazza@rwth-aachen.de\nNikolay Panov / nikolay.panov@rwth-aachen.de");
     boxContent.append("\n\nUnder supervision of\nDr. rer. medic. Dipl.-Inf. Felix Gremse,\nProf. Dr. rer. nat. Uwe Naumann\n\n31.10.2021");
     QMessageBox::about(this, "About FMT-Simulator", boxContent);
