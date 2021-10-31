@@ -62,6 +62,8 @@ private slots:
 
 private:
     bool autoDetect(QString, QString);
+    void setMainWindowInactive(QString&, QString&);
+    void setMainWindowActive(QString&, QString&);
     Ui::fmt_mainWindow *ui;
 
     Config::object simObj;
