@@ -164,7 +164,6 @@ double Utils::dot_product(std::vector<double>& a, std::vector<double>& b) {
 // _d = Abstand zum Objekt
 // _f / 1720 approximiert das CoC (Circle of Confusion); Wir können auch anderes Modell für CoC nehmen, zB Detektordiagonal/1442;
 // Wir können auch uns einfach überlegen was wir als akzeptables CoC nehmen;
-// Ich bin nicht sicher wie wir depthOfField sinnvoll auf [0,100] normieren können, denn depthOfField kann technisch von 0 bis unendlich groß sein;
 /**
  * @brief Approximates the depth of field given distance to object and focal length
  * @param _f
