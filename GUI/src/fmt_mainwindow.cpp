@@ -22,6 +22,9 @@ fmt_mainWindow::fmt_mainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //DoF vorrübergehend ausblenden
+    disableDoF();
+
     connect(ui->CmpAddButton, &QPushButton::clicked, this, &fmt_mainWindow::checkOnCmpAdd);
     connect(this, &fmt_mainWindow::triggerCmpAdd, ui->CmpListBox, &CmpList_box::addCmpButtonPressed);
 }
@@ -106,6 +109,18 @@ void fmt_mainWindow::setMainWindowActive(QString& inStyle, QString& stpStyle){
     ui->Priority3_Box->setEnabled(true);
     ui->InFileAuto->setStyleSheet(inStyle);
     ui->StpFileAuto->setStyleSheet(stpStyle);
+}
+
+/**
+ * @brief Disables all Buttons related to DoF
+ *
+ * Since DoF is not working as expected at this moment, it will be disabled for the user
+ */
+void fmt_mainWindow::disableDoF(){
+    ui->Prio1_DoF->setEnabled(false);
+    ui->Prio2_DoF->setEnabled(false);
+    ui->Prio3_DoF->setEnabled(false);
+    ui->Priority3_Box->setEnabled(false);
 }
 
 /**
@@ -492,27 +507,27 @@ void fmt_mainWindow::on_RunOptimization_clicked()
         short prioDoF = 0;
 
         short checkedCounter = 0;
-        if(ui->Prio1_bright->isChecked()){prioBright = 100; checkedCounter++;}
-        if(ui->Prio2_bright->isChecked() && ui->Priority2_Box->isChecked()){prioBright = 10; checkedCounter++;}
-        if(ui->Prio3_bright->isChecked() && ui->Priority3_Box->isChecked()){prioBright = 1; checkedCounter++;}
+        if(ui->Prio1_bright->isChecked()){prioBright = 10; checkedCounter++;}
+        if(ui->Prio2_bright->isChecked() && ui->Priority2_Box->isChecked()){prioBright = 5; checkedCounter++;}
+        if(ui->Prio3_bright->isChecked() && ui->Priority3_Box->isChecked()){prioBright = 0; checkedCounter++;}
         if(checkedCounter > 1){
             QMessageBox::critical(this, "Error", "Each Parameter requires a distinct Optimization Priority.", QMessageBox::Ok);
             return;
         }
 
         checkedCounter = 0;
-        if(ui->Prio1_focus->isChecked()){prioFocus = 100; checkedCounter++;}
-        if(ui->Prio2_focus->isChecked() && ui->Priority2_Box->isChecked()){prioFocus = 10; checkedCounter++;}
-        if(ui->Prio3_focus->isChecked() && ui->Priority3_Box->isChecked()){prioFocus = 1; checkedCounter++;}
+        if(ui->Prio1_focus->isChecked()){prioFocus = 10; checkedCounter++;}
+        if(ui->Prio2_focus->isChecked() && ui->Priority2_Box->isChecked()){prioFocus = 5; checkedCounter++;}
+        if(ui->Prio3_focus->isChecked() && ui->Priority3_Box->isChecked()){prioFocus = 0; checkedCounter++;}
         if(checkedCounter > 1){
             QMessageBox::critical(this, "Error", "Each Parameter requires a distinct Optimization Priority.", QMessageBox::Ok);
             return;
         }
 
         checkedCounter = 0;
-        if(ui->Prio1_DoF->isChecked()){prioDoF = 100; checkedCounter++;}
-        if(ui->Prio2_DoF->isChecked() && ui->Priority2_Box->isChecked()){prioDoF = 10; checkedCounter++;}
-        if(ui->Prio3_DoF->isChecked() && ui->Priority3_Box->isChecked()){prioDoF = 1; checkedCounter++;}
+        if(ui->Prio1_DoF->isChecked()){prioDoF = 10; checkedCounter++;}
+        if(ui->Prio2_DoF->isChecked() && ui->Priority2_Box->isChecked()){prioDoF = 5; checkedCounter++;}
+        if(ui->Prio3_DoF->isChecked() && ui->Priority3_Box->isChecked()){prioDoF = 0; checkedCounter++;}
         if(checkedCounter > 1){
             QMessageBox::critical(this, "Error", "Each Parameter requires a distinct Optimization Priority.", QMessageBox::Ok);
             return;
@@ -527,6 +542,7 @@ void fmt_mainWindow::on_RunOptimization_clicked()
 
         //Oberfläche einblenden
         setMainWindowActive(inStyle, stpStyle);
+        disableDoF();
 
         //Pixmap reloaden, und Liste aktualisieren
         resultImage = new QPixmap((ui->ProjPath->text() + "/" + ui->ExpFileTextfield->text()));
@@ -656,6 +672,7 @@ void fmt_mainWindow::startSimulation(int photonNumber){
 
     //Setze alle Widgets auf Aktiv
     setMainWindowActive(inStyle, stpStyle);
+    disableDoF();
 
     ui->SimProgressBar->setValue(photonNumber);
 
