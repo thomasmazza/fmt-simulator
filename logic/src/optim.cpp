@@ -2,6 +2,9 @@
 #include "../../utils/include/utils.hpp"
 #include <cmath>
 
+/**
+ * @brief OAimprove rearranges every component onto a kind of optical axes with the same distances as before
+ */
 void Optim::OAimprove(){
     //Optimierung über versetzen der Komponenten auf die optische Achse mit Abstand von davor
     std::vector<double> origin(3);
@@ -59,11 +62,12 @@ void Optim::OAimprove(){
         curDir = nextPos - curPos;
         Utils::normalizeVector(curDir);
     }
-    std::cout<<"Im done with the OA-Opt"<<std::endl;
 }
 
+/**
+ * @brief optBright optimizes the Brigthness by expanding the range of the filter till the improvement is under a certan tolerance
+ */
 void Optim::optBright(){
-    //TODO: Optimerung über Filter, Grenzen anpassen bis zu einem gewissen Level
     int noLoops;
     for(int i=lstComp->getLength()-1; i>=0; i--){
         ComponentType className = lstComp->elem(i)->getType();
@@ -109,17 +113,20 @@ void Optim::optBright(){
                 break;
         }
     }
-    std::cout<<"Done with the BrightOpt: "<<calcSum()<<"with : "<<noLoops<<std::endl;
 }
-
+/**
+ * @brief optFocus optimizes the Focus by rearranging the last lens before the detektor between the components surrounding the lens
+ *
+ * The function firstly sections the difference between the components that surrounds the lens into 50 parts, then searches for a global minimun in these parts.
+ * After the minimum is found, a gradientdescent optimizes the position with relation to the sum till its under a certain tolerance.
+ * Increment under armijo-conditions
+ */
 void Optim::optFocus(){
-    //Optimierung über einen BP und Abstand von ankommenden Photonen auf dem Detektor
     for(int i=lstComp->getLength()-1; i>=0; i--){
         ComponentType className = lstComp->elem(i)->getType();
         switch (className) {
             case lensTwoSided:
                 if(true){
-                    //Zuerst Detektor auf Brennweite setzen als vorkond.
                     std::vector<double> diff = (lstComp->elem(i+1)->getPosition())-(lstComp->elem(i-1)->getPosition());
                     double abs = Utils::getAbs(diff);
                     Utils::normalizeVector(diff);
@@ -141,7 +148,7 @@ void Optim::optFocus(){
                     std::vector<double> cur = lstComp->elem(i-1)->getPosition();
                     double absCur;
 
-
+                    //In 50 Teile teilen und absuchen
                     for(int j=0; j<50; j++){
                         std::vector<double> next = cur + (step*j)*diff;
                         static_cast<LensTwoSided&>(*lstComp->elem(i)).setPosition(next);
@@ -156,7 +163,7 @@ void Optim::optFocus(){
                     }
                     newPos = curMinVec;
                     lstComp->elem(i)->setPosition(newPos);
-
+                    //Gradientenverfahren bis Toleranz
                     while (difference > 0.0001 && absCur>0) {
                         //Berechne Gradienten
                         simulation::optTracing(lstComp, lstPhoton);
@@ -218,11 +225,9 @@ void Optim::optFocus(){
                     }
 
                 }
-                std::cout<<"Im done with the Focus-Opt"<<std::endl;
                 break;
             case lensOneSided:
             if(true){
-                //Zuerst Detektor auf Brennweite setzen als vorkond.
                 std::vector<double> diff = (lstComp->elem(i+1)->getPosition())-(lstComp->elem(i-1)->getPosition());
                 double abs = Utils::getAbs(diff);
                 Utils::normalizeVector(diff);
@@ -321,13 +326,15 @@ void Optim::optFocus(){
                 }
 
             }
-            std::cout<<"Im done with the Focus-Opt"<<std::endl;
             break;
         }
 
     }
 }
 
+/**
+ * @brief Arranges the order of optimization
+ */
 double Optim::startOptim(){
     std::cout<<"Vor der Opti: "<<calcSum()<<std::endl;
     OAimprove();
@@ -343,7 +350,9 @@ double Optim::startOptim(){
     return curMin;
 }
 
-
+/**
+ * @brief Calculates the sum after a change in the Setup
+ */
 double Optim::calcSum() {
     Detector _detect = static_cast<Detector&>(*lstComp->elem(lstComp->getLength()-1));
     _detect.createImage();
@@ -353,7 +362,16 @@ double Optim::calcSum() {
     return sum;
 }
 
-
+/**
+ * @brief Constructs a optimizer-class
+ * @param _bright, sets weight of brightness in the sum
+ * @param _focus, sets weight of focus in the sum
+ * @param _doF, sets weight of doF in the sum
+ * @param _lstComp, is the component list for tracing
+ * @param _photList, is the list of photons that hit the detector
+ * @param _object, object file for generating new photons
+ * @param _fLastLens, focal length of the last lens
+ */
 Optim::Optim(short& _bright, short& _focus, short& _doF, List* _lstComp, std::vector<Photon>* _photList, Config::object* _object,double _fLastLens) {
     lstPhoton = _photList;
     object = _object;

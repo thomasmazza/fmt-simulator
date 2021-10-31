@@ -3,10 +3,19 @@
 #include "../../utils/include/utils.hpp"
 #include <cmath>
 
+/**
+ * @brief Standard get-method for getting the current type of the component
+ * @return type of the current component ("MirrorCircle")
+ */
 std::string MirrorCircle::getType() {
     return "MirrorCircle";
 }
 
+/**
+ * @brief Main function of every component, calculates the position and direction after the photon passes
+ * @param photon, Photon who should be calculated
+ * @return true, if photon passes the mirror
+ */
 bool MirrorCircle::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
     double rS=0;
     double lS=0;
@@ -74,6 +83,13 @@ bool MirrorCircle::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
     return isComponentHit;
 }
 
+/**
+ * @brief Outsources calculation for direction of photon
+ * @param p, photon who should be calculated
+ * @param intersect, intersection vector
+ * @param normWidth, normalized vector in direction of the Width
+ * @return true, if calculation is done
+ */
 bool MirrorCircle::calcOut(Photon& p, std::vector<double>& intersect, std::vector<double>& normWidth) {
     //neuer Stützvektor wird der Schnittpunkt
     p.setPosition(intersect);
@@ -116,14 +132,34 @@ bool MirrorCircle::calcOut(Photon& p, std::vector<double>& intersect, std::vecto
     return true;
 }
 
+/**
+ * @brief Standard set-method for setting a new radius for the mirror
+ * @param new radius for the mirror
+ */
 void MirrorCircle::setRadius(double _radius) {
     radius = _radius;
 }
 
+/**
+ * @brief Standard get-method for getting the current radius of the mirror
+ * @return current radius of the lens
+ */
 double MirrorCircle::getRadius() {
     return radius;
 }
+
+/**
+ * @brief Constructs a mirrorCircle
+ * @param _position, sets the position of the new mirrorCircle
+ * @param _normal, sets the normal of the new mirrorCircle
+ * @param _radius, sets the radius of the new mirrorCircle
+ * @param _type, sets the type of the component ("mirrorCircle")
+ */
 MirrorCircle::MirrorCircle(std::vector<double>& _pos, std::vector<double>& _normal, double _radius):Component(_pos,  _normal, mirrorCircle), radius(_radius){
 }
 
+/**
+ * @brief Copys a mirrorCircle
+ * @param mirrorCircle1, copy template for the new mirrorCircle
+ */
 MirrorCircle::MirrorCircle(const MirrorCircle &mirrorCircle1): Component(mirrorCircle1), radius(mirrorCircle1.radius) {}

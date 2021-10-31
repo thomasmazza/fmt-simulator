@@ -3,6 +3,11 @@
 #include "../../utils/include/utils.hpp"
 #include <cmath>
 
+/**
+ * @brief Main function of every component, calculates the position and direction after the photon passes
+ * @param photon, Photon who should be calculated
+ * @return true, if photon passes the mirror
+ */
 bool MirrorElliptical::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
     double rS=0;
     double lS=0;
@@ -70,6 +75,13 @@ bool MirrorElliptical::getOutDir(Photon& photon, std::vector<double>& _dirOA) {
     return isComponentHit;
 }
 
+/**
+ * @brief Outsources calculation for direction of photon
+ * @param p, photon who should be calculated
+ * @param intersect, intersection vector
+ * @param normWidth, normalized vector in direction of the Width
+ * @return true, if calculation is done
+ */
 bool MirrorElliptical::calcOut(Photon& p, std::vector<double>& intersect, std::vector<double>& normWidth) {
     //neuer Stützvektor wird der Schnittpunkt
     p.setPosition(intersect);
@@ -112,23 +124,51 @@ bool MirrorElliptical::calcOut(Photon& p, std::vector<double>& intersect, std::v
     return true;
 }
 
+/**
+ * @brief Standard get-method for getting the current radius(height) of the mirror
+ * @return current radiusH of the mirror
+ */
 const double &MirrorElliptical::getRadiusH() {
     return radiusH;
 }
 
+/**
+ * @brief Standard get-method for getting the current radius(width) of the mirror
+ * @return current radiusW of the mirror
+ */
 const double &MirrorElliptical::getRadiusW() {
     return radiusW;
 }
 
+/**
+ * @brief Standard set-method for setting a new radius(width) for the mirror
+ * @param new radiusW for the mirror
+ */
 void MirrorElliptical::setRadiusW(double _radiusW) {
     radiusW = _radiusW;
 }
 
+/**
+ * @brief Standard set-method for setting a new radius(height) for the mirror
+ * @param new radiusH for the mirror
+ */
 void MirrorElliptical::setRadiusH(double _radiusH) {
     radiusH = _radiusH;
 }
 
+/**
+ * @brief Constructs a mirrorElliptical
+ * @param _position, sets the position of the new mirrorElliptical
+ * @param _normal, sets the normal of the new mirrorElliptical
+ * @param _radiusH, sets the radius(height) of the new mirrorElliptical
+ * @param _radiusW, sets the radius(width) of the new mirrorElliptical
+ * @param _type, sets the type of the component ("mirrorElliptical")
+ */
 MirrorElliptical::MirrorElliptical(std::vector<double>& _pos, std::vector<double>& _normal, double _radiusH, double _radiusW):Component(_pos, _normal, mirrorElliptical),radiusH(_radiusH),radiusW(_radiusW) {
 }
 
+/**
+ * @brief Copys a mirrorElliptical
+ * @param mirrorElliptical1, copy template for the new mirrorElliptical
+ */
 MirrorElliptical::MirrorElliptical(const MirrorElliptical &mirrorElliptical1): Component(mirrorElliptical1), radiusH(mirrorElliptical1.radiusH), radiusW(mirrorElliptical1.radiusW) {}
