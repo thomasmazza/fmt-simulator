@@ -488,7 +488,7 @@ void CmpList_element::moveDownElm(){
     if(componentList->elem(elmNumber->text().toInt() - 1)->getType() == detector){
         std::vector<double> _posOfPrevComp(3);
         if(elmNumber->text().toInt() - 1 == 1){
-             _posOfPrevComp[0] = 0; _posOfPrevComp[1] = 0; _posOfPrevComp[2] = 0;
+             _posOfPrevComp[0] = 128; _posOfPrevComp[1] = 128; _posOfPrevComp[2] = 0;
         }
         else{
             _posOfPrevComp = componentList->elem(elmNumber->text().toInt() - 2)->getPosition();
@@ -651,7 +651,7 @@ void CmpList_box::addCmpToList(QString _type, double _xPos, double _yPos, double
         //Berechne PosOfPrevComp neu
         std::vector<double> _posOfPrevComp(3);
         if(elmNumber == 1){
-             _posOfPrevComp[0] = 0; _posOfPrevComp[1] = 0; _posOfPrevComp[2] = 0;
+             _posOfPrevComp[0] = 128; _posOfPrevComp[1] = 128; _posOfPrevComp[2] = 0;
         }
         else{
             _posOfPrevComp = componentList->elem(elmNumber - 2)->getPosition();
