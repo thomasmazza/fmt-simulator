@@ -15,11 +15,13 @@
 #include <QMessageBox>
 #include <QValidator>
 
+/**
+ * @brief CmpAddWindow provides a Input Form, where the user can enter Parameters for a new Component
+ */
 class CmpAddWindow : public QDialog{
     Q_OBJECT
 public:
     explicit CmpAddWindow(QWidget* parent = 0);
-    static void removeItems(QLayout*);
 public slots:
     void typeChanged(QString);
     void closeEvent(QCloseEvent*);

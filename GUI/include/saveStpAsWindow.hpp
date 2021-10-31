@@ -10,6 +10,9 @@
 #include <QCloseEvent>
 #include <QMessageBox>
 
+/**
+ * @brief SaveStpAsWindow asks the user to enter a name for the setup file
+ */
 class SaveStpAsWindow : public QDialog{
     Q_OBJECT
 public:

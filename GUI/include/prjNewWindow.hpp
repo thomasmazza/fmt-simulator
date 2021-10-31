@@ -13,6 +13,9 @@
 #include <QMessageBox>
 #include <QValidator>
 
+/**
+ * @brief PrjNewWindow asks the user to enter a name for the new project
+ */
 class PrjNewWindow : public QDialog{
     Q_OBJECT
 public:

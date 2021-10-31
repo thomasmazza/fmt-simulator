@@ -182,16 +182,27 @@ void CmpAddWindow::changeCmpType(QString _type){
     layout->update();
 }
 
+/**
+ * @brief Triggers the Restructure of the Input Form according to the given type
+ * @param _type Currently selected Component Type in Drop Down Menu
+ */
 void CmpAddWindow::typeChanged(QString _type){
     changeCmpType(_type);
 }
 
+/**
+ * @brief Adds a warning dialog, if the user tries to close the window
+ * @param event Default close event
+ */
 void CmpAddWindow::closeEvent(QCloseEvent* event){
     QMessageBox::StandardButton exitMessage = QMessageBox::critical(this, "Warning", "If you close the window now, no changes will be made.", QMessageBox::Ok|QMessageBox::Cancel);
     if(exitMessage == QMessageBox::Ok) event->accept();
     else event->ignore();
 }
 
+/**
+ * @brief Closes the window, triggering the data transfer
+ */
 void CmpAddWindow::closeOK(){
     if(!xPos->text().isEmpty() &&
             !yPos->text().isEmpty() &&
@@ -370,6 +381,10 @@ void CmpAddWindow::closeOK(){
     QMessageBox::critical(this, "Error", "Empty input fields are not allowed.", QMessageBox::Ok);
 }
 
+/**
+ * @brief Creates a new Window
+ * @param parent Pointer to parental Window, wich is disabled due to modality, while CmpAddWindow is active
+ */
 CmpAddWindow::CmpAddWindow(QWidget* parent):QDialog(parent){
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("Add new component");

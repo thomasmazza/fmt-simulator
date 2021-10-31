@@ -11,6 +11,12 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class fmt_mainWindow; }
 QT_END_NAMESPACE
 
+/**
+ * @brief fmt_mainWindow holds the main program interface.
+ *
+ * Furthermore, it includes the ui-form, designed in QT Designer. All major events and widgets are
+ * managed from here.
+ */
 class fmt_mainWindow : public QMainWindow
 {
     Q_OBJECT

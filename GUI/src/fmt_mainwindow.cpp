@@ -12,6 +12,10 @@
 #include <iostream>
 #include <fstream>
 
+/**
+ * @brief Constructs a main window for the FMT-Simulator
+ * @param parent Default parent window
+ */
 fmt_mainWindow::fmt_mainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::fmt_mainWindow)
@@ -22,17 +26,29 @@ fmt_mainWindow::fmt_mainWindow(QWidget *parent)
     connect(this, &fmt_mainWindow::triggerCmpAdd, ui->CmpListBox, &CmpList_box::addCmpButtonPressed);
 }
 
+/**
+ * @brief Standard destructor. Deleting ui-form
+ */
 fmt_mainWindow::~fmt_mainWindow()
 {
     delete ui;
 }
 
+/**
+ * @brief Checks, if a Setup is loaded and therefore adding a component is allowed
+ */
 void fmt_mainWindow::checkOnCmpAdd(){
     //Prüfen, ob eine Setup-Datei geladen ist, falls nein, das adden unterbinden
     if(ui->StpFilePath->toPlainText() == "" || ui->StpFilePath->toPlainText() == "Auto detection failed") return;
     emit triggerCmpAdd();
 }
 
+/**
+ * @brief Automatically detects, if a file with given name and type exists in project directory
+ * @param _name Name of file without ending
+ * @param _filetype Filetype ending
+ * @return True, if File exists
+ */
 bool fmt_mainWindow::autoDetect(QString _name, QString _filetype){
     if(QFile::exists(ui->ProjPath->text() + "/" + _name + _filetype)){
         return true;
@@ -40,6 +56,9 @@ bool fmt_mainWindow::autoDetect(QString _name, QString _filetype){
     return false;
 }
 
+/**
+ * @brief Opens an input file from file explorer, if allowed
+ */
 void fmt_mainWindow::on_OpenInFile_clicked(){
     //Abbrechen, falls kein Projekt geladen ist
     if(ui->ProjPath->text() == "No project loaded"){
@@ -75,6 +94,9 @@ void fmt_mainWindow::on_OpenInFile_clicked(){
     ui->InFileAuto->setStyleSheet("QPushButton {color: black}");
 }
 
+/**
+ * @brief Opens a setup file from file explorer, if allowed
+ */
 void fmt_mainWindow::on_OpenStpFile_clicked(){
     //Abbrechen, falls kein Projekt geladen ist
     if(ui->ProjPath->text() == "No project loaded"){
@@ -128,6 +150,9 @@ void fmt_mainWindow::on_OpenStpFile_clicked(){
     ui->CmpListBox->rebuildFromList();
 }
 
+/**
+ * @brief Triggers creation process of new project, creating a window for name selection
+ */
 void fmt_mainWindow::on_actionNew_Project_triggered()
 {
     QString prjDirectoryName = QFileDialog::getExistingDirectory(this, "Select a directory", (QCoreApplication::applicationDirPath() + "/../fmt-simulator/setups"), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
@@ -138,6 +163,13 @@ void fmt_mainWindow::on_actionNew_Project_triggered()
     connect(projectNameWindow, &PrjNewWindow::setPrjName, this, &fmt_mainWindow::createNewProject);
 }
 
+/**
+ * @brief Creates a new project with given _name, if its not already existing
+ * @param _name Selected name of project
+ * @param _path Path, where project has to be created
+ *
+ * Also creates a matching setup file, wich can be auto detected
+ */
 void fmt_mainWindow::createNewProject(QString _name, QString _path){
     QDir prjDir(_path + "/" + _name);
     if(!prjDir.exists()){
@@ -148,7 +180,7 @@ void fmt_mainWindow::createNewProject(QString _name, QString _path){
         return;
     }
 
-    //Erstelle neue .stp-Datei
+    //Erstelle neue .xml-Datei
     QString stpFileName = (_path + "/" + _name + "/" + _name + ".xml");
     QFile stpFile(stpFileName);
     stpFile.open(QIODevice::WriteOnly);
@@ -165,6 +197,11 @@ void fmt_mainWindow::createNewProject(QString _name, QString _path){
     ui->SimProgressBar->setValue(0);
 }
 
+/**
+ * @brief Loads existing project from selection in a file explorer
+ *
+ * Also triggers auto detect for both input and setup files
+ */
 void fmt_mainWindow::on_actionLoad_Project_triggered()
 {
     QString prjDirectoryName = QFileDialog::getExistingDirectory(this, "Select the project directory", (QCoreApplication::applicationDirPath() + "/../fmt-simulator/setups"), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
@@ -208,7 +245,9 @@ void fmt_mainWindow::on_actionLoad_Project_triggered()
     }
 }
 
-
+/**
+ * @brief Performs auto detection on input file in current project directory
+ */
 void fmt_mainWindow::on_InFileAuto_clicked()
 {
     QString prjDirectoryName = ui->ProjPath->text();
@@ -233,7 +272,9 @@ void fmt_mainWindow::on_InFileAuto_clicked()
     }
 }
 
-
+/**
+ * @brief Performs auto detection on setup file in current project directory
+ */
 void fmt_mainWindow::on_StpFileAuto_clicked()
 {
     QString prjDirectoryName = ui->ProjPath->text();
@@ -267,6 +308,11 @@ void fmt_mainWindow::on_StpFileAuto_clicked()
     }
 }
 
+/**
+ * @brief Saves the current setup in loaded setup file
+ *
+ * Also creates a warning window, informing the user that the current file will be overwritten
+ */
 void fmt_mainWindow::on_actionSave_Project_triggered()
 {
     //Prüfen, ob ein Projekt geladen ist
@@ -284,6 +330,11 @@ void fmt_mainWindow::on_actionSave_Project_triggered()
     }
 }
 
+/**
+ * @brief Triggers the saving as process
+ *
+ * Creates a Window for defining the perferred name of the setup
+ */
 void fmt_mainWindow::on_actionSave_Setup_as_triggered()
 {
     //Prüfen, ob ein Projekt geladen ist
@@ -297,6 +348,13 @@ void fmt_mainWindow::on_actionSave_Setup_as_triggered()
     connect(saveName, &SaveStpAsWindow::setStpName, this, &fmt_mainWindow::saveWithOtherName);
 }
 
+/**
+ * @brief Saves current setup into a setup file with given name
+ * @param _name Chosen name
+ *
+ * Checks, if datatype is valid, if not, proposes possible name for saving, and provides the possibility
+ * to redefine the name
+ */
 void fmt_mainWindow::saveWithOtherName(QString _name){
     //Bestimme Endung
     int posDot = _name.lastIndexOf(QChar('.'));
@@ -331,6 +389,12 @@ void fmt_mainWindow::saveWithOtherName(QString _name){
     }
 }
 
+/**
+ * @brief Catches the closure of software, if a project is loaded
+ * @param event Standard close event
+ *
+ * Gives the opportunity, to cancel the software exit or save the project and then exit
+ */
 void fmt_mainWindow::closeEvent(QCloseEvent *event){
     //Programm einfach schliessen, falls kein Projekt geladen ist
     if(ui->ProjPath->text() == "No project loaded"){
@@ -353,10 +417,13 @@ void fmt_mainWindow::closeEvent(QCloseEvent *event){
     event->ignore();
 }
 
+/**
+ * @brief Runs optimization with chosen priorities
+ */
 void fmt_mainWindow::on_RunOptimization_clicked()
 {
-    //TODO: Prüfen, ob Simulation ausgeführt wurde
-    if(true){
+    //Prüfen, ob Simulation ausgeführt wurde
+    if(ui->SimProgressBar->value() == ui->SimProgressBar->maximum()){
         //Gültige Kombination der Auswahlen prüfen
         if(!(ui->Priority1_Box->isChecked() || ui->Priority2_Box->isChecked() || ui->Priority3_Box->isChecked())){
             QMessageBox::information(this, "Information", "No Optimization Priorities have been set. There are no Parameters to optimize to.", QMessageBox::Ok);
@@ -398,10 +465,20 @@ void fmt_mainWindow::on_RunOptimization_clicked()
         List* _List = ui->CmpListBox->getComponentList();
         simulation::doStuff(100, 10, 1, simObj, _List, photonList);
         //TODO: Pixmap reloaden, und Liste aktualisieren
+        return;
     }
+    QMessageBox::critical(this, "Error", "A simulation has to be completed before an optimization can be started.", QMessageBox::Ok);
 }
 
-
+/**
+ * @brief Starts simulation process, if all inputs are valid
+ *
+ * The function checks, if a project is loaded, and if setup and input are correctly loaded.
+ * Also checks if the last component is a detector, and if the output .bmp file is correctly
+ * named, and proposes a default name if not.
+ * Creates a window, wich asks the user to select the number of simulated photons, if all conditions
+ * are fullfilled.
+ */
 void fmt_mainWindow::on_SimStartSimulation_clicked()
 {
     //Prüfen, ob ein Projekt geladen ist
@@ -458,6 +535,9 @@ void fmt_mainWindow::on_SimStartSimulation_clicked()
     connect(setWin, &SimStartWindow::simStart, this, &fmt_mainWindow::startSimulation);
 }
 
+/**
+ * @brief Runs simulation with given number of photons
+ */
 void fmt_mainWindow::startSimulation(int photonNumber){
     //Leere Photonen-Liste
     photonList = new std::vector<Photon>();
@@ -537,11 +617,14 @@ void fmt_mainWindow::startSimulation(int photonNumber){
     ui->CmpListBox->rebuildFromList();
 }
 
+/**
+ * @brief Creates a small "about" window with quick information
+ */
 void fmt_mainWindow::on_actionFMT_Simulator_triggered()
 {
     QString boxContent = "Version 0.99\n\nDeveloped by\nLasse Alsmeyer / lasse.alsmeyer@rwth-aachen.de\nNiklas Damhorst / niklas.damhorst@rwth-aachen.de";
     boxContent.append("\nThomas Mazza / thomas.mazza@rwth-aachen.de\nNikolay Panov / nikolay.panov@rwth-aachen.de");
-    boxContent.append("\n\nUnder supervision of\nDr. rer. medic. Dipl.-Inf. Felix Gremse,\nProf. Dr. rer. nat. Uwe Naumann\n\n30.10.2021");
+    boxContent.append("\n\nUnder supervision of\nDr. rer. medic. Dipl.-Inf. Felix Gremse,\nProf. Dr. rer. nat. Uwe Naumann\n\n31.10.2021");
     QMessageBox::about(this, "About FMT-Simulator", boxContent);
 }
 

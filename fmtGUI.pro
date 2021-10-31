@@ -105,9 +105,11 @@ HEADERS += \
 FORMS += \
     GUI/include/fmt_mainwindow.ui
 
-doc.depends = $(SOURCES)
+doc.depends += \
+    $(HEADERS) \
+    $(SOURCES)
 
-doc.commands = (cat Doxyfile; echo "INPUT = $?") | doxygen -
+doc.commands = (cat Doxyfile) | doxygen -
 QMAKE_EXTRA_TARGETS += doc
 
 # Default rules for deployment.
