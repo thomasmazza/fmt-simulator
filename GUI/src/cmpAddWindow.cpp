@@ -2,7 +2,7 @@
 
 /**
  * @brief Changes input form of the Window corresponding to the given Type
- * @param _type Currently selected Type, wich is selected in the Drop Down Menu.
+ * @param _type Currently selected Type, which is selected in the Drop Down Menu.
  *
  * This function is called, if the user changes the Component Type in the Drop Down Menu.
  *
